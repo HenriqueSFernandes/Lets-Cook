@@ -1,16 +1,7 @@
-# lets_cook
+# Let's Cook
 
-A new Flutter project.
+## Product Vision
 
-## Getting Started
+Let's Cook is a revolutionary mobile application designed to connect students within FEUP to buy and sell homemade meals, reducing food waste while fostering a sense of community and culinary exploration. Targeted specifically towards students, Let's Cook addresses the common issue of excess food and tight budgets by providing a platform for convenient and sustainable food sharing.  
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Unlike food delivery apps, like Uber Eats and Glovo, that focus on selling restaurant food, Let's Cook is centered around a marketplace for healthy and cheap homemade meals made by students and for students.
