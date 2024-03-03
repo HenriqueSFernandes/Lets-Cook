@@ -20,6 +20,9 @@ Unlike food delivery apps, like Uber Eats and Glovo, that focus on selling resta
 ## list of assumptions and dependencies
 - Firebase
 
+## User stories
+
+![alt text](image.png)
 ## Authored by :
 - Allan Santos (up202109243)
 - Filipe Gaio (up202204985)
