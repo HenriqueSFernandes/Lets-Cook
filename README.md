@@ -23,6 +23,9 @@ Unlike food delivery apps, like Uber Eats and Glovo, that focus on selling resta
 ## User stories
 
 ![alt text](image.png)
+
+## Domain diagram
+![alt text](<Screenshot from 2024-03-15 10-15-11.png>)
 ## Authored by :
 - Allan Santos (up202109243)
 - Filipe Gaio (up202204985)
