@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'Username.dart';
-
 class Product extends StatelessWidget {
   String userName;
   String dishName;
   double price;
 
-  Product({required this.userName, required this.dishName, required this.price, super.key});
+  Product(
+      {required this.userName,
+      required this.dishName,
+      required this.price,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,51 +18,42 @@ class Product extends StatelessWidget {
       height: 200,
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.black,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.all(
+          color: Colors.orangeAccent,
+          width: 2,
+        ),
         boxShadow: const [
           BoxShadow(
             color: Colors.grey,
-            spreadRadius: 0,
-            blurRadius: 7,
-            offset: Offset(0, 3),
+            blurRadius: 4,
+            offset: Offset(4, 4),
           )
         ],
         image: const DecorationImage(
           image: AssetImage("lib/resources/francesinha.jpg"),
           fit: BoxFit.cover,
-          opacity: 0.8,
         ),
-        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          UserWidget(userName),
           Container(
-            padding: const EdgeInsets.all(10),
+            width: double.infinity,
+            height: 80,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              color: Theme.of(context).colorScheme.background,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  dishName,
-                  style: const TextStyle(
-                    fontSize: 22,
-                  ),
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(9),
+                  bottomRight: Radius.circular(9)),
+              border: Border(
+                top: BorderSide(
+                  width: 2,
+                  color: Colors.orangeAccent,
                 ),
-                Text(
-                  "$price€",
-                  style: const TextStyle(
-                    fontSize: 22,
-                  ),
-                ),
-              ],
+              ),
             ),
+            child: Text("Hello"),
           ),
         ],
       ),
