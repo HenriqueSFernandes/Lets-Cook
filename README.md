@@ -85,7 +85,7 @@ In the "Let's Cook" app, a buyer is essentially a university student seeking con
 In the "Let's Cook" app, an admin plays a crucial role in ensuring smooth operations and maintaining a safe and enjoyable experience for all users. Admins are responsible for managing the platform, monitoring user activity, and addressing any issues or concerns that may arise. They could be university staff members or trusted individuals designated to oversee the app's functionalities. They have a GodToken which gives them those privileges and they can ban anyone and allow users to sell products.
 
 #### Dish :
-In the "Let's Cook" app, a dish is the star of the show, enticing buyers with its delicious flavors and enticing presentations. Each dish listed on the platform represents a culinary creation crafted by a talented seller within the university community.
+In the "Let's Cook" app, a dish is the star of the show, enticing buyers with its delicious flavors and enticing presentations. Each dish listed on the platform represents a culinary creation crafted by a talented seller within the university community. It is described by its name, ingredients, the diets to which it belongs, calories and if it is available at the moment.
 
 ## Architecture and Design
 The architecture of a software system encompasses the set of key decisions about its overall organization.
@@ -97,10 +97,19 @@ To document the architecture requires describing the decomposition of the system
 In this section you should start by briefly describing the overall components of the project and their interrelations. You should also describe how you solved typical problems you may have encountered, pointing to well-known architectural and design patterns, if applicable.
 
 ### Logical architecture
-The purpose of this subsection is to document the high-level logical structure of the code (Logical View), using a UML diagram with logical packages, without the worry of allocating to components, processes or machines.
+For us to have a good organization of our code for easier maintenance, we divided our project in the following sections:
+- Let’s Cook:This package is the global package for our phone application, it has the other packages of our system.
 
-It can be beneficial to present the system in a horizontal decomposition, defining layers and implementation concepts, such as the user interface, business logic and concepts.
+- Let’s Cook UI:  This package is focused on the frontend of our application, it includes the components of the user interface.
 
+
+- Let’s Cook Business Logic: This is the package that includes the user business logic, it also includes API calls to the backend of the application.
+
+
+- Let’s Cook Database Schema: This package contains the local database logic and API.
+
+
+- External Services: This package is the global package for external services application depends on. It includes the other logical packages of our system.
 ![img.png](img.png)
 ### Physical architecture
 The goal of this subsection is to document the high-level physical structure of the software system (machines, connections, software components installed, and their dependencies) using UML deployment diagrams (Deployment View) or component diagrams (Implementation View), separate or integrated, showing the physical structure of the system.
