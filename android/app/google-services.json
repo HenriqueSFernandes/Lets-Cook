@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "986887862089",
+    "project_id": "let-s-cook-880bc",
+    "storage_bucket": "let-s-cook-880bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986887862089:android:9421d84a3c52a911264c98",
+        "android_client_info": {
+          "package_name": "com.letscook.lets_cook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByfVIdrZaHNEMFU8LazBv2w1gKaVix-bc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
