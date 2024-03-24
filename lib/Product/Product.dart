@@ -21,7 +21,7 @@ class Product extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         border: Border.all(
-          color: primaryColor,
+          color: Theme.of(context).primaryColor,
           width: 2,
         ),
         boxShadow: const [
@@ -50,6 +50,7 @@ class Product extends StatelessWidget {
               border: Border(
                 top: BorderSide(
                   width: 2,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
