@@ -16,6 +16,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  final Color aquaGreen = const Color(0xFF1B8587);
   int currentPageIndex = 0;
   late PageController _pageController;
 
@@ -33,11 +34,12 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
+        colorScheme: ColorScheme.fromSeed(seedColor: aquaGreen),
       ),
       title: "Let's Cook",
       home: Scaffold(

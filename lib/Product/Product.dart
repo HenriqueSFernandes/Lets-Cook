@@ -4,7 +4,6 @@ class Product extends StatelessWidget {
   String userName;
   String dishName;
   double price;
-  static const Color aquaGreen = Color(0xFF1B8587);
 
   Product(
       {required this.userName,
@@ -14,6 +13,7 @@ class Product extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor = Theme.of(context).primaryColor;
     return Container(
       width: 300,
       height: 225,
@@ -21,7 +21,7 @@ class Product extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         border: Border.all(
-          color: Colors.green,
+          color: primaryColor,
           width: 2,
         ),
         boxShadow: const [
@@ -50,7 +50,6 @@ class Product extends StatelessWidget {
               border: Border(
                 top: BorderSide(
                   width: 2,
-                  color: Colors.green,
                 ),
               ),
             ),
@@ -63,7 +62,7 @@ class Product extends StatelessWidget {
                     "Heading",
                     style: TextStyle(
                       fontSize: 25,
-                      color: aquaGreen,
+                      color: primaryColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -73,8 +72,8 @@ class Product extends StatelessWidget {
                   child: Text(
                     "Paragraph",
                     style: TextStyle(
-                      color: aquaGreen,
                       fontSize: 15,
+                      color: primaryColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -91,7 +90,8 @@ class Product extends StatelessWidget {
                             child: Container(
                               width: 30,
                               height: 30,
-                              color: aquaGreen,
+                              color: primaryColor,
+
                               child: Icon(
                                 Icons.star,
                                 color: Colors.white,
@@ -103,7 +103,7 @@ class Product extends StatelessWidget {
                             "4.8", // Convert the rating to string
                             style: TextStyle(
                               fontSize: 20,
-                              color: aquaGreen,
+                              color: primaryColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -116,8 +116,8 @@ class Product extends StatelessWidget {
                         "\$$price",
                         style: TextStyle(
                           fontSize: 20,
+                          color: primaryColor,
                           fontWeight: FontWeight.bold,
-                          color: aquaGreen,
                         ),
                       ),
                     ),
