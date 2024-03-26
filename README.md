@@ -1,6 +1,3 @@
-<!-- Template file for README.md for LEIC-ES-2023-24 -->
-
-> [!NOTE] In this file you can find the structure to use to document your app as a product in the README.md file. Along the file you will find guidelines that you can delete or comment
 
 # Let's Cook Development Report
 
@@ -120,13 +117,16 @@ Our app's physical architecture comprises the user device housing the frontend a
 
 
 ### Vertical prototype
-To help on validating all the architectural, design and technological decisions made, we usually implement a vertical prototype, a thin vertical slice of the system integrating as much technologies we can.
-
-In this subsection please describe which feature, or part of it, you have implemented, and how, together with a snapshot of the user interface, if applicable.
-
-At this phase, instead of a complete user story, you can simply implement a small part of a feature that demonstrates thay you can use the technology, for example, show a screen with the app credits (name and authors).
-
-
+We developed the following features for the prototype:
+- ##### Navigation :
+We developed a navigation bar that allows the user to navigate between all the pages
+![alt text](<bar.png>)
+- ##### Design :
+We styled different widget using material design and in some cases we used custom seeds for the color scheme
+![alt text](main.jpg)
+- #### Authentication:
+We developed Login/Register functionality using firebase. The user is able to register using his google account
+![alt text](login.jpg)
 ## Project management
 Software project management is the art and science of planning and leading software projects, in which software projects are planned, implemented, monitored and controlled.
 
