@@ -69,23 +69,27 @@ In this section, you should describe all kinds of requirements for your module: 
 
 ### Domain model
 
-![alt text](<Screenshot from 2024-03-15 10-15-11.png>)
+![alt text](diagramadomain.drawio.png)
 
-#### User
+- #### User
 
-A user is basically a uni student who's either buying or selling food. They could be someone just looking for a quick meal without cooking or a budding chef wanting to share their tasty creations and earn some cash. Each user has a profile with stuff like their name, ID, if they're active or not, and where they are on campus. Plus, they can share a bit about themselves, their food tastes, and what they're selling or looking to buy.
+A user is basically a student who's either buying or selling food. Each user has a profile with stuff like their name, ID, if they're active or not, and where they are on campus. Plus, they can share a bit about themselves, their food tastes, and what they're selling or looking to buy.
 
-#### Seller:
+- #### Seller:
 
-In the "Let's Cook" app, a seller is typically a university student eager to share their culinary skills and earn some extra money. They could be a passionate cook who loves experimenting with flavors or a student with a knack for preparing delicious homemade meals. Each seller has in addition to the User fiels, a sellerId, a deliverRadius (in which area they deliver food), their average rating, their specialities and their sales record
-#### Buyer:
-In the "Let's Cook" app, a buyer is essentially a university student seeking convenient and tasty food options within their campus community. They could be a busy student looking for quick meals without the hassle of cooking or someone craving homemade dishes prepared by talented peers. Each buyer has in addition to the user fields, a BuyerId and its BuyingHistory
+A seller is typically a university student eager to share their culinary skills and earn some extra money. Each seller has in addition to the User fiels, a sellerId, a deliverRadius (where they deliver food), their average rating, their specialities and their sales record. After getting accepted he can post a variety of dishes for sale,
 
-#### Admin:
-In the "Let's Cook" app, an admin plays a crucial role in ensuring smooth operations and maintaining a safe and enjoyable experience for all users. Admins are responsible for managing the platform, monitoring user activity, and addressing any issues or concerns that may arise. They could be university staff members or trusted individuals designated to oversee the app's functionalities. They have a GodToken which gives them those privileges and they can ban anyone and allow users to sell products.
+- #### Buyer:
+A buyer is essentially a university student seeking convenient and tasty food options within their campus community. Each buyer has in addition to the User fields, a BuyerId and its BuyingHistory. He can also follow his favourite sellers.
 
-#### Dish :
-In the "Let's Cook" app, a dish is the star of the show, enticing buyers with its delicious flavors and enticing presentations. Each dish listed on the platform represents a culinary creation crafted by a talented seller within the university community. It is described by its name, ingredients, the diets to which it belongs, calories and if it is available at the moment.
+- #### Admin:
+An admin plays a crucial role in ensuring smooth operations and maintaining a safe and enjoyable experience for all users. Admins are responsible for managing the platform, monitoring user activity, and addressing any issues or concerns that may arise. They have a GodToken which gives them special privileges like being able to ban any user and allowing users to sell products.
+
+- #### Dish :
+A dish is the star of the show, enticing buyers with its delicious flavors. Each dish listed on the platform represents a culinary creation crafted by a talented seller within the university community. It is described by its name, ingredients, calories and if it is available at the moment. Each Dish may belong to different diets
+
+- #### Diet :
+Each diet is represented by its name and by a description which may contain specific information about such diet like the foods that are allowed, where it originates from and potencial benefits it has.
 
 ## Architecture and Design
 The architecture of a software system encompasses the set of key decisions about its overall organization.
