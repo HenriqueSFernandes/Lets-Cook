@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Product extends StatelessWidget {
-  String userName;
-  String dishName;
-  double price;
+  final String userName;
+  final String dishName;
+  final double price;
+  final String documentRef;
 
   Product(
       {required this.userName,
       required this.dishName,
       required this.price,
+      required this.documentRef,
       super.key});
 
   @override
@@ -58,9 +60,10 @@ class Product extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0), // Adjusted padding
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 0.0), // Adjusted padding
                   child: Text(
-                    "Heading",
+                    dishName,
                     style: TextStyle(
                       fontSize: 25,
                       color: primaryColor,
@@ -69,9 +72,10 @@ class Product extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0), // Adjusted padding
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 0.0), // Adjusted padding
                   child: Text(
-                    "Paragraph",
+                    userName,
                     style: TextStyle(
                       fontSize: 15,
                       color: primaryColor,
@@ -83,7 +87,8 @@ class Product extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 2.0),
                       child: Row(
                         children: [
                           ClipRRect(
@@ -92,14 +97,14 @@ class Product extends StatelessWidget {
                               width: 30,
                               height: 30,
                               color: primaryColor,
-
                               child: Icon(
                                 Icons.star,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                          SizedBox(width: 5), // Add spacing between star icon and text
+                          SizedBox(width: 5),
+                          // Add spacing between star icon and text
                           Text(
                             "4.8", // Convert the rating to string
                             style: TextStyle(
@@ -114,7 +119,7 @@ class Product extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        "\$$price",
+                        "$price€",
                         style: TextStyle(
                           fontSize: 20,
                           color: primaryColor,

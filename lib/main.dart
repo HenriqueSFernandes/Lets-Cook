@@ -46,7 +46,7 @@ class _MainAppState extends State<MainApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff015e5c)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff015e5c)),
       ),
       title: "Let's Cook",
       initialRoute:
@@ -97,10 +97,10 @@ class _MainAppState extends State<MainApp> {
                   currentPageIndex = index;
                 });
               },
-              children: const [
-                HomePage(key: PageStorageKey('HomePage')),
-                NewProductPage(key: PageStorageKey('NewProductPage')),
-                ProfilePage(key: PageStorageKey('ProfilePage')),
+              children: [
+                HomePage(key: const PageStorageKey('HomePage')),
+                const NewProductPage(key: PageStorageKey('NewProductPage')),
+                const ProfilePage(key: PageStorageKey('ProfilePage')),
               ],
             ),
           );
