@@ -46,25 +46,19 @@ Let's Cook is a revolutionary mobile application designed to connect students wi
 * Home Page
 * Menu for navigation
 * User profile
-* Search bar with many filters ( food restrictions or diets, location preferences, price filtering , ratings and cook)
-* Scrolldown list of offers with a appealing photo, price, rating, cook
+* Search bar with many filters ( food restrictions or diets, location preferences, price filtering, ratings and cooker)
+* Scrolldown list of offers with an appealing photo, price, rating, cook
 * Dish Page extended version of the menu
-* Cook Page photo,description, experience, rating
+* Cook Page photo, description, experience, rating
 * About Page
 
 ### Elevator Pitch
 
-Draft a small text to help you quickly introduce and describe your product in a short time (lift travel time ~90 seconds) and a few words (~800 characters), a technique usually known as elevator pitch.
-
-Take a look at the following links to learn some techniques:
-
-* [Crafting an Elevator Pitch](https://www.mindtools.com/pages/article/elevator-pitch.htm)
-* [The Best Elevator Pitch Examples, Templates, and Tactics - A Guide to Writing an Unforgettable Elevator Speech, by strategypeak.com](https://strategypeak.com/elevator-pitch-examples/)
-* [Top 7 Killer Elevator Pitch Examples, by toggl.com](https://blog.toggl.com/elevator-pitch-examples/)
+Introducing Let's Cook, the game-changing platform addressing campus food affordability. In a time when many students struggle financially, Let's Cook connects student chefs with those in need of affordable, quality meals. With just a tap, students can buy and sell homemade dishes, creating a win-win situation: culinary enthusiasts earn extra income while offering convenient, inexpensive meals to their peers. Let's Cook isn't just about food delivery; it's about fostering a community of sharing, empowering students economically, and reshaping the future of campus dining.
 
 ## Requirements
 
-In this section, you should describe all kinds of requirements for your module: functional and non-functional requirements.
+<!-- In this section, you should describe all kinds of requirements for your module: functional and non-functional requirements. -->
 
 ### Domain model
 
@@ -72,11 +66,11 @@ In this section, you should describe all kinds of requirements for your module: 
 
 * #### User
 
-A user is basically a student who's either buying or selling food. Each user has a profile with stuff like their name, ID, if they're active or not, and where they are on campus. Plus, they can share a bit about themselves, their food tastes, and what they're selling or looking to buy.
+A user is basically a student who's either buying or selling food. Each user has a profile with attributes like their name, ID, if they're active or not, and where they are on campus. Plus, they can share a bit about themselves, their food tastes, and what they're selling or looking to buy.
 
 * #### Seller
 
-A seller is typically a university student eager to share their culinary skills and earn some extra money. Each seller has in addition to the User fields, a sellerId, a deliverRadius (where they deliver food), their average rating, their specialties and their sales record. After getting accepted he can post a variety of dishes for sale,
+A seller is typically a university student eager to share their culinary skills and earn some extra money. Each seller has in addition to the User fields, a sellerId, a deliverRadius (where they deliver food), their average rating, their specialties, and their sales record. After getting accepted he can post a variety of dishes for sale,
 
 * #### Buyer
 
@@ -88,7 +82,7 @@ An admin plays a crucial role in ensuring smooth operations and maintaining a sa
 
 * #### Dish
 
-A dish is the star of the show, enticing buyers with its delicious flavors. Each dish listed on the platform represents a culinary creation crafted by a talented seller within the university community. It is described by its name, ingredients, calories and if it is available at the moment. Each Dish may belong to different diets
+A dish is the main component of the app. It is described by its name, ingredients, calories and if it is available at the moment. Each Dish may belong to different diets.
 
 * #### Diet
 
@@ -96,19 +90,19 @@ Each diet is represented by its name and by a description which may contain spec
 
 ## Architecture and Design
 
-The architecture of a software system encompasses the set of key decisions about its overall organization.
+<!-- The architecture of a software system encompasses the set of key decisions about its overall organization.
 
 A well written architecture document is brief but reduces the amount of time it takes new programmers to a project to understand the code to feel able to make modifications and enhancements.
 
 To document the architecture requires describing the decomposition of the system in their parts (high-level components) and the key behaviors and collaborations between them.
 
-In this section you should start by briefly describing the overall components of the project and their interrelations. You should also describe how you solved typical problems you may have encountered, pointing to well-known architectural and design patterns, if applicable.
+In this section you should start by briefly describing the overall components of the project and their interrelations. You should also describe how you solved typical problems you may have encountered, pointing to well-known architectural and design patterns, if applicable. -->
 
 ### Logical architecture
 
-For us to have a good organization of our code for easier maintenance, we divided our project in the following sections:
+For us to have a good organization of our code for easier maintenance, we divided our project into the following sections:
 
-* Let’s Cook:This package is the global package for our phone application, it has the other packages of our system.
+* Let’s Cook: This package is the global package for our mobile application, it has the other packages of our system.
 
 * Let’s Cook UI:  This package is focused on the frontend of our application, it includes the components of the user interface.
 
@@ -116,7 +110,8 @@ For us to have a good organization of our code for easier maintenance, we divide
 
 * Let’s Cook Database Schema: This package contains the local database logic and API.
 
-* External Services: This package is the global package for external services application depends on. It includes the other logical packages of our system.
+* External Services: This package is the global package for external services our application depends on. It includes the other logical packages of our system.  
+
 ![img.png](docs/uml/logicalUML.png)
 
 ### Physical architecture
@@ -135,7 +130,7 @@ We developed a navigation bar that allows the user to navigate between different
 
 * #### Design
 
-We styled different widget using material design and in some cases we used custom seeds for the color scheme
+We styled different widgets using material design and in some cases we used custom seeds for the color scheme
 ![alt text](docs/prints/mainPage.png)
 
 * #### Authentication
