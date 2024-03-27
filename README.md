@@ -5,18 +5,18 @@ Welcome to the documentation pages of the Let's Cook App!
 
 You can find here details about the the Let's Cook App, from a high-level vision to low-level implementation decisions, a kind of Software Development Report, organized by type of activities:
 
-* [Business modeling](#Business-Modelling)
-    * [Product Vision](#Product-Vision)
-    * [Features and Assumptions](#Features-and-Assumptions)
-    * [Elevator Pitch](#Elevator-pitch)
-* [Requirements](#Requirements)
-    * [User stories](#User-stories)
-    * [Domain model](#Domain-model)
-* [Architecture and Design](#Architecture-And-Design)
-    * [Logical architecture](#Logical-Architecture)
-    * [Physical architecture](#Physical-Architecture)
-    * [Vertical prototype](#Vertical-Prototype)
-* [Project management](#Project-Management)
+* [Business modeling](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Business-Modelling)
+    * [Product Vision](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Product-Vision)
+    * [Features and Assumptions](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Features-and-Assumptions)
+    * [Elevator Pitch](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Elevator-pitch)
+* [Requirements](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Requirements)
+    * [User stories](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3Astory)
+    * [Domain model](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Domain-model)
+* [Architecture and Design](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Architecture-And-Design)
+    * [Logical architecture](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Logical-Architecture)
+    * [Physical architecture](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Physical-Architecture)
+    * [Vertical prototype](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Vertical-Prototype)
+* [Project management](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2#Project-Management)
 
 Contributions are expected to be made exclusively by the initial team, but we may open them to the community, after the course, in all areas and topics: requirements, technologies, development, experimentation, testing, etc.
 
