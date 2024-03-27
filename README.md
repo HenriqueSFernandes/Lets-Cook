@@ -76,11 +76,11 @@ A user is basically a student who's either buying or selling food. Each user has
 
 * #### Seller
 
-A seller is typically a university student eager to share their culinary skills and earn some extra money. Each seller has in addition to the User fiels, a sellerId, a deliverRadius (where they deliver food), their average rating, their specialities and their sales record. After getting accepted he can post a variety of dishes for sale,
+A seller is typically a university student eager to share their culinary skills and earn some extra money. Each seller has in addition to the User fields, a sellerId, a deliverRadius (where they deliver food), their average rating, their specialties and their sales record. After getting accepted he can post a variety of dishes for sale,
 
 * #### Buyer
 
-A buyer is essentially a university student seeking convenient and tasty food options within their campus community. Each buyer has in addition to the User fields, a BuyerId and its BuyingHistory. He can also follow his favourite sellers.
+A buyer is essentially a university student seeking convenient and tasty food options within their campus community. Each buyer has in addition to the User fields, a BuyerId and its BuyingHistory. He can also follow his favorite sellers.
 
 * #### Admin
 
@@ -92,7 +92,7 @@ A dish is the star of the show, enticing buyers with its delicious flavors. Each
 
 * #### Diet
 
-Each diet is represented by its name and by a description which may contain specific information about such diet like the foods that are allowed, where it originates from and potencial benefits it has.
+Each diet is represented by its name and by a description which may contain specific information about such diet like the foods that are allowed, where it originates from and potential benefits it has.
 
 ## Architecture and Design
 
@@ -131,22 +131,22 @@ We developed the following features for the prototype:
 * #### Navigation
 
 We developed a navigation bar that allows the user to navigate between different pages.
-![alt text](docs/mockups/bottomNavBar.png)
+![alt text](docs/prints/bottomNavBar.png)
 
 * #### Design
 
 We styled different widget using material design and in some cases we used custom seeds for the color scheme
-![alt text](docs/mockups/mainPage.png)
+![alt text](docs/prints/mainPage.png)
 
 * #### Authentication
 
 We developed Login/Register functionality using Firebase Auth. The user is able to register using a Google account or an email/password.
-![alt text](docs/mockups/loginPage.png)
+![alt text](docs/prints/loginPage.png)
 
 * #### Database
 
 We built a custom database with Firebase Firestore that allows us to save data about users, dishes, and others and automatically sync the data with each client.
-![database](docs/mockups/firestoreDatabase.png)
+![database](docs/prints/firestoreDatabase.png)
 
 ## Project management
 
