@@ -1,1 +1,0 @@
- /home/jose/Documents/feup/2/esof/2LEIC16T2/.dart_tool/flutter_build/5bd33b528b7ba2f9023f8d02a9982403/native_assets.yaml: 
