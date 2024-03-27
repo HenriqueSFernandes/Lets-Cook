@@ -123,10 +123,10 @@ We developed a navigation bar that allows the user to navigate between all the p
 ![alt text](<bar.png>)
 - ##### Design :
 We styled different widget using material design and in some cases we used custom seeds for the color scheme
-![alt text](main.jpg)
+![alt text](docs/main.jpg)
 - #### Authentication:
 We developed Login/Register functionality using firebase. The user is able to register using his google account
-![alt text](login.jpg)
+![alt text](docs/login.jpg)
 ## Project management
 Software project management is the art and science of planning and leading software projects, in which software projects are planned, implemented, monitored and controlled.
 
