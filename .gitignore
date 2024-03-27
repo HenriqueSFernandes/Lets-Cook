@@ -42,3 +42,5 @@ app.*.map.json
 src/android/app/debug
 src/android/app/profile
 src/android/app/release
+
+.idea/
