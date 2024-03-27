@@ -46,7 +46,7 @@ Let's Cook is a revolutionary mobile application designed to connect students wi
 * Home Page
 * Menu for navigation
 * User profile
-* Search bar with many filters ( food restrictions or diets, location preferences, price filtering, ratings and cooker)
+* Search bar with many filters ( food restrictions or diets, location preferences, price filtering, ratings and chef)
 * Scrolldown list of offers with an appealing photo, price, rating, cook
 * Dish Page extended version of the menu
 * Cook Page photo, description, experience, rating
@@ -66,7 +66,7 @@ Introducing Let's Cook, the game-changing platform addressing campus food afford
 
 * #### User
 
-A user is basically a student who's either buying or selling food. Each user has a profile with attributes like their name, ID, if they're active or not, and where they are on campus. Plus, they can share a bit about themselves, their food tastes, and what they're selling or looking to buy.
+A user is a student who's either buying or selling food. Each user has a profile with attributes like their name, ID, if they're active or not, and where they are on campus. Plus, they can share a bit about themselves, their food tastes, and what they're selling or looking to buy.
 
 * #### Seller
 
@@ -82,7 +82,7 @@ An admin plays a crucial role in ensuring smooth operations and maintaining a sa
 
 * #### Dish
 
-A dish is the main component of the app. It is described by its name, ingredients, calories and if it is available at the moment. Each Dish may belong to different diets.
+A dish is the main component of the app. It is described by its name, ingredients, calories and if it is available at the moment. Each dish may belong to different diets.
 
 * #### Diet
 
