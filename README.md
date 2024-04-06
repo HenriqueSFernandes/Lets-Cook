@@ -145,16 +145,32 @@ We built a custom database with Firebase Firestore that allows us to save data a
 
 ## Project management
 
-Software project management is the art and science of planning and leading software projects, in which software projects are planned, implemented, monitored and controlled.
+### Sprint 0
 
-In the context of ESOF, we recommend each team to adopt a set of project management practices and tools capable of registering tasks, assigning tasks to team members, adding estimations to tasks, monitor tasks progress, and therefore being able to track their projects.
+> The goal of this sprint is to implement a basic working app with backend integration and some base documentation.
 
-Common practices of managing iterative software development are: backlog management, release management, estimation, iteration planning, iteration development, acceptance tests, and retrospectives.
+End of the sprint:
+![Sprint 0 End](./docs/sprintsPrints/Sprint0end.png)
 
-You can find below information and references related with the project management in our team:
+#### What went well?
 
-* Backlog management: Product backlog and Sprint backlog in a [Github Projects board](https://github.com/orgs/FEUP-LEIC-ES-2023-24/projects/64);
-* Release management: [v0](#), v1, v2, v3, ...;
-* Sprint planning and retrospectives:
-  * plans: screenshots of Github Projects board at begin and end of each iteration;
-  * retrospectives: meeting notes in a document in the repository;
+* Everyone contributed to the project with different parts, like UML diagrams, design or code.
+* We managed to get a basic prototype working.
+
+#### What didn't go so well?
+
+* Sometimes the communication wasn't the best, for example there were some unclear requirements that led to misunderstandings in the implementation.
+
+#### What we are going to start doing?
+
+* Every change will require a new branch, even if it is a small change.
+* Each pull request will require a good description of what changed and why and at least 2 reviews will be required before merging.
+* Each pull request review must be detailed, and if there are any issues, they must be resolved before approving the changes.
+* Everyone needs to have an idea of what others are working on, in order to facilitate the communication.
+
+### Sprint 1
+
+> The goal of this sprint is to implement the core functionalities of the app.
+
+Start of the sprint:
+![Sprint 1 Start](./docs/sprintsPrints/Sprint1begin.png)
