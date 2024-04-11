@@ -26,7 +26,13 @@ class Product extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const MealPage(),
+            builder: (context) => MealPage(
+              documentRef: documentRef,
+              userName: userName,
+              dishName: dishName,
+              imageURL: imageURL,
+              price: price,
+            ),
           ),
         );
       },
