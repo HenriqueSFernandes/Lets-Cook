@@ -4,14 +4,17 @@ class Product extends StatelessWidget {
   final String userName;
   final String dishName;
   final double price;
+  final String imageURL;
   final String documentRef;
 
-  Product(
-      {required this.userName,
-      required this.dishName,
-      required this.price,
-      required this.documentRef,
-      super.key});
+  const Product({
+    required this.userName,
+    required this.dishName,
+    required this.price,
+    required this.documentRef,
+    required this.imageURL,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +36,8 @@ class Product extends StatelessWidget {
             offset: Offset(4, 4),
           )
         ],
-        image: const DecorationImage(
-          image: AssetImage("lib/resources/francesinha.jpg"),
+        image: DecorationImage(
+          image: NetworkImage(imageURL),
           fit: BoxFit.cover,
         ),
       ),
@@ -46,7 +49,7 @@ class Product extends StatelessWidget {
             height: 100,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(9),
                   bottomRight: Radius.circular(9)),
               border: Border(

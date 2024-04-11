@@ -58,10 +58,6 @@ class _MainAppState extends State<MainApp> {
         },
         "/home": (context) {
           return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => setState(() {}),
-              child: Icon(Icons.refresh),
-            ),
             appBar: AppBar(
               title: const Text("Let's Cook"),
               elevation: 4,

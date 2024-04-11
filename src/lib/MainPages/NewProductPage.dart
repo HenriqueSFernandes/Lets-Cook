@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_cook/Components/IngredientCard.dart';
@@ -73,7 +77,34 @@ class _NewProductPageState extends State<NewProductPage> {
     }
   }
 
-  void submitMeal() {
+  Future<List<String>> uploadImages(
+      Map<String, MealImageCard> images, String mealID) async {
+    final storageRef = FirebaseStorage.instance.ref().child("meals/$mealID");
+    List<String> imageUrls = [];
+    for (final key in images.keys){
+      final file = images[key]!.file;
+      final imageRef = storageRef.child("$key.png");
+      try {
+        await imageRef.putFile(
+          file,
+          SettableMetadata(
+            contentType: "image/jpeg",
+          ),
+        );
+        final url = await imageRef.getDownloadURL();
+        print("URL:$url");
+        imageUrls.add(url);
+      } catch (e) {
+        // print only if in debug mode.
+        if (kDebugMode) {
+          print("Error while uploading the file.");
+        }
+      }
+    }
+    return imageUrls;
+  }
+
+  void submitMeal() async {
     String name = nameController.text;
     String description = descriptionController.text;
     double? price = double.tryParse(priceController.text);
@@ -103,7 +134,35 @@ class _NewProductPageState extends State<NewProductPage> {
               ],
             );
           });
+      return;
     }
+
+    final String mealID = FirebaseAuth.instance.currentUser!.uid +
+        DateTime.now().millisecondsSinceEpoch.toString();
+    List<String> imageUrls = await uploadImages(images, mealID);
+
+    final docRef = FirebaseFirestore.instance.collection("dishes").doc(mealID);
+
+    final data = {
+      "mealname": name,
+      "description": description,
+      "price": price,
+      "quantity": portions,
+      "username": FirebaseAuth.instance.currentUser!.displayName,
+      "userid": FirebaseAuth.instance.currentUser!.uid,
+      "ingredients": ingredientNames,
+      "images": imageUrls,
+    };
+    await docRef.set(data).onError(
+        (error, stackTrace) => print("Error writing document: $error"));
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        duration: Duration(seconds: 3),
+        content: Text("Meal submitted."),
+      ),
+    );
   }
 
   @override
