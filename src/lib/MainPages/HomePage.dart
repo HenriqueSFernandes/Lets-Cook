@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_cook/Product/Product.dart';
+import 'package:lets_cook/Components/Product/ProductCard.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
     );
     return ListView(
       children: products,
+      padding: EdgeInsets.only(left: 15, right: 15),
     );
   }
 }

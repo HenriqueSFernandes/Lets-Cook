@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lets_cook/Components/IngredientCard.dart';
+import 'package:lets_cook/Components/NewProduct/IngredientCard.dart';
 import 'package:lets_cook/Components/NewProduct/MealDescriptionInput.dart';
 import 'package:lets_cook/Components/NewProduct/MealImageCard.dart';
 import 'package:lets_cook/Components/NewProduct/MealIngredientInput.dart';
@@ -94,7 +94,6 @@ class _NewProductPageState extends State<NewProductPage> {
           ),
         );
         final url = await imageRef.getDownloadURL();
-        print("URL:$url");
         imageUrls.add(url);
       } catch (e) {
         // print only if in debug mode.
