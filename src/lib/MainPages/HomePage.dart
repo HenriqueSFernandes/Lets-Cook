@@ -21,9 +21,10 @@ class _HomePageState extends State<HomePage> {
         List<Product> updatedProducts = [];
         for (var element in event.docs) {
           updatedProducts.add(Product(
-            userName: element["user"],
-            dishName: element["name"],
+            userName: element["username"],
+            dishName: element["mealname"],
             price: element["price"],
+            imageURL: element["images"][0],
             documentRef: element.id,
           ));
         }

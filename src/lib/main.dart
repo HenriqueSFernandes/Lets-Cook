@@ -1,14 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_cook/MainPages/HomePage.dart';
+import 'package:lets_cook/MainPages/LoginPage.dart';
 import 'package:lets_cook/MainPages/NewProductPage.dart';
 import 'package:lets_cook/MainPages/ProfilePage.dart';
 import 'package:lets_cook/firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:lets_cook/MainPages/LoginPage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -41,10 +44,10 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        textTheme: GoogleFonts.ubuntuCondensedTextTheme(),
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff015e5c)),
       ),
@@ -99,7 +102,7 @@ class _MainAppState extends State<MainApp> {
               },
               children: [
                 HomePage(key: const PageStorageKey('HomePage')),
-                const NewProductPage(key: PageStorageKey('NewProductPage')),
+                NewProductPage(key: const PageStorageKey('NewProductPage')),
                 const ProfilePage(key: PageStorageKey('ProfilePage')),
               ],
             ),
