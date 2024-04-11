@@ -73,6 +73,7 @@ class _NewProductPageState extends State<NewProductPage> {
           setState(() {});
         },
       );
+      ingredientController.clear();
       setState(() {});
     }
   }
