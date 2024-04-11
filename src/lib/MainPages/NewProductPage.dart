@@ -24,6 +24,7 @@ class NewProductPage extends StatefulWidget {
 class _NewProductPageState extends State<NewProductPage> {
   Map<String, IngredientCard> ingredients = {};
   Map<String, MealImageCard> images = {};
+  bool isUploading = false;
   File? selectedImage;
 
   final nameController = TextEditingController();
@@ -82,7 +83,7 @@ class _NewProductPageState extends State<NewProductPage> {
       Map<String, MealImageCard> images, String mealID) async {
     final storageRef = FirebaseStorage.instance.ref().child("meals/$mealID");
     List<String> imageUrls = [];
-    for (final key in images.keys){
+    for (final key in images.keys) {
       final file = images[key]!.file;
       final imageRef = storageRef.child("$key.png");
       try {
@@ -106,6 +107,8 @@ class _NewProductPageState extends State<NewProductPage> {
   }
 
   void submitMeal() async {
+    isUploading = true;
+    setState(() {});
     String name = nameController.text;
     String description = descriptionController.text;
     double? price = double.tryParse(priceController.text);
@@ -135,6 +138,8 @@ class _NewProductPageState extends State<NewProductPage> {
               ],
             );
           });
+      isUploading = false;
+      setState(() {});
       return;
     }
 
@@ -156,14 +161,23 @@ class _NewProductPageState extends State<NewProductPage> {
     };
     await docRef.set(data).onError(
         (error, stackTrace) => print("Error writing document: $error"));
-
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        duration: Duration(seconds: 3),
-        content: Text("Meal submitted."),
-      ),
-    );
+    nameController.clear();
+    descriptionController.clear();
+    ingredients.clear();
+    priceController.clear();
+    portionsController.clear();
+    ingredientController.clear();
+    images.clear();
+    isUploading = false;
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Meal submitted"),
+        ),
+      );
+    }
+    setState(() {});
   }
 
   @override
@@ -259,13 +273,20 @@ class _NewProductPageState extends State<NewProductPage> {
           ),
           const SizedBox(height: 20),
           Align(
-            child: FilledButton(
-              onPressed: submitMeal,
-              child: const Text(
-                "Sell",
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
+            child: isUploading
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  )
+                : FilledButton(
+                    onPressed: submitMeal,
+                    child: const Text(
+                      "Upload",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
           )
         ],
       ),
