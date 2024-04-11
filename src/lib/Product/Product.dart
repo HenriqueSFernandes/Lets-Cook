@@ -122,7 +122,7 @@ class Product extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        "$price€",
+                        "${price.toStringAsFixed(2)}€",
                         style: TextStyle(
                           fontSize: 20,
                           color: primaryColor,
