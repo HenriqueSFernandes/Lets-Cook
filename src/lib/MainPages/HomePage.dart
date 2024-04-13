@@ -36,9 +36,15 @@ class _HomePageState extends State<HomePage> {
       },
       onError: (error) => print("Listen failed: $error"),
     );
-    return ListView(
-      children: products,
-      padding: EdgeInsets.only(left: 15, right: 15),
+    return Padding(
+      padding: const EdgeInsets.only(right: 1),
+      child: RawScrollbar(
+        radius: const Radius.circular(20),
+        child: ListView(
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          children: products,
+        ),
+      ),
     );
   }
 }

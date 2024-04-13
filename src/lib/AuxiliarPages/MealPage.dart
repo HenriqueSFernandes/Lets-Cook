@@ -56,69 +56,75 @@ class MealPage extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(30),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 1),
+                  child: Scrollbar(
+                    radius: Radius.circular(20),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: Column(
                           children: [
-                            Text(
-                              dishName,
-                              style: TextStyle(
-                                fontSize: 30,
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  dishName,
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  "${price.toStringAsFixed(2)}€",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            CollapsableList(
+                              title: "Ingredients",
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: ingredientsColumn1
+                                        .map((e) => Text("• $e"))
+                                        .toList(),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: ingredientsColumn2
+                                        .map((e) => Text("• $e"))
+                                        .toList(),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: ingredientsColumn3
+                                        .map((e) => Text("• $e"))
+                                        .toList(),
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(
-                              "${price.toStringAsFixed(2)}€",
-                              style: TextStyle(
-                                fontSize: 30,
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            CollapsableList(
+                              title: "Pictures (n)",
+                              child: Column(
+                                  children: List.generate(50, (index) => Text(index.toString()))
+                                      .toList()),
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        CollapsableList(
-                          title: "Ingredients",
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: ingredientsColumn1
-                                    .map((e) => Text("• $e"))
-                                    .toList(),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: ingredientsColumn2
-                                    .map((e) => Text("• $e"))
-                                    .toList(),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: ingredientsColumn3
-                                    .map((e) => Text("• $e"))
-                                    .toList(),
-                              ),
-                            ],
-                          ),
-                        ),
-                        CollapsableList(
-                          title: "Pictures (n)",
-                          child: Column(
-                              children: List.generate(50, (index) => Text(index.toString()))
-                                  .toList()),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
