@@ -6,15 +6,17 @@ class Product extends StatelessWidget {
   final String userName;
   final String dishName;
   final double price;
+  final String description;
   final String imageURL;
-  final String documentRef;
+  final List<String> ingredients;
 
   const Product({
     required this.userName,
     required this.dishName,
     required this.price,
-    required this.documentRef,
+    required this.description,
     required this.imageURL,
+    required this.ingredients,
     super.key,
   });
 
@@ -27,11 +29,12 @@ class Product extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => MealPage(
-              documentRef: documentRef,
               userName: userName,
               dishName: dishName,
-              imageURL: imageURL,
               price: price,
+              description: description,
+              imageURL: imageURL,
+              ingredients: ingredients,
             ),
           ),
         );
@@ -116,13 +119,13 @@ class Product extends StatelessWidget {
                                 width: 30,
                                 height: 30,
                                 color: primaryColor,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.star,
                                   color: Colors.white,
                                 ),
                               ),
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             // Add spacing between star icon and text
                             Text(
                               "4.8", // Convert the rating to string

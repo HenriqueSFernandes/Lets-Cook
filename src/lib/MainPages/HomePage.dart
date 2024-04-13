@@ -24,8 +24,9 @@ class _HomePageState extends State<HomePage> {
             userName: element["username"],
             dishName: element["mealname"],
             price: element["price"],
+            description: element["description"],
             imageURL: element["images"][0],
-            documentRef: element.id,
+            ingredients: List<String>.from(element["ingredients"]),
           ));
         }
         if (!mounted) return;

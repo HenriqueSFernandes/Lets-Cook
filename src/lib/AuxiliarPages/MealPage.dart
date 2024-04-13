@@ -1,56 +1,128 @@
+import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lets_cook/Components/MealPage/CollapsableList.dart';
 
 class MealPage extends StatelessWidget {
   final String userName;
   final String dishName;
   final double price;
+  final String description;
   final String imageURL;
-  final String documentRef;
+  final List<String> ingredients;
 
-  const MealPage(
-      {super.key,
-      required this.userName,
-      required this.dishName,
-      required this.price,
-      required this.imageURL,
-      required this.documentRef});
+  const MealPage({
+    super.key,
+    required this.userName,
+    required this.dishName,
+    required this.price,
+    required this.description,
+    required this.imageURL,
+    required this.ingredients,
+  });
 
   @override
   Widget build(BuildContext context) {
+    ingredients.sort();
+    final splitIngredients = ingredients.slices(3);
+    final ingredientsColumn1 = [];
+    final ingredientsColumn2 = [];
+    final ingredientsColumn3 = [];
+
+    for (var slice in splitIngredients) {
+      for (int i = 0; i < slice.length; i++) {
+        if (i == 0) {
+          ingredientsColumn1.add(slice[i]);
+        } else if (i == 1) {
+          ingredientsColumn2.add(slice[i]);
+        } else if (i == 2) {
+          ingredientsColumn3.add(slice[i]);
+        }
+      }
+    }
+
     return Scaffold(
       body: Stack(
         children: [
           Column(
             children: [
-              Image(image: NetworkImage(imageURL)),
-              Padding(
-                padding: const EdgeInsets.all(30),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Container(
+                height: MediaQuery.of(context).size.height / 3,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(imageURL),
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: Column(
                       children: [
-                        Text(
-                          dishName,
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w600,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              dishName,
+                              style: TextStyle(
+                                fontSize: 30,
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              "${price.toStringAsFixed(2)}€",
+                              style: TextStyle(
+                                fontSize: 30,
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        CollapsableList(
+                          title: "Ingredients",
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: ingredientsColumn1
+                                    .map((e) => Text("• $e"))
+                                    .toList(),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: ingredientsColumn2
+                                    .map((e) => Text("• $e"))
+                                    .toList(),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: ingredientsColumn3
+                                    .map((e) => Text("• $e"))
+                                    .toList(),
+                              ),
+                            ],
                           ),
                         ),
-                        Text(
-                          "${price.toStringAsFixed(2)}€",
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        CollapsableList(
+                          title: "Pictures (n)",
+                          child: Column(
+                              children: List.generate(50, (index) => Text(index.toString()))
+                                  .toList()),
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              )
+              ),
             ],
           ),
           Positioned(
@@ -64,10 +136,11 @@ class MealPage extends StatelessWidget {
                 backgroundColor: Theme.of(context).primaryColor,
               ),
               child: const Center(
-                  child: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              )),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ],
