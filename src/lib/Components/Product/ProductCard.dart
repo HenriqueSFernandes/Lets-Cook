@@ -7,7 +7,7 @@ class Product extends StatelessWidget {
   final String dishName;
   final double price;
   final String description;
-  final String imageURL;
+  final List<String> imageURLs;
   final List<String> ingredients;
 
   const Product({
@@ -15,7 +15,7 @@ class Product extends StatelessWidget {
     required this.dishName,
     required this.price,
     required this.description,
-    required this.imageURL,
+    required this.imageURLs,
     required this.ingredients,
     super.key,
   });
@@ -25,6 +25,7 @@ class Product extends StatelessWidget {
     final Color primaryColor = Theme.of(context).primaryColor;
     return GestureDetector(
       onTap: () {
+        List<NetworkImage> images = imageURLs.map((e) => NetworkImage(e)).toList();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -33,7 +34,7 @@ class Product extends StatelessWidget {
               dishName: dishName,
               price: price,
               description: description,
-              imageURL: imageURL,
+              images: images,
               ingredients: ingredients,
             ),
           ),
@@ -56,7 +57,7 @@ class Product extends StatelessWidget {
             )
           ],
           image: DecorationImage(
-            image: NetworkImage(imageURL),
+            image: NetworkImage(imageURLs[0]),
             fit: BoxFit.cover,
           ),
         ),

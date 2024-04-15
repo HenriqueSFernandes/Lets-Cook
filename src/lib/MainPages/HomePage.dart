@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
             dishName: element["mealname"],
             price: element["price"],
             description: element["description"],
-            imageURL: element["images"][0],
+            imageURLs: List<String>.from(element["images"]),
             ingredients: List<String>.from(element["ingredients"]),
           ));
         }

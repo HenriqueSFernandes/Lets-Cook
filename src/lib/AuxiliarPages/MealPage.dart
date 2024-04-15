@@ -8,7 +8,7 @@ class MealPage extends StatelessWidget {
   final String dishName;
   final double price;
   final String description;
-  final String imageURL;
+  final List<NetworkImage> images;
   final List<String> ingredients;
 
   const MealPage({
@@ -17,7 +17,7 @@ class MealPage extends StatelessWidget {
     required this.dishName,
     required this.price,
     required this.description,
-    required this.imageURL,
+    required this.images,
     required this.ingredients,
   });
 
@@ -50,7 +50,7 @@ class MealPage extends StatelessWidget {
                 height: MediaQuery.of(context).size.height / 3,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(imageURL),
+                    image: images[0],
                     fit: BoxFit.fitWidth,
                   ),
                 ),
@@ -64,6 +64,7 @@ class MealPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(30),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,6 +90,7 @@ class MealPage extends StatelessWidget {
                             const SizedBox(
                               height: 25,
                             ),
+                            Text(description),
                             CollapsableList(
                               title: "Ingredients",
                               child: Row(
