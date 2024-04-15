@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_cook/Components/NewProduct/IngredientCard.dart';
 import 'package:lets_cook/Components/NewProduct/MealDescriptionInput.dart';
-import 'package:lets_cook/Components/NewProduct/MealImageCard.dart';
+import 'package:lets_cook/Components/NewProduct/DismissibleImageCard.dart';
 import 'package:lets_cook/Components/NewProduct/MealIngredientInput.dart';
 import 'package:lets_cook/Components/NewProduct/MealNameInput.dart';
 import 'package:lets_cook/Components/NewProduct/MealPortionsInput.dart';
@@ -23,7 +23,7 @@ class NewProductPage extends StatefulWidget {
 
 class _NewProductPageState extends State<NewProductPage> {
   Map<String, IngredientCard> ingredients = {};
-  Map<String, MealImageCard> images = {};
+  Map<String, DismissibleImageCard> images = {};
   bool isUploading = false;
   File? selectedImage;
 
@@ -39,7 +39,7 @@ class _NewProductPageState extends State<NewProductPage> {
       selectedImage = File(image!.path);
       if (selectedImage != null) {
         final id = DateTime.now().millisecondsSinceEpoch.toString();
-        images[id] = MealImageCard(
+        images[id] = DismissibleImageCard(
             image: selectedImage!,
             onRemove: () {
               images.remove(id);
@@ -55,7 +55,7 @@ class _NewProductPageState extends State<NewProductPage> {
       selectedImage = File(image!.path);
       if (selectedImage != null) {
         final id = DateTime.now().millisecondsSinceEpoch.toString();
-        images[id] = MealImageCard(
+        images[id] = DismissibleImageCard(
             image: selectedImage!,
             onRemove: () {
               images.remove(id);
@@ -80,7 +80,7 @@ class _NewProductPageState extends State<NewProductPage> {
   }
 
   Future<List<String>> uploadImages(
-      Map<String, MealImageCard> images, String mealID) async {
+      Map<String, DismissibleImageCard> images, String mealID) async {
     final storageRef = FirebaseStorage.instance.ref().child("meals/$mealID");
     List<String> imageUrls = [];
     for (final key in images.keys) {

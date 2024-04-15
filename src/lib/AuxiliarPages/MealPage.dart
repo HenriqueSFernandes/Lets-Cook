@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/MealPage/CollapsableList.dart';
+import 'package:lets_cook/Components/MealPage/ImageCard.dart';
 
 class MealPage extends StatelessWidget {
   final String userName;
@@ -94,23 +94,27 @@ class MealPage extends StatelessWidget {
                             CollapsableList(
                               title: "Ingredients",
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: ingredientsColumn1
                                         .map((e) => Text("• $e"))
                                         .toList(),
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: ingredientsColumn2
                                         .map((e) => Text("• $e"))
                                         .toList(),
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: ingredientsColumn3
                                         .map((e) => Text("• $e"))
                                         .toList(),
@@ -119,10 +123,18 @@ class MealPage extends StatelessWidget {
                               ),
                             ),
                             CollapsableList(
-                              title: "Pictures (n)",
-                              child: Column(
-                                  children: List.generate(50, (index) => Text(index.toString()))
-                                      .toList()),
+                              title: "Pictures (${images.length})",
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: images
+                                      .mapIndexed((index, image) => Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: ImageCard(image: image),
+                                      ))
+                                      .toList(),
+                                ),
+                              ),
                             ),
                           ],
                         ),
