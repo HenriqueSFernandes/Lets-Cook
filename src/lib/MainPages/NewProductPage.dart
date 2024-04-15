@@ -6,13 +6,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lets_cook/Components/NewProduct/IngredientCard.dart';
-import 'package:lets_cook/Components/NewProduct/MealDescriptionInput.dart';
-import 'package:lets_cook/Components/NewProduct/DismissibleImageCard.dart';
-import 'package:lets_cook/Components/NewProduct/MealIngredientInput.dart';
-import 'package:lets_cook/Components/NewProduct/MealNameInput.dart';
-import 'package:lets_cook/Components/NewProduct/MealPortionsInput.dart';
-import 'package:lets_cook/Components/NewProduct/MealPriceInput.dart';
+import 'package:lets_cook/Components/NewProductPage/IngredientCard.dart';
+import 'package:lets_cook/Components/NewProductPage/MealDescriptionInput.dart';
+import 'package:lets_cook/Components/NewProductPage/DismissibleImageCard.dart';
+import 'package:lets_cook/Components/NewProductPage/MealIngredientInput.dart';
+import 'package:lets_cook/Components/NewProductPage/MealNameInput.dart';
+import 'package:lets_cook/Components/NewProductPage/MealPortionsInput.dart';
+import 'package:lets_cook/Components/NewProductPage/MealPriceInput.dart';
 
 class NewProductPage extends StatefulWidget {
   NewProductPage({super.key});

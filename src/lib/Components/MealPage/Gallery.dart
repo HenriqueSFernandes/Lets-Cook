@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Gallery extends StatefulWidget {
   final List<NetworkImage> images;
@@ -24,7 +24,6 @@ class _GalleryState extends State<Gallery> {
       currentIndex = 0;
     }
     setState(() {
-      print(currentIndex);
     });
   }
 
@@ -33,9 +32,7 @@ class _GalleryState extends State<Gallery> {
     if (currentIndex < 0) {
       currentIndex = widget.images.length - 1;
     }
-    setState(() {
-      print(currentIndex);
-    });
+    setState(() {});
   }
 
   @override
@@ -59,7 +56,9 @@ class _GalleryState extends State<Gallery> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: previousImage,
+                    onPressed: () {
+                      previousImage();
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(5),

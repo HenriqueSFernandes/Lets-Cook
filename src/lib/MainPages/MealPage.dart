@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/MealPage/CollapsableList.dart';
 import 'package:lets_cook/Components/MealPage/Gallery.dart';
 import 'package:lets_cook/Components/MealPage/ImageCard.dart';
+import 'package:lets_cook/Components/MealPage/UserButton.dart';
 
 class MealPage extends StatelessWidget {
   final String userName;
   final String dishName;
   final double price;
   final String description;
+  final String userID;
   final List<NetworkImage> images;
   final List<String> ingredients;
 
@@ -18,6 +20,7 @@ class MealPage extends StatelessWidget {
     required this.dishName,
     required this.price,
     required this.description,
+    required this.userID,
     required this.images,
     required this.ingredients,
   });
@@ -60,7 +63,7 @@ class MealPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 1),
                   child: Scrollbar(
-                    radius: Radius.circular(20),
+                    radius: const Radius.circular(20),
                     child: SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.all(30),
@@ -85,6 +88,43 @@ class MealPage extends StatelessWidget {
                                     color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.w600,
                                   ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                UserButton(
+                                  userName: userName,
+                                  userID: userID,
+                                ),
+                                Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(7),
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        color: Theme.of(context).primaryColor,
+                                        child: const Icon(
+                                          Icons.star,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    // Add spacing between star icon and text
+                                    Text(
+                                      "4.8 / 5.0",
+                                      // Convert the rating to string
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

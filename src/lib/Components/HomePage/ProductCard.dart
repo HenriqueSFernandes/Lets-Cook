@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../AuxiliarPages/MealPage.dart';
+import '../../MainPages/MealPage.dart';
 
 class Product extends StatelessWidget {
   final String userName;
   final String dishName;
   final double price;
   final String description;
+  final String userID;
   final List<String> imageURLs;
   final List<String> ingredients;
 
@@ -15,6 +16,7 @@ class Product extends StatelessWidget {
     required this.dishName,
     required this.price,
     required this.description,
+    required this.userID,
     required this.imageURLs,
     required this.ingredients,
     super.key,
@@ -25,7 +27,8 @@ class Product extends StatelessWidget {
     final Color primaryColor = Theme.of(context).primaryColor;
     return GestureDetector(
       onTap: () {
-        List<NetworkImage> images = imageURLs.map((e) => NetworkImage(e)).toList();
+        List<NetworkImage> images =
+            imageURLs.map((e) => NetworkImage(e)).toList();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -34,6 +37,7 @@ class Product extends StatelessWidget {
               dishName: dishName,
               price: price,
               description: description,
+              userID: userID,
               images: images,
               ingredients: ingredients,
             ),

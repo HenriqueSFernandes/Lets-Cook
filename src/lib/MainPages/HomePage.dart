@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_cook/Components/Product/ProductCard.dart';
+import 'package:lets_cook/Components/HomePage/ProductCard.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
             dishName: element["mealname"],
             price: element["price"],
             description: element["description"],
+            userID: element["userid"],
             imageURLs: List<String>.from(element["images"]),
             ingredients: List<String>.from(element["ingredients"]),
           ));
