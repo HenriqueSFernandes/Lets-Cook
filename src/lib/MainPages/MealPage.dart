@@ -206,6 +206,46 @@ class MealPage extends StatelessWidget {
             ],
           ),
           Positioned(
+            bottom: 20,
+            right: 20,
+            child: ElevatedButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Feature not implemented!"),
+                        content: const Text(
+                            "This feature is yet to be implemented."),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text("Ok"),
+                          ),
+                        ],
+                      );
+                    });
+              },
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsets>(
+                  const EdgeInsets.only(
+                    left: 35,
+                    right: 35,
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).primaryColor),
+              ),
+              child: const Text(
+                "BUY",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
             top: 40,
             left: 20,
             child: ElevatedButton(
