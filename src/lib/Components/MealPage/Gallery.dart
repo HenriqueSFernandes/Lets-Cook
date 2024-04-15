@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:photo_view/photo_view.dart';
 
 class Gallery extends StatefulWidget {
   final List<NetworkImage> images;
@@ -23,8 +23,7 @@ class _GalleryState extends State<Gallery> {
     if (currentIndex >= widget.images.length) {
       currentIndex = 0;
     }
-    setState(() {
-    });
+    setState(() {});
   }
 
   void previousImage() {
@@ -41,18 +40,21 @@ class _GalleryState extends State<Gallery> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image(image: widget.images[currentIndex]),
-              const SizedBox(height: 20),
-            ],
+          Container(
+            height: double.infinity,
           ),
+          PhotoView(
+            backgroundDecoration: BoxDecoration(color: Colors.white),
+            imageProvider: widget.images[currentIndex],
+            maxScale: PhotoViewComputedScale.contained * 2.5,
+            minScale: PhotoViewComputedScale.contained,
+          ),
+          const SizedBox(height: 20),
           Positioned(
             bottom: 75,
             child: SafeArea(
               child: Row(
+                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
