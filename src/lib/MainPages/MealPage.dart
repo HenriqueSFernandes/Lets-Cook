@@ -50,12 +50,21 @@ class MealPage extends StatelessWidget {
         children: [
           Column(
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height / 3,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: images[0],
-                    fit: BoxFit.fitWidth,
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        Gallery(initialIndex: 0, images: images),
+                  ),
+                ),
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 3,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: images[0],
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                 ),
               ),

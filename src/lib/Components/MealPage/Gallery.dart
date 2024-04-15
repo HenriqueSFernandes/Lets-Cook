@@ -44,7 +44,7 @@ class _GalleryState extends State<Gallery> {
             height: double.infinity,
           ),
           PhotoView(
-            backgroundDecoration: BoxDecoration(color: Colors.white),
+            backgroundDecoration: const BoxDecoration(color: Colors.white),
             imageProvider: widget.images[currentIndex],
             maxScale: PhotoViewComputedScale.contained * 2.5,
             minScale: PhotoViewComputedScale.contained,
