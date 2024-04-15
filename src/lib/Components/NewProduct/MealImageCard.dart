@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class MealImageCard extends StatelessWidget {
-  final Function onRemove;
+  final Function? onRemove;
   final File image;
 
-  const MealImageCard({required this.image, required this.onRemove, super.key});
+  const MealImageCard({required this.image, this.onRemove, super.key});
 
   File get file {
     return image;
@@ -30,19 +30,21 @@ class MealImageCard extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          right: 0,
-          top: 0,
-          child: IconButton(
-            onPressed: () {
-              onRemove();
-            },
-            icon: const Icon(
-              Icons.cancel_outlined,
-              color: Colors.red,
-            ),
-          ),
-        ),
+        onRemove == null
+            ? const SizedBox()
+            : Positioned(
+                right: 0,
+                top: 0,
+                child: IconButton(
+                  onPressed: () {
+                    onRemove!();
+                  },
+                  icon: const Icon(
+                    Icons.cancel_outlined,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
       ],
     );
   }
