@@ -40,9 +40,10 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.only(right: 1),
       child: RawScrollbar(
         radius: const Radius.circular(20),
-        child: ListView(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          children: products,
+        child: SingleChildScrollView(
+          child: Column(
+            children: products,
+          ),
         ),
       ),
     );
