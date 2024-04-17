@@ -6,13 +6,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lets_cook/Components/IngredientCard.dart';
-import 'package:lets_cook/Components/NewProduct/MealDescriptionInput.dart';
-import 'package:lets_cook/Components/NewProduct/MealImageCard.dart';
-import 'package:lets_cook/Components/NewProduct/MealIngredientInput.dart';
-import 'package:lets_cook/Components/NewProduct/MealNameInput.dart';
-import 'package:lets_cook/Components/NewProduct/MealPortionsInput.dart';
-import 'package:lets_cook/Components/NewProduct/MealPriceInput.dart';
+import 'package:lets_cook/Components/NewProductPage/IngredientCard.dart';
+import 'package:lets_cook/Components/NewProductPage/MealDescriptionInput.dart';
+import 'package:lets_cook/Components/NewProductPage/DismissibleImageCard.dart';
+import 'package:lets_cook/Components/NewProductPage/MealIngredientInput.dart';
+import 'package:lets_cook/Components/NewProductPage/MealNameInput.dart';
+import 'package:lets_cook/Components/NewProductPage/MealPortionsInput.dart';
+import 'package:lets_cook/Components/NewProductPage/MealPriceInput.dart';
 
 class NewProductPage extends StatefulWidget {
   NewProductPage({super.key});
@@ -23,7 +23,7 @@ class NewProductPage extends StatefulWidget {
 
 class _NewProductPageState extends State<NewProductPage> {
   Map<String, IngredientCard> ingredients = {};
-  Map<String, MealImageCard> images = {};
+  Map<String, DismissibleImageCard> images = {};
   bool isUploading = false;
   File? selectedImage;
 
@@ -39,7 +39,7 @@ class _NewProductPageState extends State<NewProductPage> {
       selectedImage = File(image!.path);
       if (selectedImage != null) {
         final id = DateTime.now().millisecondsSinceEpoch.toString();
-        images[id] = MealImageCard(
+        images[id] = DismissibleImageCard(
             image: selectedImage!,
             onRemove: () {
               images.remove(id);
@@ -55,7 +55,7 @@ class _NewProductPageState extends State<NewProductPage> {
       selectedImage = File(image!.path);
       if (selectedImage != null) {
         final id = DateTime.now().millisecondsSinceEpoch.toString();
-        images[id] = MealImageCard(
+        images[id] = DismissibleImageCard(
             image: selectedImage!,
             onRemove: () {
               images.remove(id);
@@ -80,7 +80,7 @@ class _NewProductPageState extends State<NewProductPage> {
   }
 
   Future<List<String>> uploadImages(
-      Map<String, MealImageCard> images, String mealID) async {
+      Map<String, DismissibleImageCard> images, String mealID) async {
     final storageRef = FirebaseStorage.instance.ref().child("meals/$mealID");
     List<String> imageUrls = [];
     for (final key in images.keys) {
@@ -94,7 +94,6 @@ class _NewProductPageState extends State<NewProductPage> {
           ),
         );
         final url = await imageRef.getDownloadURL();
-        print("URL:$url");
         imageUrls.add(url);
       } catch (e) {
         // print only if in debug mode.

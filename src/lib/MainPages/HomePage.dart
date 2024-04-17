@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_cook/Product/Product.dart';
+import 'package:lets_cook/Components/HomePage/ProductCard.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -24,8 +24,10 @@ class _HomePageState extends State<HomePage> {
             userName: element["username"],
             dishName: element["mealname"],
             price: element["price"],
-            imageURL: element["images"][0],
-            documentRef: element.id,
+            description: element["description"],
+            userID: element["userid"],
+            imageURLs: List<String>.from(element["images"]),
+            ingredients: List<String>.from(element["ingredients"]),
           ));
         }
         if (!mounted) return;
@@ -35,8 +37,16 @@ class _HomePageState extends State<HomePage> {
       },
       onError: (error) => print("Listen failed: $error"),
     );
-    return ListView(
-      children: products,
+    return Padding(
+      padding: const EdgeInsets.only(right: 1),
+      child: RawScrollbar(
+        radius: const Radius.circular(20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: products,
+          ),
+        ),
+      ),
     );
   }
 }

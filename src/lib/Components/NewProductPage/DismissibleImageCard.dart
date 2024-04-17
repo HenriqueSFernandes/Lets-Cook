@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-class MealImageCard extends StatelessWidget {
+class DismissibleImageCard extends StatelessWidget {
   final Function onRemove;
   final File image;
 
-  const MealImageCard({required this.image, required this.onRemove, super.key});
+  const DismissibleImageCard({required this.image, required this.onRemove, super.key});
 
   File get file {
     return image;

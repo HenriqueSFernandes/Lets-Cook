@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lets_cook/Components/IngredientCard.dart';
+import 'package:lets_cook/Components/NewProductPage/IngredientCard.dart';
 
 class MealIngredientInput extends StatelessWidget {
   final TextEditingController ingredientController;
