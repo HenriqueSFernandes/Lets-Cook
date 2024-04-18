@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/HomePage/ProductCard.dart';
-
+List<String> ingredients = [];
+List<String> cooks = [];
 class HomePage extends StatefulWidget {
   HomePage({super.key});
 
@@ -24,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   }
   double minPrice=0;
   double maxPrice=1000;
-  List<String> ingredients = [];
   String _cook = '';
   Widget build(BuildContext context) {
     final collectionRef = db.collection("dishes");
@@ -50,6 +50,9 @@ class _HomePageState extends State<HomePage> {
       onError: (error) => print("Listen failed: $error"),
     );
     products=products.where((product) => product.price >= minPrice && product.price <= maxPrice).toList();
+    if(!ingredients.isEmpty){
+      products=products.where((product) => ingredients.every((ingredient) => product.ingredients.contains(ingredient))).toList();
+    }
 
 
     return Scaffold(
@@ -216,71 +219,94 @@ class IngredientSelectionScreen extends StatelessWidget {
   }
 }
 
+
 class IngredientForm extends StatefulWidget {
   @override
   _IngredientFormState createState() => _IngredientFormState();
 }
 
 class _IngredientFormState extends State<IngredientForm> {
-  final List<TextEditingController> _ingredientControllers = [TextEditingController()];
-
-  @override
-  void dispose() {
-    for (var controller in _ingredientControllers) {
-      controller.dispose();
-    }
-    super.dispose();
-  }
+  final TextEditingController _ingredientController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: _ingredientControllers.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TextField(
-                    controller: _ingredientControllers[index],
-                    decoration: InputDecoration(labelText: 'Enter Ingredient ${index + 1}'),
-                  ),
-                );
-              },
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: ingredients.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(ingredients[index]),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: () {
+                            setState(() {
+                              ingredients.removeAt(index);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-          SizedBox(height: 20),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _showAddIngredientDialog(context);
+              },
+              child: Text('Add Ingredient'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showAddIngredientDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Add Ingredient'),
+        content: TextField(
+          controller: _ingredientController,
+          decoration: InputDecoration(labelText: 'Enter Ingredient'),
+        ),
+        actions: [
           ElevatedButton(
             onPressed: () {
-              // Get the values from all text fields and pass them back to the previous screen
-              List<String> ingredients = [];
-              for (var controller in _ingredientControllers) {
-                ingredients.add(controller.text);
-              }
-              Navigator.pop(context, ingredients);
-            },
-            child: Text('OK'),
-          ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              // Add a new text field for entering another ingredient
               setState(() {
-                _ingredientControllers.add(TextEditingController());
+                ingredients.add(_ingredientController.text);
+                _ingredientController.clear();
               });
+              Navigator.of(context).pop();
             },
-            child: Text('Add Ingredient'),
+            child: Text('Add'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancel'),
           ),
         ],
       ),
     );
   }
 }
+
 class CookSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
