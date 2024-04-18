@@ -457,7 +457,7 @@ class _PriceFormState extends State<PriceForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Maximum Price: ${_maxPrice.toStringAsFixed(2)}', // Round to 2 decimal places
+            'Min : ${_minPrice.toStringAsFixed(2)} Max: ${_maxPrice.toStringAsFixed(2)}', // Round to 2 decimal places
             style: TextStyle(fontSize: 16),
           ),
           RangeSlider(
