@@ -19,7 +19,7 @@ Future<void> main() async {
 }
 
 class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+  const MainApp({Key? key}) : super(key: key);
 
   @override
   State<MainApp> createState() => _MainAppState();
@@ -42,6 +42,10 @@ class _MainAppState extends State<MainApp> {
     super.dispose();
   }
 
+  String truncateLabel(String label, int maxLength) {
+    return label.length <= maxLength ? label : '${label.substring(0, maxLength - 3)}...';
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,7 +57,7 @@ class _MainAppState extends State<MainApp> {
       ),
       title: "Let's Cook",
       initialRoute:
-          FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home",
+      FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home",
       routes: {
         "/sign-in": (context) {
           return const LoginPage();
@@ -65,18 +69,18 @@ class _MainAppState extends State<MainApp> {
               elevation: 4,
             ),
             bottomNavigationBar: NavigationBar(
-              destinations: const [
+              destinations: [
                 NavigationDestination(
-                  icon: Icon(Icons.home, size: 30),
-                  label: "Home",
+                  icon: const Icon(Icons.home, size: 30),
+                  label: truncateLabel("Home", 10), // Truncate label
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.add, size: 30),
-                  label: "Add",
+                  icon: const Icon(Icons.add, size: 30),
+                  label: truncateLabel("Add", 10), // Truncate label
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.person, size: 30),
-                  label: "Profile",
+                  icon: const Icon(Icons.person, size: 30),
+                  label: truncateLabel("Profile", 10), // Truncate label
                 ),
               ],
               labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
@@ -87,7 +91,6 @@ class _MainAppState extends State<MainApp> {
                   _pageController.animateToPage(
                     index,
                     duration: const Duration(milliseconds: 300),
-// Adjust duration as needed
                     curve: Curves.ease,
                   );
                 });
@@ -112,3 +115,4 @@ class _MainAppState extends State<MainApp> {
     );
   }
 }
+
