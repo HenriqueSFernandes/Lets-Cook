@@ -49,10 +49,26 @@ class _HomePageState extends State<HomePage> {
       },
       onError: (error) => print("Listen failed: $error"),
     );
-    products=products.where((product) => product.price >= minPrice && product.price <= maxPrice).toList();
-    if(!ingredients.isEmpty){
-      products=products.where((product) => ingredients.every((ingredient) => product.ingredients.contains(ingredient))).toList();
+    products = products.where((product) => product.price >= minPrice && product.price <= maxPrice).toList();
+
+    if (!ingredients.isEmpty) {
+      products = products.where((product) {
+        return ingredients.any((ingredient) {
+          return product.ingredients.any((productIngredient) {
+            return productIngredient.toLowerCase().contains(ingredient.toLowerCase());
+          });
+        });
+      }).toList();
     }
+    if (!cooks.isEmpty) {
+      products = products.where((product) {
+        return cooks.any((cook) {
+          return product.userName.toLowerCase().contains(cook.toLowerCase());
+        });
+      }).toList();
+    }
+
+
 
 
     return Scaffold(
@@ -325,38 +341,90 @@ class CookForm extends StatefulWidget {
 }
 
 class _CookFormState extends State<CookForm> {
-  final _cookController = TextEditingController();
+  final TextEditingController _cookController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: cooks.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(cooks[index]),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: () {
+                            setState(() {
+                              cooks.removeAt(index);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _showAddCookDialog(context);
+              },
+              child: Text('Add Cook'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showAddCookDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Add Cook'),
+        content: TextField(
+          controller: _cookController,
+          decoration: InputDecoration(labelText: 'Enter Cook'),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                cooks.add(_cookController.text);
+                _cookController.clear();
+              });
+              Navigator.of(context).pop();
+            },
+            child: Text('Add'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancel'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   void dispose() {
     _cookController.dispose();
     super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextField(
-            controller: _cookController,
-            decoration: InputDecoration(labelText: 'Enter Cook'),
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Get the value from the text field and pass it back to the previous screen
-              String cook = _cookController.text;
-              Navigator.pop(context, cook);
-            },
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 }
 
