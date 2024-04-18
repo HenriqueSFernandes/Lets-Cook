@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
   bool matchesSearchCriteria(String searchText, Product product) {
-    return product.dishName.toLowerCase().contains(searchText.toLowerCase()) || product.userName.toLowerCase().contains(searchText.toLowerCase());
+    return product.dishName.toLowerCase().contains(searchText.toLowerCase()) || product.userName.toLowerCase().contains(searchText.toLowerCase())  || product.description.toLowerCase().contains(searchText.toLowerCase());
   }
   double minPrice=0;
   double maxPrice=1000;
@@ -67,10 +67,7 @@ class _HomePageState extends State<HomePage> {
         });
       }).toList();
     }
-
-
-
-
+    products=products.where((product) => matchesSearchCriteria(_searchController.text, product)).toList();
     return Scaffold(
 
       body: Column(
