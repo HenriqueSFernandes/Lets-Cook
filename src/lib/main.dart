@@ -42,8 +42,8 @@ class _MainAppState extends State<MainApp> {
     super.dispose();
   }
 
-  String truncateLabel(String label, int maxLength) {
-    return label.length <= maxLength ? label : '${label.substring(0, maxLength - 3)}...';
+  String truncateString(String text, int maxLength) {
+    return text.length <= maxLength ? text : '${text.substring(0, maxLength - 3)}...';
   }
 
   @override
@@ -72,15 +72,15 @@ class _MainAppState extends State<MainApp> {
               destinations: [
                 NavigationDestination(
                   icon: const Icon(Icons.home, size: 30),
-                  label: truncateLabel("Home", 10), // Truncate label
+                  label: "Home",
                 ),
                 NavigationDestination(
                   icon: const Icon(Icons.add, size: 30),
-                  label: truncateLabel("Add", 10), // Truncate label
+                  label: "Add",
                 ),
                 NavigationDestination(
                   icon: const Icon(Icons.person, size: 30),
-                  label: truncateLabel("Profile", 10), // Truncate label
+                  label: "Profile",
                 ),
               ],
               labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
@@ -115,4 +115,3 @@ class _MainAppState extends State<MainApp> {
     );
   }
 }
-
