@@ -8,6 +8,7 @@ class Product extends StatelessWidget {
   final double price;
   final String description;
   final String userID;
+  final String mealID;
   final List<String> imageURLs;
   final List<String> ingredients;
 
@@ -17,6 +18,7 @@ class Product extends StatelessWidget {
     required this.price,
     required this.description,
     required this.userID,
+    required this.mealID,
     required this.imageURLs,
     required this.ingredients,
     super.key,
@@ -38,6 +40,7 @@ class Product extends StatelessWidget {
               price: price,
               description: description,
               userID: userID,
+              mealID: mealID,
               images: images,
               ingredients: ingredients,
             ),

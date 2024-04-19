@@ -11,6 +11,7 @@ class MealPage extends StatelessWidget {
   final double price;
   final String description;
   final String userID;
+  final String mealID;
   final List<NetworkImage> images;
   final List<String> ingredients;
 
@@ -21,6 +22,7 @@ class MealPage extends StatelessWidget {
     required this.price,
     required this.description,
     required this.userID,
+    required this.mealID,
     required this.images,
     required this.ingredients,
   });
