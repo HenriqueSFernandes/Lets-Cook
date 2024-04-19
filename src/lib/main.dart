@@ -19,7 +19,7 @@ Future<void> main() async {
 }
 
 class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+  const MainApp({Key? key}) : super(key: key);
 
   @override
   State<MainApp> createState() => _MainAppState();
@@ -42,6 +42,10 @@ class _MainAppState extends State<MainApp> {
     super.dispose();
   }
 
+  String truncateString(String text, int maxLength) {
+    return text.length <= maxLength ? text : '${text.substring(0, maxLength - 3)}...';
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,7 +57,7 @@ class _MainAppState extends State<MainApp> {
       ),
       title: "Let's Cook",
       initialRoute:
-          FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home",
+      FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home",
       routes: {
         "/sign-in": (context) {
           return const LoginPage();
@@ -65,17 +69,17 @@ class _MainAppState extends State<MainApp> {
               elevation: 4,
             ),
             bottomNavigationBar: NavigationBar(
-              destinations: const [
+              destinations: [
                 NavigationDestination(
-                  icon: Icon(Icons.home, size: 30),
+                  icon: const Icon(Icons.home, size: 30),
                   label: "Home",
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.add, size: 30),
+                  icon: const Icon(Icons.add, size: 30),
                   label: "Add",
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.person, size: 30),
+                  icon: const Icon(Icons.person, size: 30),
                   label: "Profile",
                 ),
               ],
@@ -87,7 +91,6 @@ class _MainAppState extends State<MainApp> {
                   _pageController.animateToPage(
                     index,
                     duration: const Duration(milliseconds: 300),
-// Adjust duration as needed
                     curve: Curves.ease,
                   );
                 });

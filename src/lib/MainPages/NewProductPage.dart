@@ -121,7 +121,7 @@ class _NewProductPageState extends State<NewProductPage> {
         price < 0 ||
         portions <= 0 ||
         ingredientNames.isEmpty ||
-        imageFiles.isEmpty) {
+        imageFiles.isEmpty || name.length> 20 || description.length> 200) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
