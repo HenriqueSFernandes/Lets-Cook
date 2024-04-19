@@ -177,3 +177,16 @@ Start of the sprint:
 
 End of the sprint:
 ![Sprint 1 End](./docs/sprintsPrints/Sprint1end.png)
+
+#### What went well?
+
+* Everyone contributed to the project, so we managed to implement some of the core functionalities of the app.
+
+#### What didn't go so well?
+
+* There was a difference in the amount of work each person did.
+
+#### What we are going to start doing?
+
+* The issues with higher complexity will be assigned to small teams of 2-3 members instead of a single person
+* Only implement new feature when the already implemented ones are finalized, because currently there are features whose design is not final
