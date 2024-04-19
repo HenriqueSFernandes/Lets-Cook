@@ -174,3 +174,6 @@ End of the sprint:
 
 Start of the sprint:
 ![Sprint 1 Start](./docs/sprintsPrints/Sprint1begin.png)
+
+End of the sprint:
+![Sprint 1 End](./docs/sprintsPrints/Sprint1end.png)
