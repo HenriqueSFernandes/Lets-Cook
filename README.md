@@ -191,3 +191,10 @@ End of the sprint:
 * The issues with higher complexity will be assigned to small teams of 2-3 members instead of a single person.
 * Only implement new features when the already implemented ones are finalized, because currently there are features whose design or functionality is not final.
 * Whoever implements a new feature is also responsible for writing tests for that feature.
+
+### Sprint 2
+
+> The goal of this sprint is to improve what we already have and implement the remaining of the key features.
+
+Start of the sprint:
+![Sprint 1 Start](./docs/sprintsPrints/Sprint2begin.png)
