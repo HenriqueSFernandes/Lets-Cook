@@ -59,17 +59,40 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final docRef =
         FirebaseFirestore.instance.collection("chatrooms").doc(widget.roomID);
-    docRef.get().then((value) => {
-          if (!value.exists)
-            {
-              docRef.set({
-                "user1ID": widget.senderID,
-                "user2ID": widget.receiverID,
-                "mealID": widget.mealID,
-                "messages": [],
-              })
-            }
+    docRef.get().then((value) {
+      if (!value.exists) {
+        docRef.set({
+          "user1ID": widget.senderID,
+          "user2ID": widget.receiverID,
+          "mealID": widget.mealID,
+          "messages": [],
         });
+        final senderRef =
+            FirebaseFirestore.instance.collection("users").doc(widget.senderID);
+        final receiverRef = FirebaseFirestore.instance
+            .collection("users")
+            .doc(widget.receiverID);
+        senderRef.update({
+          "chatrooms": FieldValue.arrayUnion([
+            {
+              "roomID": widget.roomID,
+              "receiverID": widget.receiverID,
+              "mealID": widget.mealID,
+            },
+          ])
+        });
+        receiverRef.update({
+          "chatrooms": FieldValue.arrayUnion([
+            {
+              "roomID": widget.roomID,
+              "receiverID": widget.senderID,
+              "mealID": widget.mealID,
+            }
+          ])
+        });
+      }
+    });
+
     docRef.snapshots().listen((event) {
       List<Message> updatedMessages = [];
       for (var message in event.data()!["messages"]) {
