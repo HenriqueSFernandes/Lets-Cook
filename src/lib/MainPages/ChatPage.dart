@@ -1,19 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lets_cook/Components/ChatPage/Message.dart';
 import 'package:lets_cook/Components/ChatPage/MessageInput.dart';
-
-class Message {
-  final String senderUserID;
-  final String content;
-  final DateTime dateTime;
-
-  Message({
-    required this.senderUserID,
-    required this.content,
-    required this.dateTime,
-  });
-}
 
 class ChatPage extends StatefulWidget {
   final String receiverID;
@@ -109,6 +98,7 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text("Chat"),
       ),
@@ -119,14 +109,7 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child: ListView(
                 reverse: true,
-                children: widget.messages.reversed
-                    .map((e) => Row(
-                          mainAxisAlignment: e.senderUserID == widget.senderID
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
-                          children: [Text(e.content)],
-                        ))
-                    .toList(),
+                children: widget.messages.reversed.toList(),
               ),
             ),
             MessageInput(
