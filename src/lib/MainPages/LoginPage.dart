@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'SignUp.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key});
 
@@ -149,7 +150,12 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Implement your sign-up logic here
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SignUpPage(), // Replace SignUpPage() with the appropriate class name of SignUp.dart
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
