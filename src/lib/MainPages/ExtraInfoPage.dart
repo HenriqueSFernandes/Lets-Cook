@@ -1,10 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:lets_cook/MainPages/HomePage.dart';
+import 'package:lets_cook/main.dart';
+bool done=false;
 class ExtraInfoPage extends StatelessWidget {
-  const ExtraInfoPage({Key? key}) : super(key: key);
-
+   ExtraInfoPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,14 +38,79 @@ class _CustomExtraInfoFormState extends State
     // For example, you can send the data to a backend server
     // or store it locally on the device
     // Also, include logic to handle the selected image
+
+    // Check if all required fields are filled
+    if (_nameController.text.isEmpty ||
+        _phoneNumberController.text.isEmpty ||
+        _courseOfStudyController.text.isEmpty ||
+        _specialityController.text.isEmpty ||
+        _moreAboutYourselfController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Invalid data!"),
+            content: const Text("Please fill in all the required fields."),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("Ok"),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    // Perform image upload if an image is selected
     if (_selectedImage != null) {
-      // Upload the selected image to the server
+      // Example code for uploading the selected image to Firebase Storage
+      final storageRef = FirebaseStorage.instance.ref().child("user_photos");
+      final imageRef = storageRef.child("${DateTime.now().millisecondsSinceEpoch}.png");
+      try {
+        await imageRef.putFile(
+          _selectedImage!,
+          SettableMetadata(contentType: "image/jpeg"),
+        );
+        final imageUrl = await imageRef.getDownloadURL();
+        // Now you have the imageUrl which can be stored along with other user data
+        print("Uploaded image URL: $imageUrl");
+      } catch (e) {
+        print("Error uploading image: $e");
+        // Handle upload error
+      }
+    }
+
+    // If you reach here, all data is valid and image (if any) is uploaded
+    // Proceed to save user data to Firestore or any other backend
+    // Example code for saving user data to Firestore
+    final userData = {
+      "name": _nameController.text,
+      "phone_number": _phoneNumberController.text,
+      "course_of_study": _courseOfStudyController.text,
+      "speciality": _specialityController.text,
+      "more_about_yourself": _moreAboutYourselfController.text,
+      // Add more fields as needed
+    };
+
+    try {
+      await FirebaseFirestore.instance.collection("users").add(userData);
+      // Data saved successfully
+      print("User data saved successfully!");
+      setState(() {
+        done = true;
+      });
+    } catch (e) {
+      print("Error saving user data: $e");
+      // Handle error
     }
   }
 
+
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    final pickedImage = await picker.pickImage(source: ImageSource.camera);
     setState(() {
       _selectedImage = pickedImage != null ? File(pickedImage.path) : null;
     });
