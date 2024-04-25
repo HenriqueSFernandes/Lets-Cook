@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/main.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key});
 
@@ -41,6 +41,24 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
       print('Sign-in error: $e');
     }
   }
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +112,9 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
               Container(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    // Implement your Google sign-in logic here
+                  onPressed: ()  {
+                    signInWithGoogle();
+
                   },
                   icon: Container(
                     height: 24.0,
@@ -114,7 +133,7 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                 },
                 child: Text('Forgot Password?'),
               ),
-              SizedBox(height: 200.0),
+              SizedBox(height: 140.0),
               Container(
                 width: double.infinity,
                 child: Text(
