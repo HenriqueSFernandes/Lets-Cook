@@ -19,15 +19,35 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class CustomLoginForm extends StatelessWidget {
+class CustomLoginForm extends StatefulWidget {
   const CustomLoginForm({Key? key}) : super(key: key);
+
+  @override
+  _CustomLoginFormState createState() => _CustomLoginFormState();
+}
+
+class _CustomLoginFormState extends State<CustomLoginForm> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _signInWithEmailAndPassword() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    } catch (e) {
+      // Handle sign-in errors
+      print('Sign-in error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child:SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -42,50 +62,44 @@ class CustomLoginForm extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: 20.0), // Increased height
+              SizedBox(height: 20.0),
               TextFormField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email or Username',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0), // Increased borderRadius
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
               ),
-              SizedBox(height: 20.0), // Increased height
+              SizedBox(height: 20.0),
               TextFormField(
+                controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0), // Increased borderRadius
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 20.0), // Increased height
+              SizedBox(height: 20.0),
               Container(
-                width: double.infinity, // Make the button take up all available space
+                width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Implement your authentication logic here
-                  },
+                  onPressed: _signInWithEmailAndPassword,
                   child: Text('Sign In'),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  // Implement your forgot password logic here
-                },
-                child: Text('Forgot Password?'),
-              ),
               Container(
-                width: double.infinity, // Make the button take up all available space
+                width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () {
                     // Implement your Google sign-in logic here
                   },
                   icon: Container(
-                    height: 24.0, // Set the height as needed
-                    width: 24.0, // Set the width as needed
+                    height: 24.0,
+                    width: 24.0,
                     child: Image.network(
                       'http://pngimg.com/uploads/google/google_PNG19635.png',
                       fit: BoxFit.scaleDown,
@@ -94,39 +108,50 @@ class CustomLoginForm extends StatelessWidget {
                   label: Text('Sign In with Google'),
                 ),
               ),
-              SizedBox(height: 200.0), // Increased height
+              TextButton(
+                onPressed: () {
+                  // Implement your forgot password logic here
+                },
+                child: Text('Forgot Password?'),
+              ),
+              SizedBox(height: 200.0),
               Container(
-                width: double.infinity, // Make the button take up all available space
+                width: double.infinity,
                 child: Text(
                   'Don\'t have an account?',
                   textAlign: TextAlign.center,
-                  style:
-                  TextStyle(
-                    fontSize: 20, // Adjust the font size as needed
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
                 ),
               ),
               SizedBox(height: 16.0),
               Container(
-                width: double.infinity, // Make the button take up all available space
+                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
                     // Implement your sign-up logic here
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0), // Rounded corners
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-                    padding: EdgeInsets.all(16.0), // Increased padding
+                    padding: EdgeInsets.all(16.0),
                   ),
                   child: Text('Sign Up'),
                 ),
               ),
             ],
           ),
-        )
-
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
