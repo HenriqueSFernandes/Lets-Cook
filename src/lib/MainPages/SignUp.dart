@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'ExtraInfoPage.dart';
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key});
 
@@ -32,6 +32,13 @@ class _CustomSignUpFormState extends State
           email: _emailController.text,
           password: _passwordController.text,
         );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ExtraInfoPage(), // Replace SignUpPage() with the appropriate class name of SignUp.dart
+          ),
+        );
+
       } else {
         // Passwords don't match, handle error
         print('Passwords do not match');

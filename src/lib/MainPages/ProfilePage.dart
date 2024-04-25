@@ -13,12 +13,12 @@ class ProfilePage extends StatelessWidget {
               (context) async {
             try {
               await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacementNamed(context, "sign-in");
+              Navigator.pushReplacementNamed(context, "/sign-in"); // Ensure "/sign-in" is the correct route name for the sign-in page
             } catch (e) {
               print('Sign-out error: $e');
             }
           },
-        )
+        ),
       ],
     );
   }
