@@ -78,6 +78,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
       );
       return;
     }
+    var imageUrl = "";
 
     // Perform image upload if an image is selected
     if (_selectedImage != null) {
@@ -89,7 +90,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
           _selectedImage!,
           SettableMetadata(contentType: "image/jpeg"),
         );
-        final imageUrl = await imageRef.getDownloadURL();
+      imageUrl = await imageRef.getDownloadURL();
         // Now you have the imageUrl which can be stored along with other user data
         print("Uploaded image URL: $imageUrl");
       } catch (e) {
@@ -107,11 +108,16 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
       "course_of_study": _courseOfStudyController.text,
       "speciality": _specialityController.text,
       "more_about_yourself": _moreAboutYourselfController.text,
+      "image_url": imageUrl,
       // Add more fields as needed
     };
 
     try {
       await FirebaseFirestore.instance.collection("users").add(userData);
+      FirebaseAuth.instance.currentUser!.updateDisplayName(_nameController.text);
+      FirebaseAuth.instance.currentUser!.updatePhotoURL(imageUrl);
+      FirebaseAuth.instance.currentUser!.reload();
+
       // Data saved successfully
       print("User data saved successfully!");
       widget.onFormCompleted();
