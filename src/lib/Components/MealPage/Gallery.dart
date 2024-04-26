@@ -8,30 +8,20 @@ class Gallery extends StatefulWidget {
   const Gallery({
     required this.initialIndex,
     required this.images,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<Gallery> createState() => _GalleryState();
+  _GalleryState createState() => _GalleryState();
 }
 
 class _GalleryState extends State<Gallery> {
-  late int currentIndex = widget.initialIndex;
+  late PageController pageController;
 
-  void nextImage() {
-    currentIndex++;
-    if (currentIndex >= widget.images.length) {
-      currentIndex = 0;
-    }
-    setState(() {});
-  }
-
-  void previousImage() {
-    currentIndex--;
-    if (currentIndex < 0) {
-      currentIndex = widget.images.length - 1;
-    }
-    setState(() {});
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: widget.initialIndex);
   }
 
   @override
@@ -40,16 +30,21 @@ class _GalleryState extends State<Gallery> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
-            height: double.infinity,
+          PageView.builder(
+            controller: pageController,
+            itemCount: widget.images.length,
+            onPageChanged: (index) {
+              setState(() {});
+            },
+            itemBuilder: (context, index) {
+              return PhotoView(
+                backgroundDecoration: const BoxDecoration(color: Colors.white),
+                imageProvider: widget.images[index],
+                maxScale: PhotoViewComputedScale.contained * 2.5,
+                minScale: PhotoViewComputedScale.contained,
+              );
+            },
           ),
-          PhotoView(
-            backgroundDecoration: const BoxDecoration(color: Colors.white),
-            imageProvider: widget.images[currentIndex],
-            maxScale: PhotoViewComputedScale.contained * 2.5,
-            minScale: PhotoViewComputedScale.contained,
-          ),
-          const SizedBox(height: 20),
           Positioned(
             bottom: 75,
             child: SafeArea(
@@ -59,7 +54,10 @@ class _GalleryState extends State<Gallery> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      previousImage();
+                      pageController.previousPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
@@ -73,18 +71,21 @@ class _GalleryState extends State<Gallery> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
                   Text(
-                    "${currentIndex + 1}/${widget.images.length}",
+                    "${pageController.hasClients && pageController.page != null ? pageController.page!.round() + 1 : widget.initialIndex + 1}/${widget.images.length}",
                     style: TextStyle(
                       fontSize: 30,
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(width: 10),
                   ElevatedButton(
-                    onPressed: nextImage,
+                    onPressed: () {
+                      pageController.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(5),
