@@ -113,7 +113,7 @@ class _CustomSignUpFormState extends State
             TextButton(
               onPressed: () {
                 // Navigate to login page
-                Navigator.pop(context);
+
               },
               child: Text('Already have an account? Sign In'),
             ),

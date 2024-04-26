@@ -6,26 +6,42 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:lets_cook/MainPages/HomePage.dart';
 import 'package:lets_cook/main.dart';
-bool done=false;
-class ExtraInfoPage extends StatelessWidget {
-   ExtraInfoPage({Key? key}) : super(key: key);
+var done=false;
+
+class ExtraInfoPage extends StatefulWidget {
+  ExtraInfoPage({Key? key}) : super(key: key);
+
+  @override
+  _ExtraInfoPageState createState() => _ExtraInfoPageState();
+}
+
+class _ExtraInfoPageState extends State<ExtraInfoPage> {
+  bool done = false;
+
   @override
   Widget build(BuildContext context) {
+    if(done) return MainApp();
     return Scaffold(
-      body: CustomExtraInfoForm(),
+      body: CustomExtraInfoForm(onFormCompleted: () {
+        setState(() {
+          done = true;
+        });
+      }),
     );
   }
 }
-
 class CustomExtraInfoForm extends StatefulWidget {
-  const CustomExtraInfoForm({Key? key}) : super(key: key);
+  final VoidCallback onFormCompleted;
+  const CustomExtraInfoForm({Key? key, required this.onFormCompleted}) : super(key: key);
+
 
   @override
   _CustomExtraInfoFormState createState() => _CustomExtraInfoFormState();
 }
 
-class _CustomExtraInfoFormState extends State
+class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
 {
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _courseOfStudyController = TextEditingController();
@@ -98,9 +114,7 @@ class _CustomExtraInfoFormState extends State
       await FirebaseFirestore.instance.collection("users").add(userData);
       // Data saved successfully
       print("User data saved successfully!");
-      setState(() {
-        done = true;
-      });
+      widget.onFormCompleted();
     } catch (e) {
       print("Error saving user data: $e");
       // Handle error
