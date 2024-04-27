@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/ChatPage/Message.dart';
 import 'package:lets_cook/Components/ChatPage/MessageInput.dart';
+import 'package:lets_cook/MainPages/MealPage.dart';
 
 class ChatPage extends StatefulWidget {
   final String receiverID;
@@ -11,6 +12,11 @@ class ChatPage extends StatefulWidget {
   String? roomID;
   String? chefName;
   String? mealName;
+  double? price;
+  String? description;
+  String? chefID;
+  List<String>? ingredients;
+  List<NetworkImage>? images;
   List<Message> messages = [];
 
   ChatPage({
@@ -22,9 +28,16 @@ class ChatPage extends StatefulWidget {
     userIDs.sort();
     roomID = userIDs.join() + mealID;
     final mealRef = FirebaseFirestore.instance.collection("dishes").doc(mealID);
+    List<String> imageURLs;
     mealRef.get().then((value) => {
           chefName = value["username"],
           mealName = value["mealname"],
+          price = value["price"],
+          description = value["description"],
+          imageURLs = List<String>.from(value["images"]),
+          images = imageURLs.map((e) => NetworkImage(e)).toList(),
+          chefID = value["userid"],
+          ingredients = List<String>.from(value["ingredients"]),
         });
   }
 
@@ -121,7 +134,22 @@ class _ChatPageState extends State<ChatPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MealPage(
+                      userName: widget.chefName!,
+                      dishName: widget.mealName!,
+                      price: widget.price!,
+                      description: widget.description!,
+                      userID: widget.chefID!,
+                      mealID: widget.mealID,
+                      images: widget.images!,
+                      ingredients: widget.ingredients!),
+                ),
+              );
+            },
             child: Text(
               "See details",
               style: TextStyle(
