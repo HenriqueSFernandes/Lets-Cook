@@ -8,7 +8,9 @@ class ChatPage extends StatefulWidget {
   final String receiverID;
   final String mealID;
   final String senderID = FirebaseAuth.instance.currentUser!.uid;
-  late String roomID;
+  String? roomID;
+  String? chefName;
+  String? mealName;
   List<Message> messages = [];
 
   ChatPage({
@@ -19,6 +21,11 @@ class ChatPage extends StatefulWidget {
     final List<String> userIDs = [senderID, receiverID];
     userIDs.sort();
     roomID = userIDs.join() + mealID;
+    final mealRef = FirebaseFirestore.instance.collection("dishes").doc(mealID);
+    mealRef.get().then((value) => {
+          chefName = value["username"],
+          mealName = value["mealname"],
+        });
   }
 
   @override
@@ -100,7 +107,30 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text("Chat"),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.mealName ?? ""),
+            Text(
+              widget.chefName ?? "",
+              style: const TextStyle(
+                fontSize: 15,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              "See details",
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                decorationColor: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
