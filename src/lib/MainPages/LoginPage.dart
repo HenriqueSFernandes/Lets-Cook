@@ -26,6 +26,7 @@ class LoginPage extends StatelessWidget {
                     valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
                   ),
                 );
+
               } else {
                 if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                   // User email found in Firestore, route to MainApp

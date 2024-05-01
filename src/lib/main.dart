@@ -3,12 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_cook/MainPages/ExtraInfoPage.dart';
 import 'package:lets_cook/MainPages/HomePage.dart';
 import 'package:lets_cook/MainPages/LoginPage.dart';
 import 'package:lets_cook/MainPages/NewProductPage.dart';
 import 'package:lets_cook/MainPages/ProfilePage.dart';
 import 'package:lets_cook/firebase_options.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -27,6 +28,8 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   final Color aquaGreen = const Color(0xFF1B8587);
+  bool done=false;
+  String route= "/sign-in";
   int currentPageIndex = 0;
   late PageController _pageController;
 
@@ -47,7 +50,17 @@ class _MainAppState extends State<MainApp> {
   }
 
   @override
+  Future<QuerySnapshot> _checkUserData(String uid) async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .where(FieldPath.documentId, isEqualTo: uid)
+        .get();
+  }
+
   Widget build(BuildContext context) {
+    print("done is $done");
+    if(done) {
+      print("inside");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -56,9 +69,10 @@ class _MainAppState extends State<MainApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff015e5c)),
       ),
       title: "Let's Cook",
-      initialRoute:
-      FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home",
-      routes: {
+      initialRoute: route,
+      routes: {"extra-page": (context) {
+        return ExtraInfoPage();
+      },
         "/sign-in": (context) {
           return const LoginPage();
         },
@@ -114,4 +128,29 @@ class _MainAppState extends State<MainApp> {
       },
     );
   }
+else {
+    route=FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home";
+    if(route=="/home"){
+      if(_checkUserData(FirebaseAuth.instance.currentUser!.uid) != null) {
+        route = "/home";
+
+        WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {done = true;}));
+
+      }
+      else {
+        route = "/extra-page";
+        WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {done = true;}));
+      }
+    }else{
+      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {done = true;}));}
+    }
+
+    return Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+      ),
+    );
+
+  }
+
 }
