@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:lets_cook/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'SignUp.dart';
+import 'ExtraInfoPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key});
 
@@ -13,10 +15,37 @@ class LoginPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return CustomLoginForm();
+        } else {
+          return FutureBuilder<QuerySnapshot>(
+            future: FirebaseAuth.instance.currentUser != null ? _checkUserData(FirebaseAuth.instance.currentUser!.uid) : null,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Show a loading indicator while waiting for the query result
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                  ),
+                );
+              } else {
+                if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                  // User email found in Firestore, route to MainApp
+                  return MainApp();
+                } else {
+                  return ExtraInfoPage();
+                }
+              }
+            },
+          );
         }
-        return const MainApp();
       },
     );
+  }
+
+  Future<QuerySnapshot> _checkUserData(String uid) async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .where(FieldPath.documentId, isEqualTo: uid)
+        .get();
   }
 }
 

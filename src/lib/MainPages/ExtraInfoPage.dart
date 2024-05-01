@@ -104,9 +104,12 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
   }
 
   Future<void> _saveUserDataToFirestore(Map<String, dynamic> userData) async {
-    await FirebaseFirestore.instance.collection("users").add(userData);
-  }
+    // Get the current user's UID
+    String uid = FirebaseAuth.instance.currentUser!.uid;
 
+    // Set the user's data in Firestore with the UID as the document ID
+    await FirebaseFirestore.instance.collection("users").doc(uid).set(userData);
+  }
   void _updateCurrentUserProfile(String displayName, String? photoUrl) {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
