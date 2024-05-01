@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
                 // Show a loading indicator while waiting for the query result
                 return Center(
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                    valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
                   ),
                 );
               } else {
