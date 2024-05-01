@@ -36,19 +36,68 @@ class _CustomSignUpFormState extends State
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ExtraInfoPage(), // Replace SignUpPage() with the appropriate class name of SignUp.dart
+            builder: (context) => ExtraInfoPage(),
           ),
         );
-
       } else {
-        // Passwords don't match, handle error
-        print('Passwords do not match');
+        // Passwords don't match
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Passwords do not match.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       // Handle sign-up errors
       print('Sign-up error: $e');
+      // Show error message
+      String errorMessage = 'An error occurred. Please try again later.';
+      if (e is FirebaseAuthException) {
+        switch (e.code) {
+         case 'weak-password':
+              errorMessage = 'Password is too weak. Please choose a stronger password.';
+              break;
+          case 'email-already-in-use':
+            errorMessage = 'Email is already in use. Please use a different email.';
+            break;
+        // Add more cases to handle specific error codes if needed
+          default:
+            errorMessage = 'Sign-up failed. Please try again later.';
+            break;
+        }
+      }
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(errorMessage),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

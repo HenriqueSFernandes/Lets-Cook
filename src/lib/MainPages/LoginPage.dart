@@ -38,10 +38,42 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
         password: _passwordController.text,
       );
     } catch (e) {
-      // Handle sign-in errors
-      print('Sign-in error: $e');
+      String errorMessage = 'An error occurred. Please try again.';
+
+      // Check for specific error types and customize error message
+      if (e is FirebaseAuthException) {
+        print(e.code);
+        switch (e.code) {
+          case 'invalid-credential':
+            errorMessage = 'Invalid credentials. Please check your email and password.';
+            break;
+          default:
+            errorMessage = 'Sign-in failed. Please try again later.';
+            break;
+        }
+      }
+
+      // Show error message to the user
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Sign-In Error'),
+            content: Text(errorMessage),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
+
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();

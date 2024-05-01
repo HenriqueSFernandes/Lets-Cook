@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:lets_cook/MainPages/HomePage.dart';
 import 'package:lets_cook/main.dart';
+import 'package:http/http.dart' as http;
+
 var done=false;
 
 class ExtraInfoPage extends StatefulWidget {
@@ -50,58 +52,26 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
   File? _selectedImage; // Variable to store the selected image file
 
   Future<void> _saveExtraInfo() async {
-    // Add your logic to save extra information here
-    // For example, you can send the data to a backend server
-    // or store it locally on the device
-    // Also, include logic to handle the selected image
-
-    // Check if all required fields are filled
     if (_nameController.text.isEmpty ||
         _phoneNumberController.text.isEmpty ||
         _courseOfStudyController.text.isEmpty ||
         _specialityController.text.isEmpty ||
         _moreAboutYourselfController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Invalid data!"),
-            content: const Text("Please fill in all the required fields."),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text("Ok"),
-              ),
-            ],
-          );
-        },
-      );
+      _showErrorDialog("Invalid data!", "Please fill in all the required fields.");
       return;
     }
+
     var imageUrl = "";
 
-    // Perform image upload if an image is selected
     if (_selectedImage != null) {
-      // Example code for uploading the selected image to Firebase Storage
-      final storageRef = FirebaseStorage.instance.ref().child("user_photos");
-      final imageRef = storageRef.child("${DateTime.now().millisecondsSinceEpoch}.png");
       try {
-        await imageRef.putFile(
-          _selectedImage!,
-          SettableMetadata(contentType: "image/jpeg"),
-        );
-      imageUrl = await imageRef.getDownloadURL();
-        // Now you have the imageUrl which can be stored along with other user data
-        print("Uploaded image URL: $imageUrl");
+        imageUrl = await _uploadImageToStorage(_selectedImage!);
       } catch (e) {
-        print("Error uploading image: $e");
-        // Handle upload error
+        _showErrorDialog("Image Upload Error", "Failed to upload image: $e");
+        return;
       }
     }
 
-    // If you reach here, all data is valid and image (if any) is uploaded
-    // Proceed to save user data to Firestore or any other backend
-    // Example code for saving user data to Firestore
     final userData = {
       "name": _nameController.text,
       "phone_number": _phoneNumberController.text,
@@ -113,20 +83,54 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
     };
 
     try {
-      await FirebaseFirestore.instance.collection("users").add(userData);
-      FirebaseAuth.instance.currentUser!.updateDisplayName(_nameController.text);
-      FirebaseAuth.instance.currentUser!.updatePhotoURL(imageUrl);
-      FirebaseAuth.instance.currentUser!.reload();
-
-      // Data saved successfully
-      print("User data saved successfully!");
+      await _saveUserDataToFirestore(userData);
+      _updateCurrentUserProfile(_nameController.text, imageUrl);
       widget.onFormCompleted();
     } catch (e) {
-      print("Error saving user data: $e");
-      // Handle error
+      _showErrorDialog("Save Data Error", "Failed to save user data: $e");
+    }
+
+  }
+
+
+
+  Future<String> _uploadImageToStorage(File imageFile) async {
+    final storageRef = FirebaseStorage.instance.ref().child("user_photos");
+    final imageRef = storageRef.child("${DateTime.now().millisecondsSinceEpoch}.png");
+    await imageRef.putFile(imageFile, SettableMetadata(contentType: "image/jpeg"));
+    return await imageRef.getDownloadURL();
+  }
+
+  Future<void> _saveUserDataToFirestore(Map<String, dynamic> userData) async {
+    await FirebaseFirestore.instance.collection("users").add(userData);
+  }
+
+  void _updateCurrentUserProfile(String displayName, String? photoUrl) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      user.updateDisplayName(displayName);
+      if (photoUrl != null) user.updatePhotoURL(photoUrl);
+      user.reload();
     }
   }
 
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Ok"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
