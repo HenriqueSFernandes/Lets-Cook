@@ -58,6 +58,68 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
+  Future<void> _resetPassword() async {
+    String? email = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Reset Password'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, null); // Close the dialog without providing an email
+            },
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context, _emailController.text); // Provide the entered email
+            },
+            child: Text('Reset Password'),
+          ),
+        ],
+      ),
+    );
+
+    if (email != null) {
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+        // Show a dialog or message indicating that the reset email has been sent
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Password Reset'),
+              content: Text('Password reset email sent to $email'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } catch (e) {
+        // Handle errors
+        print('Password reset error: $e');
+      }
+    }
+  }
 
 
 
@@ -86,9 +148,17 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email or Username',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                  labelStyle: TextStyle(
+                    color: Colors.grey.shade600,
                   ),
+                  prefixIcon: Icon(Icons.person_outline),
+                  filled: true,
+                  fillColor: Theme.of(context).bottomAppBarTheme.color,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.never, // Prevent label from floating above when typing
                 ),
               ),
               SizedBox(height: 20.0),
@@ -96,20 +166,40 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                  labelStyle: TextStyle(
+                    color: Colors.grey.shade600,
                   ),
+                  prefixIcon: Icon(Icons.password_sharp),
+                  filled: true,
+                  fillColor: Theme.of(context).bottomAppBarTheme.color,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.never, // Prevent label from floating above when typing
                 ),
                 obscureText: true,
               ),
+
               SizedBox(height: 20.0),
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _signInWithEmailAndPassword,
-                  child: Text('Sign In'),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0, // Adjust the font size here
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
+                    minimumSize: MaterialStateProperty.all(Size(double.infinity, 50.0)), // Set minimum button size
+                  ),
                 ),
               ),
+              SizedBox(height: 16.0),
               Container(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -130,7 +220,7 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
               ),
               TextButton(
                 onPressed: () {
-                  // Implement your forgot password logic here
+                  _resetPassword();
                 },
                 child: Text('Forgot Password?'),
               ),
@@ -159,13 +249,21 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
-                    padding: EdgeInsets.all(16.0),
+                    minimumSize: Size(double.infinity, 50.0), // Set minimum button size
+                    backgroundColor: Theme.of(context).primaryColor, // Use the same color as the previous button
                   ),
-                  child: Text('Sign Up'),
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0, // Adjust the font size here
+                    ),
+                  ),
                 ),
               ),
+
             ],
           ),
         ),

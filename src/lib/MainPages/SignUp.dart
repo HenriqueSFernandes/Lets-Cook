@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'ExtraInfoPage.dart';
+import 'LoginPage.dart';
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key});
 
@@ -75,9 +76,15 @@ class _CustomSignUpFormState extends State
               decoration: InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide.none,
                 ),
+                prefixIcon: Icon(Icons.email_outlined),
+                filled: true,
+                fillColor: Theme.of(context).bottomAppBarTheme.color,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
+
             ),
             SizedBox(height: 20.0),
             TextFormField(
@@ -85,8 +92,13 @@ class _CustomSignUpFormState extends State
               decoration: InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide.none,
                 ),
+                prefixIcon: Icon(Icons.password_sharp),
+                filled: true,
+                fillColor: Theme.of(context).bottomAppBarTheme.color,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
               obscureText: true,
             ),
@@ -96,8 +108,13 @@ class _CustomSignUpFormState extends State
               decoration: InputDecoration(
                 labelText: 'Repeat Password',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide.none,
                 ),
+                prefixIcon: Icon(Icons.password_sharp ),
+                filled: true,
+                fillColor: Theme.of(context).bottomAppBarTheme.color,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
               obscureText: true,
             ),
@@ -106,13 +123,26 @@ class _CustomSignUpFormState extends State
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _signUpWithEmailAndPassword,
-                child: Text('Sign Up'),
+                child: Text('Sign Up',
+                  style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0, // Adjust the font size here
+                ),),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
+                  minimumSize: MaterialStateProperty.all(Size(double.infinity, 50.0)), // Set minimum button size
+                ),
               ),
             ),
             SizedBox(height: 16.0),
             TextButton(
               onPressed: () {
-                // Navigate to login page
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(), // Replace LoginPage() with the appropriate class name of Login.dart
+                  ),
+                );
 
               },
               child: Text('Already have an account? Sign In'),
