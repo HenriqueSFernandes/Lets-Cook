@@ -179,7 +179,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
               decoration: InputDecoration(
                 labelText: 'Name',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
                 prefixIcon: Icon(Icons.person_outline),
@@ -194,7 +194,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
               decoration: InputDecoration(
                 labelText: 'UP Number',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
                 prefixIcon: Icon(Icons.check_box_outlined),
@@ -209,7 +209,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
               decoration: InputDecoration(
                 labelText: 'Course of Study',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
                 prefixIcon: Icon(Icons.book_outlined),
@@ -224,7 +224,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
               decoration: InputDecoration(
                 labelText: 'Speciality',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
                 prefixIcon: Icon(Icons.star_border_outlined),
@@ -240,7 +240,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
               decoration: InputDecoration(
                 labelText: 'More About Yourself',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
                 prefixIcon: Icon(Icons.short_text_sharp),

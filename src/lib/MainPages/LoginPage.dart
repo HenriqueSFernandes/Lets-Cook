@@ -209,7 +209,7 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                  labelText: 'Email or Username',
+                  labelText: 'Email ',
                   labelStyle: TextStyle(
                     color: Colors.grey.shade600,
                   ),
