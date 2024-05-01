@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:lets_cook/Components/NewProductPage/DismissibleImageCard.dart';
 import 'package:lets_cook/MainPages/HomePage.dart';
 import 'package:lets_cook/main.dart';
 import 'package:http/http.dart' as http;
@@ -43,7 +44,8 @@ class CustomExtraInfoForm extends StatefulWidget {
 
 class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
 {
-
+  Map<String, DismissibleImageCard> images = {};
+  bool isUploading = false;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _courseOfStudyController = TextEditingController();
@@ -133,10 +135,19 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
   }
 
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.camera);
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
-      _selectedImage = pickedImage != null ? File(pickedImage.path) : null;
+      _selectedImage = File(image!.path);
+      if (_selectedImage != null) {
+        images.clear();
+        final id = DateTime.now().millisecondsSinceEpoch.toString();
+        images[id] = DismissibleImageCard(
+            image: _selectedImage!,
+            onRemove: () {
+              images.remove(id);
+              setState(() {});
+            });
+      }
     });
   }
 
@@ -239,6 +250,24 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
             ElevatedButton(
               onPressed: _pickImage,
               child: Text('Upload  Photo'),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: images.values
+                        .map(
+                          (e) => Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: e,
+                      ),
+                    )
+                        .toList(),
+                  ),
+                )
+              ],
             ),
             SizedBox(height: 20.0),
             Container(
