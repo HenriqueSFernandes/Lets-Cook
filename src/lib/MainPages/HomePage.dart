@@ -108,107 +108,72 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              onChanged: (value) {
-                setState(() {}); // Trigger rebuild to apply filter
-              },
-              decoration: InputDecoration(
-                hintText: 'Search',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(40.0),
-                  // Set the border radius to a bigger value
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor,
-                      width: 2.0), // Set border color to green and width to 2.0
-                ),
-                prefixIcon: PopupMenuButton<String>(
-                  icon: PopupMenuButton<String>(
-                    icon: Icon(Icons.settings,
-                        color: Theme.of(context).primaryColor),
-                    onSelected: (value) async {
-                      switch (value) {
-                        case 'Ingredient':
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    IngredientSelectionScreen()),
-                          );
-                          setState(() {
-                            ingredients = result;
-                            for (var ingredient in ingredients) {
-                              print(ingredient);
-                            }
-                          });
-                          break;
-                        case 'Cook':
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CookSelectionScreen()),
-                          );
-                          setState(() {
-                            _cook = result;
-                          });
-                          break;
-                        case 'Price':
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PriceSelectionScreen()),
-                          );
-                          if (result != null) {
-                            // Check if result is not null to handle case where user cancels the selection
-                            double minPrice_ = result[0];
-                            double maxPrice_ = result[1];
-                            setState(() {
-                              minPrice = minPrice_;
-                              maxPrice = maxPrice_;
-                            });
-                            // Now you can use minPrice and maxPrice as needed
-                            print('Minimum Price: $minPrice');
-                            print('Maximum Price: $maxPrice');
+          TextField(
+            controller: _searchController,
+            onChanged: (value) {
+              setState(() {}); // Trigger rebuild to apply filter
+            },
+            decoration: InputDecoration(
+              hintText: 'Search',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.0),
+                // Set the border radius to a bigger value
+                borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                  width: 2.0,
+                ), // Set border color to green and width to 2.0
+              ),
+              prefixIcon: PopupMenuButton<String>(
+                icon: PopupMenuButton<String>(
+                  icon: Icon(Icons.settings,
+                      color: Theme.of(context).primaryColor),
+                  onSelected: (value) async {
+                    switch (value) {
+                      case 'Ingredient':
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  IngredientSelectionScreen()),
+                        );
+                        setState(() {
+                          ingredients = result;
+                          for (var ingredient in ingredients) {
+                            print(ingredient);
                           }
-                          break;
-                      }
-                    },
-                    itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<String>>[
-                      const PopupMenuItem<String>(
-                        value: 'Ingredient',
-                        child: SizedBox(
-                          height: 70,
-                          child: ListTile(
-                            leading: Icon(Icons.fastfood),
-                            title: Text('Filter by Ingredient'),
-                          ),
-                        ),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'Cook',
-                        child: SizedBox(
-                          height: 70,
-                          child: ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text('Filter by Cook'),
-                          ),
-                        ),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'Price',
-                        child: SizedBox(
-                          height: 70,
-                          child: ListTile(
-                            leading: Icon(Icons.attach_money),
-                            title: Text('Filter by Price'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                        });
+                        break;
+                      case 'Cook':
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CookSelectionScreen()),
+                        );
+                        setState(() {
+                          _cook = result;
+                        });
+                        break;
+                      case 'Price':
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PriceSelectionScreen()),
+                        );
+                        if (result != null) {
+                          // Check if result is not null to handle case where user cancels the selection
+                          double minPrice_ = result[0];
+                          double maxPrice_ = result[1];
+                          setState(() {
+                            minPrice = minPrice_;
+                            maxPrice = maxPrice_;
+                          });
+                          // Now you can use minPrice and maxPrice as needed
+                          print('Minimum Price: $minPrice');
+                          print('Maximum Price: $maxPrice');
+                        }
+                        break;
+                    }
+                  },
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
                     const PopupMenuItem<String>(
@@ -243,6 +208,38 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  const PopupMenuItem<String>(
+                    value: 'Ingredient',
+                    child: SizedBox(
+                      height: 70,
+                      child: ListTile(
+                        leading: Icon(Icons.fastfood),
+                        title: Text('Filter by Ingredient'),
+                      ),
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'Cook',
+                    child: SizedBox(
+                      height: 70,
+                      child: ListTile(
+                        leading: Icon(Icons.person),
+                        title: Text('Filter by Cook'),
+                      ),
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'Price',
+                    child: SizedBox(
+                      height: 70,
+                      child: ListTile(
+                        leading: Icon(Icons.attach_money),
+                        title: Text('Filter by Price'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
