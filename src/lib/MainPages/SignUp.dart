@@ -192,10 +192,34 @@ class _CustomSignUpFormState extends State
                     builder: (context) => LoginPage(), // Replace LoginPage() with the appropriate class name of Login.dart
                   ),
                 );
-
               },
-              child: Text('Already have an account? Sign In'),
+              child: Text(
+                'Already have an account? ',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(), // Replace LoginPage() with the appropriate class name of Login.dart
+                  ),
+                );
+              },
+              child: Text(
+                'Sign In',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+
           ],
         ),
       ),

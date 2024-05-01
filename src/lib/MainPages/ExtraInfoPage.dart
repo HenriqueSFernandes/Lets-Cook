@@ -247,9 +247,28 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
               ),
             ),
             SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: _pickImage,
-              child: Text('Upload  Photo'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Profile Picture:",
+                  style: TextStyle(fontSize: 20),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    _pickImage();
+                  },
+                  child: const Row(
+                    children: [
+                      Icon(Icons.add),
+                      Text(
+                        "Import",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -269,12 +288,23 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
                 )
               ],
             ),
+
             SizedBox(height: 20.0),
             Container(
-
+              width: double.infinity,
               child: ElevatedButton(
                 onPressed: _saveExtraInfo,
-                child: Text('Save Info'),
+                child: Text(
+                  'Finish',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0, // Adjust the font size here
+                  ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
+                  minimumSize: MaterialStateProperty.all(Size(double.infinity, 50.0)), // Set minimum button size
+                ),
               ),
             ),
           ],
