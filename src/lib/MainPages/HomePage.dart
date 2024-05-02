@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/HomePage/ProductCard.dart';
 
@@ -35,26 +34,6 @@ class _HomePageState extends State<HomePage> {
   String _cook = '';
 
   Widget build(BuildContext context) {
-    // TODO this piece of code registers the user in the database, it will not be needed when we implement a custom login / register page
-    final docRef = FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid);
-    docRef.get().then(
-          (doc) => {
-            if (!doc.exists)
-              {
-                docRef.set(
-                  {
-                    "username":
-                        FirebaseAuth.instance.currentUser!.displayName ??
-                            "null",
-                    "chatrooms": [],
-                  },
-                )
-              }
-          },
-        );
-
     final collectionRef = db.collection("dishes");
     collectionRef.snapshots().listen(
       (event) {
