@@ -43,7 +43,9 @@ class _MainAppState extends State<MainApp> {
   }
 
   String truncateString(String text, int maxLength) {
-    return text.length <= maxLength ? text : '${text.substring(0, maxLength - 3)}...';
+    return text.length <= maxLength
+        ? text
+        : '${text.substring(0, maxLength - 3)}...';
   }
 
   @override
@@ -57,7 +59,7 @@ class _MainAppState extends State<MainApp> {
       ),
       title: "Let's Cook",
       initialRoute:
-      FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home",
+          FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home",
       routes: {
         "/sign-in": (context) {
           return const LoginPage();
@@ -106,7 +108,9 @@ class _MainAppState extends State<MainApp> {
               children: [
                 HomePage(key: const PageStorageKey('HomePage')),
                 NewProductPage(key: const PageStorageKey('NewProductPage')),
-                const ProfilePage(key: PageStorageKey('ProfilePage')),
+                ProfilePage(
+                    userID: FirebaseAuth.instance.currentUser!.uid,
+                    key: const PageStorageKey('ProfilePage')),
               ],
             ),
           );
