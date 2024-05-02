@@ -4,6 +4,7 @@ import 'package:lets_cook/Components/MealPage/CollapsableList.dart';
 import 'package:lets_cook/Components/MealPage/Gallery.dart';
 import 'package:lets_cook/Components/MealPage/ImageCard.dart';
 import 'package:lets_cook/Components/MealPage/UserButton.dart';
+import 'package:lets_cook/MainPages/ChatPage.dart';
 
 class MealPage extends StatelessWidget {
   final String userName;
@@ -11,6 +12,7 @@ class MealPage extends StatelessWidget {
   final double price;
   final String description;
   final String userID;
+  final String mealID;
   final List<NetworkImage> images;
   final List<String> ingredients;
 
@@ -21,6 +23,7 @@ class MealPage extends StatelessWidget {
     required this.price,
     required this.description,
     required this.userID,
+    required this.mealID,
     required this.images,
     required this.ingredients,
   });
@@ -107,6 +110,7 @@ class MealPage extends StatelessWidget {
                                 UserButton(
                                   userName: userName,
                                   userID: userID,
+                                  mealID: mealID,
                                 ),
                                 Row(
                                   children: [
@@ -210,21 +214,10 @@ class MealPage extends StatelessWidget {
             right: 20,
             child: ElevatedButton(
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Feature not implemented!"),
-                        content: const Text(
-                            "This feature is yet to be implemented."),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("Ok"),
-                          ),
-                        ],
-                      );
-                    });
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      ChatPage(receiverID: userID, mealID: mealID),
+                ));
               },
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsets>(
