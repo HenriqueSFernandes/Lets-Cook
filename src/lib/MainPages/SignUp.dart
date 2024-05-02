@@ -3,18 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'ExtraInfoPage.dart';
 import 'LoginPage.dart';
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key});
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: CustomSignUpForm(),
     );
   }
 }
 
 class CustomSignUpForm extends StatefulWidget {
-  const CustomSignUpForm({Key? key}) : super(key: key);
+  const CustomSignUpForm({super.key});
 
   @override
   _CustomSignUpFormState createState() => _CustomSignUpFormState();
@@ -36,7 +36,7 @@ class _CustomSignUpFormState extends State
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ExtraInfoPage(),
+            builder: (context) => const ExtraInfoPage(),
           ),
         );
       } else {
@@ -45,14 +45,14 @@ class _CustomSignUpFormState extends State
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Error'),
-              content: Text('Passwords do not match.'),
+              title: const Text('Error'),
+              content: const Text('Passwords do not match.'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -82,14 +82,14 @@ class _CustomSignUpFormState extends State
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Error'),
+            title: const Text('Error'),
             content: Text(errorMessage),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -107,7 +107,7 @@ class _CustomSignUpFormState extends State
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 100.0),
+            const SizedBox(height: 100.0),
             Center(
               child: Text(
                 "Welcome Chef\nLet's cook",
@@ -119,23 +119,24 @@ class _CustomSignUpFormState extends State
               ),
 
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextFormField(
               controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.email_outlined),
+                prefixIcon: const Icon(Icons.email_outlined),
                 filled: true,
                 fillColor: Theme.of(context).bottomAppBarTheme.color,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
 
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextFormField(
               controller: _passwordController,
               decoration: InputDecoration(
@@ -144,14 +145,14 @@ class _CustomSignUpFormState extends State
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.password_sharp),
+                prefixIcon: const Icon(Icons.password_sharp),
                 filled: true,
                 fillColor: Theme.of(context).bottomAppBarTheme.color,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
               obscureText: true,
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextFormField(
               controller: _repeatPasswordController,
               decoration: InputDecoration(
@@ -160,40 +161,40 @@ class _CustomSignUpFormState extends State
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.password_sharp ),
+                prefixIcon: const Icon(Icons.password_sharp ),
                 filled: true,
                 fillColor: Theme.of(context).bottomAppBarTheme.color,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
               obscureText: true,
             ),
-            SizedBox(height: 20.0),
-            Container(
+            const SizedBox(height: 20.0),
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _signUpWithEmailAndPassword,
-                child: Text('Sign Up',
-                  style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0, // Adjust the font size here
-                ),),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
-                  minimumSize: MaterialStateProperty.all(Size(double.infinity, 50.0)), // Set minimum button size
+                  minimumSize: MaterialStateProperty.all(const Size(double.infinity, 50.0)), // Set minimum button size
                 ),
+                child: const Text('Sign Up',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0, // Adjust the font size here
+                  ),),
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextButton(
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LoginPage(), // Replace LoginPage() with the appropriate class name of Login.dart
+                    builder: (context) => const LoginPage(), // Replace LoginPage() with the appropriate class name of Login.dart
                   ),
                 );
               },
-              child: Text(
+              child: const Text(
                 'Already have an account? ',
                 style: TextStyle(
                   color: Colors.black,
@@ -206,7 +207,7 @@ class _CustomSignUpFormState extends State
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LoginPage(), // Replace LoginPage() with the appropriate class name of Login.dart
+                    builder: (context) => const LoginPage(), // Replace LoginPage() with the appropriate class name of Login.dart
                   ),
                 );
               },

@@ -5,14 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:lets_cook/Components/NewProductPage/DismissibleImageCard.dart';
-import 'package:lets_cook/MainPages/HomePage.dart';
 import 'package:lets_cook/main.dart';
-import 'package:http/http.dart' as http;
 
 var done=false;
 
 class ExtraInfoPage extends StatefulWidget {
-  ExtraInfoPage({Key? key}) : super(key: key);
+  const ExtraInfoPage({super.key});
 
   @override
   _ExtraInfoPageState createState() => _ExtraInfoPageState();
@@ -23,7 +21,7 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(done) return MainApp();
+    if(done) return const MainApp();
     return Scaffold(
       body: CustomExtraInfoForm(onFormCompleted: () {
         setState(() {
@@ -35,7 +33,7 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
 }
 class CustomExtraInfoForm extends StatefulWidget {
   final VoidCallback onFormCompleted;
-  const CustomExtraInfoForm({Key? key, required this.onFormCompleted}) : super(key: key);
+  const CustomExtraInfoForm({super.key, required this.onFormCompleted});
 
 
   @override
@@ -58,7 +56,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
         _phoneNumberController.text.isEmpty ||
         _courseOfStudyController.text.isEmpty ||
         _specialityController.text.isEmpty ||
-        _moreAboutYourselfController.text.isEmpty) {
+        _moreAboutYourselfController.text.isEmpty || _selectedImage==null) {
       _showErrorDialog("Invalid data!", "Please fill in all the required fields.");
       return;
     }
@@ -162,7 +160,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 100.0),
+            const SizedBox(height: 100.0),
             Center(
               child: Text(
                 "Final details Chef",
@@ -173,7 +171,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextFormField(
               controller: _nameController,
               decoration: InputDecoration(
@@ -182,13 +180,13 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.person_outline),
+                prefixIcon: const Icon(Icons.person_outline),
                 filled: true,
                 fillColor: Theme.of(context).bottomAppBarTheme.color,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextFormField(
               controller: _phoneNumberController,
               decoration: InputDecoration(
@@ -197,13 +195,13 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.check_box_outlined),
+                prefixIcon: const Icon(Icons.check_box_outlined),
                 filled: true,
                 fillColor: Theme.of(context).bottomAppBarTheme.color,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextFormField(
               controller: _courseOfStudyController,
               decoration: InputDecoration(
@@ -212,13 +210,13 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.book_outlined),
+                prefixIcon: const Icon(Icons.book_outlined),
                 filled: true,
                 fillColor: Theme.of(context).bottomAppBarTheme.color,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextFormField(
               controller: _specialityController,
               decoration: InputDecoration(
@@ -227,13 +225,13 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.star_border_outlined),
+                prefixIcon: const Icon(Icons.star_border_outlined),
                 filled: true,
                 fillColor: Theme.of(context).bottomAppBarTheme.color,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextFormField(
               controller: _moreAboutYourselfController,
               maxLines: 2,
@@ -243,13 +241,13 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
-                prefixIcon: Icon(Icons.short_text_sharp),
+                prefixIcon: const Icon(Icons.short_text_sharp),
                 filled: true,
                 fillColor: Theme.of(context).bottomAppBarTheme.color,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -292,21 +290,21 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
               ],
             ),
 
-            SizedBox(height: 20.0),
-            Container(
+            const SizedBox(height: 20.0),
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _saveExtraInfo,
-                child: Text(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
+                  minimumSize: MaterialStateProperty.all( const Size(double.infinity, 50.0)), // Set minimum button size
+                ),
+                child: const Text(
                   'Finish',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0, // Adjust the font size here
                   ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
-                  minimumSize: MaterialStateProperty.all(Size(double.infinity, 50.0)), // Set minimum button size
                 ),
               ),
             ),

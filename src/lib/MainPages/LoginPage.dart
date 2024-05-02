@@ -6,7 +6,7 @@ import 'SignUp.dart';
 import 'ExtraInfoPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key});
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return CustomLoginForm();
+          return const CustomLoginForm();
         } else {
           return FutureBuilder<QuerySnapshot>(
             future: FirebaseAuth.instance.currentUser != null ? _checkUserData(FirebaseAuth.instance.currentUser!.uid) : null,
@@ -30,9 +30,9 @@ class LoginPage extends StatelessWidget {
               } else {
                 if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                   // User email found in Firestore, route to MainApp
-                  return MainApp();
+                  return const MainApp();
                 } else {
-                  return ExtraInfoPage();
+                  return const ExtraInfoPage();
                 }
               }
             },
@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
 }
 
 class CustomLoginForm extends StatefulWidget {
-  const CustomLoginForm({Key? key}) : super(key: key);
+  const CustomLoginForm({super.key});
 
   @override
   _CustomLoginFormState createState() => _CustomLoginFormState();
@@ -87,14 +87,14 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Sign-In Error'),
+            title: const Text('Sign-In Error'),
             content: Text(errorMessage),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -123,14 +123,14 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
     String? email = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Reset Password'),
+        title: const Text('Reset Password'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
+              decoration: const  InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
@@ -142,13 +142,13 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
             onPressed: () {
               Navigator.pop(context, null); // Close the dialog without providing an email
             },
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context, _emailController.text); // Provide the entered email
             },
-            child: Text('Reset Password'),
+            child: const Text('Reset Password'),
           ),
         ],
       ),
@@ -162,14 +162,14 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Password Reset'),
-              content: Text('Password reset email sent to $email'),
+              title: const Text('Password Reset'),
+              content:  Text('Password reset email sent to $email'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -193,7 +193,7 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 100.0),
+              const SizedBox(height: 100.0),
               Center(
                 child: Text(
                   'Are you cooking or eating today, chef?',
@@ -204,7 +204,7 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -213,7 +213,7 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                   labelStyle: TextStyle(
                     color: Colors.grey.shade600,
                   ),
-                  prefixIcon: Icon(Icons.person_outline),
+                  prefixIcon: const Icon(Icons.person_outline),
                   filled: true,
                   fillColor: Theme.of(context).bottomAppBarTheme.color,
                   border: OutlineInputBorder(
@@ -223,7 +223,7 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                   floatingLabelBehavior: FloatingLabelBehavior.never, // Prevent label from floating above when typing
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(
@@ -231,7 +231,7 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                   labelStyle: TextStyle(
                     color: Colors.grey.shade600,
                   ),
-                  prefixIcon: Icon(Icons.password_sharp),
+                  prefixIcon: const Icon(Icons.password_sharp),
                   filled: true,
                   fillColor: Theme.of(context).bottomAppBarTheme.color,
                   border: OutlineInputBorder(
@@ -243,33 +243,34 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                 obscureText: true,
               ),
 
-              SizedBox(height: 20.0),
-              Container(
+              const SizedBox(height: 20.0),
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _signInWithEmailAndPassword,
-                  child: Text(
+
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
+                    minimumSize: MaterialStateProperty.all(const Size(double.infinity, 50.0)), // Set minimum button size
+                  ),
+                  child: const Text(
                     'Login',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0, // Adjust the font size here
                     ),
                   ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
-                    minimumSize: MaterialStateProperty.all(Size(double.infinity, 50.0)), // Set minimum button size
-                  ),
                 ),
               ),
-              SizedBox(height: 16.0),
-              Container(
+              const SizedBox(height: 16.0),
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: ()  {
                     signInWithGoogle();
 
                   },
-                  icon: Container(
+                  icon: SizedBox(
                     height: 24.0,
                     width: 24.0,
                     child: Image.network(
@@ -277,19 +278,19 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                       fit: BoxFit.scaleDown,
                     ),
                   ),
-                  label: Text('Sign In with Google'),
+                  label:const Text('Sign In with Google'),
                 ),
               ),
               TextButton(
                 onPressed: () {
                   _resetPassword();
                 },
-                child: Text('Forgot Password?'),
+                child:const Text('Forgot Password?'),
               ),
-              SizedBox(height: 140.0),
-              Container(
+              const SizedBox(height: 140.0),
+              const SizedBox(
                 width: double.infinity,
-                child: Text(
+                child:Text(
                   'Don\'t have an account?',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -297,15 +298,15 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.0),
-              Container(
+              const SizedBox(height: 16.0),
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SignUpPage(), // Replace SignUpPage() with the appropriate class name of SignUp.dart
+                        builder: (context) => const SignUpPage(), // Replace SignUpPage() with the appropriate class name of SignUp.dart
                       ),
                     );
                   },
@@ -313,10 +314,10 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
-                    minimumSize: Size(double.infinity, 50.0), // Set minimum button size
+                    minimumSize: const Size(double.infinity, 50.0), // Set minimum button size
                     backgroundColor: Theme.of(context).primaryColor, // Use the same color as the previous button
                   ),
-                  child: Text(
+                  child: const Text(
                     'Sign Up',
                     style: TextStyle(
                       color: Colors.white,
