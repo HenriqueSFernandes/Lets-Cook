@@ -38,7 +38,12 @@ class _MessageInputState extends State<MessageInput> {
             ),
           ),
           TextButton(
-              onPressed: () => widget.onSend(), child: const Icon(Icons.send))
+            onPressed: () {
+              widget.onSend();
+              widget.inputController.clear();
+            },
+            child: const Icon(Icons.send),
+          )
         ],
       ),
     );
