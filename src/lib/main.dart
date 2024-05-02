@@ -1,14 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_cook/MainPages/ChatListPage.dart';
+import 'package:lets_cook/MainPages/ExtraInfoPage.dart';
 import 'package:lets_cook/MainPages/HomePage.dart';
 import 'package:lets_cook/MainPages/LoginPage.dart';
 import 'package:lets_cook/MainPages/NewProductPage.dart';
 import 'package:lets_cook/MainPages/ProfilePage.dart';
 import 'package:lets_cook/firebase_options.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -27,6 +30,8 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   final Color aquaGreen = const Color(0xFF1B8587);
+  bool done=false;
+  String route= "/sign-in";
   int currentPageIndex = 0;
   late PageController _pageController;
 
@@ -49,7 +54,15 @@ class _MainAppState extends State<MainApp> {
   }
 
   @override
+  Future<QuerySnapshot> _checkUserData(String uid) async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .where(FieldPath.documentId, isEqualTo: uid)
+        .get();
+  }
+
   Widget build(BuildContext context) {
+    if(done) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -69,19 +82,40 @@ class _MainAppState extends State<MainApp> {
             appBar: AppBar(
               title: const Text("Let's Cook"),
               elevation: 4,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    final userRef = FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(FirebaseAuth.instance.currentUser!.uid);
+                    userRef.get().then((DocumentSnapshot doc) {
+                      final data = doc.data() as Map<String, dynamic>;
+                      final List<Map<String, dynamic>> chatrooms =
+                          List.from(data["chatrooms"]);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ChatListPage(rooms: chatrooms)),
+                      );
+                    });
+                  },
+                  icon: Icon(Icons.message),
+                )
+              ],
             ),
             bottomNavigationBar: NavigationBar(
-              destinations: [
+              destinations: const [
                 NavigationDestination(
-                  icon: const Icon(Icons.home, size: 30),
+                  icon: Icon(Icons.home, size: 30),
                   label: "Home",
                 ),
                 NavigationDestination(
-                  icon: const Icon(Icons.add, size: 30),
+                  icon: Icon(Icons.add, size: 30),
                   label: "Add",
                 ),
                 NavigationDestination(
-                  icon: const Icon(Icons.person, size: 30),
+                  icon: Icon(Icons.person, size: 30),
                   label: "Profile",
                 ),
               ],
@@ -106,7 +140,7 @@ class _MainAppState extends State<MainApp> {
                 });
               },
               children: [
-                HomePage(key: const PageStorageKey('HomePage')),
+                const HomePage(key: PageStorageKey('HomePage')),
                 NewProductPage(key: const PageStorageKey('NewProductPage')),
                 ProfilePage(
                     userID: FirebaseAuth.instance.currentUser!.uid,
@@ -118,4 +152,29 @@ class _MainAppState extends State<MainApp> {
       },
     );
   }
+else {
+    route=FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home";
+    if(route=="/home"){
+      if(_checkUserData(FirebaseAuth.instance.currentUser!.uid) != null) {
+        route = "/home";
+
+        WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {done = true;}));
+
+      }
+      else {
+        route = "/extra-page";
+        WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {done = true;}));
+      }
+    }else{
+      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {done = true;}));}
+    }
+
+    return Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+      ),
+    );
+
+  }
+
 }

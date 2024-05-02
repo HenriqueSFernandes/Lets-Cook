@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class UserButton extends StatelessWidget {
   final String userName;
   final String userID;
+  final String mealID;
 
   const UserButton({
     required this.userName,
     required this.userID,
+    required this.mealID,
     super.key,
   });
 
