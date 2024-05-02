@@ -17,6 +17,9 @@ class Gallery extends StatefulWidget {
 
 class _GalleryState extends State<Gallery> {
   late PageController pageController;
+  bool _zoomEnabled = true;
+  bool _scrollEnabled = true;
+  int _pointerCount = 0;
 
   @override
   void initState() {
@@ -30,20 +33,41 @@ class _GalleryState extends State<Gallery> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          PageView.builder(
-            controller: pageController,
-            itemCount: widget.images.length,
-            onPageChanged: (index) {
-              setState(() {});
+          Listener(
+            onPointerDown: (details) {
+              _pointerCount++;
+              if (_pointerCount > 1) {
+                setState(() {
+                  _zoomEnabled = true;
+                  _scrollEnabled = false;
+                });
+              }
             },
-            itemBuilder: (context, index) {
-              return PhotoView(
-                backgroundDecoration: const BoxDecoration(color: Colors.white),
-                imageProvider: widget.images[index],
-                maxScale: PhotoViewComputedScale.contained * 2.5,
-                minScale: PhotoViewComputedScale.contained,
-              );
+            onPointerUp: (details) {
+              _pointerCount--;
+              if (_pointerCount <= 1) {
+                setState(() {
+                  _zoomEnabled = false;
+                  _scrollEnabled = true;
+                });
+              }
             },
+            child: PageView.builder(
+              controller: pageController,
+              itemCount: widget.images.length,
+              onPageChanged: (index) {
+                setState(() {});
+              },
+              physics: _scrollEnabled ? PageScrollPhysics() : NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return PhotoView(
+                  backgroundDecoration: const BoxDecoration(color: Colors.white),
+                  imageProvider: widget.images[index],
+                  maxScale: _zoomEnabled ? PhotoViewComputedScale.contained * 2.5 : PhotoViewComputedScale.contained,
+                  minScale: PhotoViewComputedScale.contained,
+                );
+              },
+            ),
           ),
           Positioned(
             bottom: 75,
@@ -124,4 +148,4 @@ class _GalleryState extends State<Gallery> {
       ),
     );
   }
-}
+}g
