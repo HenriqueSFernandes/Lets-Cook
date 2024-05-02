@@ -7,11 +7,12 @@ void main() {
   testWidgets('Product widget test', (WidgetTester tester) async {
     mockNetworkImagesFor(() async {
       // Define test data
-      final testUserName = 'Test User';
-      final testDishName = 'Test Dish';
-      final testPrice = 10.0;
-      final testDescription = 'Test Description';
-      final testUserID = 'Test UserID';
+      const testUserName = 'Test User';
+      const testDishName = 'Test Dish';
+      const testPrice = 10.0;
+      const testDescription = 'Test Description';
+      const testUserID = 'Test UserID';
+      const testMealID = 'Test MealID';
       final testImageURLs = ['https://example.com/image.jpg'];
       final testIngredients = ['Ingredient 1', 'Ingredient 2'];
 
@@ -25,6 +26,7 @@ void main() {
               price: testPrice,
               description: testDescription,
               userID: testUserID,
+              mealID: testMealID,
               imageURLs: testImageURLs,
               ingredients: testIngredients,
             ),
@@ -42,7 +44,7 @@ void main() {
       // Verify that the Product widget displays the correct data
       expect(find.text(testUserName), findsOneWidget);
       expect(find.text(testDishName), findsOneWidget);
-      expect(find.text(testPrice.toStringAsFixed(2) + '€'), findsOneWidget);
+      expect(find.text('${testPrice.toStringAsFixed(2)}€'), findsOneWidget);
       expect(find.text('4.8'), findsOneWidget); // Verify rating
     });
   });

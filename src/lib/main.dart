@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_cook/MainPages/ChatListPage.dart';
 import 'package:lets_cook/MainPages/ExtraInfoPage.dart';
 import 'package:lets_cook/MainPages/HomePage.dart';
 import 'package:lets_cook/MainPages/LoginPage.dart';
@@ -46,7 +48,9 @@ class _MainAppState extends State<MainApp> {
   }
 
   String truncateString(String text, int maxLength) {
-    return text.length <= maxLength ? text : '${text.substring(0, maxLength - 3)}...';
+    return text.length <= maxLength
+        ? text
+        : '${text.substring(0, maxLength - 3)}...';
   }
 
   @override
@@ -67,10 +71,9 @@ class _MainAppState extends State<MainApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff015e5c)),
       ),
       title: "Let's Cook",
-      initialRoute: route,
-      routes: {"extra-page": (context) {
-        return ExtraInfoPage();
-      },
+      initialRoute:
+          FirebaseAuth.instance.currentUser == null ? "/sign-in" : "/home",
+      routes: {
         "/sign-in": (context) {
           return const LoginPage();
         },
@@ -79,19 +82,40 @@ class _MainAppState extends State<MainApp> {
             appBar: AppBar(
               title: const Text("Let's Cook"),
               elevation: 4,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    final userRef = FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(FirebaseAuth.instance.currentUser!.uid);
+                    userRef.get().then((DocumentSnapshot doc) {
+                      final data = doc.data() as Map<String, dynamic>;
+                      final List<Map<String, dynamic>> chatrooms =
+                          List.from(data["chatrooms"]);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ChatListPage(rooms: chatrooms)),
+                      );
+                    });
+                  },
+                  icon: Icon(Icons.message),
+                )
+              ],
             ),
             bottomNavigationBar: NavigationBar(
-              destinations: [
+              destinations: const [
                 NavigationDestination(
-                  icon: const Icon(Icons.home, size: 30),
+                  icon: Icon(Icons.home, size: 30),
                   label: "Home",
                 ),
                 NavigationDestination(
-                  icon: const Icon(Icons.add, size: 30),
+                  icon: Icon(Icons.add, size: 30),
                   label: "Add",
                 ),
                 NavigationDestination(
-                  icon: const Icon(Icons.person, size: 30),
+                  icon: Icon(Icons.person, size: 30),
                   label: "Profile",
                 ),
               ],
@@ -116,7 +140,7 @@ class _MainAppState extends State<MainApp> {
                 });
               },
               children: [
-                HomePage(key: const PageStorageKey('HomePage')),
+                const HomePage(key: PageStorageKey('HomePage')),
                 NewProductPage(key: const PageStorageKey('NewProductPage')),
                 const ProfilePage(key: PageStorageKey('ProfilePage')),
               ],
