@@ -148,4 +148,4 @@ class _GalleryState extends State<Gallery> {
       ),
     );
   }
-}g
+}
