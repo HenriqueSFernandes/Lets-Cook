@@ -72,7 +72,6 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
 
       // Check for specific error types and customize error message
       if (e is FirebaseAuthException) {
-        print(e.code);
         switch (e.code) {
           case 'invalid-credential':
             errorMessage = 'Invalid credentials. Please check your email and password.';
@@ -208,6 +207,7 @@ class _CustomLoginFormState extends State<CustomLoginForm> {
               SizedBox(height: 20.0),
               TextFormField(
                 controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: 'Email ',
                   labelStyle: TextStyle(

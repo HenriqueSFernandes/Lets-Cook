@@ -58,9 +58,7 @@ class _MainAppState extends State<MainApp> {
   }
 
   Widget build(BuildContext context) {
-    print("done is $done");
     if(done) {
-      print("inside");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
