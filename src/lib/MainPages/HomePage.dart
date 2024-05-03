@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
           updatedProducts.add(Product(
             userName: element["username"],
             dishName: element["mealname"],
-            price: element["price"],
+            price: double.parse(element["price"].toString()),
             description: element["description"],
             userID: element["userid"],
             mealID: element.id,
