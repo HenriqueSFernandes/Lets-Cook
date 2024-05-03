@@ -197,4 +197,26 @@ End of the sprint:
 > The goal of this sprint is to improve what we already have and implement the remaining of the key features.
 
 Start of the sprint:
-![Sprint 1 Start](./docs/sprintsPrints/Sprint2begin.png)
+![Sprint 2 Start](./docs/sprintsPrints/Sprint2begin.png)
+
+End of the sprint:
+![Sprint 2 End](./docs/sprintsPrints/Sprint2end.png)
+
+#### What went well?
+
+*  We implemented the most important features.
+
+#### What didn't go so well?
+
+* Some issues took more time than expected to get done. Our communication could be better
+
+#### What we are going to start doing?
+
+* We are going to start testing more before merging and for harder tasks we will start developing them in smaller groups rather than individually
+
+### Sprint 3
+
+> The goal of this sprint is to improve the user experience and the UI.
+
+Start of the sprint:
+![Sprint 3 Start](./docs/sprintsPrints/Sprint3begin.png)
