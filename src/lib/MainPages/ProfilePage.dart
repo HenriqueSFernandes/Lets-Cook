@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lets_cook/Components/HomePage/ProductCard.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userID;
@@ -23,6 +24,28 @@ class _ProfilePageState extends State<ProfilePage> {
     final snapshot = await userRef.get();
     final bio = snapshot.data()!["more_about_yourself"];
     return bio;
+  }
+
+  Future<List<Product>> getProducts() async {
+    List<Product> products = [];
+    final dishesRef = FirebaseFirestore.instance.collection("dishes");
+    final userDishesRef = dishesRef.where('userid',
+        isEqualTo: FirebaseAuth.instance.currentUser!.uid);
+    await userDishesRef.get().then((doc) {
+      for (var value in doc.docs) {
+        products.add(Product(
+          userName: value['username'],
+          dishName: value['mealname'],
+          price: value['price'],
+          description: value['description'],
+          userID: value['userid'],
+          mealID: value.id,
+          imageURLs: List<String>.from(value["images"]),
+          ingredients: List<String>.from(value["ingredients"]),
+        ));
+      }
+    });
+    return products;
   }
 
   @override
@@ -77,7 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 20),
           Container(
-            margin: EdgeInsets.only(left: 30, right: 30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
             child: FutureBuilder(
               future: getBio(),
               builder: (context, snapshot) {
@@ -90,12 +113,12 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           const SizedBox(height: 20),
-          Text(
+          const Text(
             "extra info here...",
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
-          Text(
+          const Text(
             "Available meals:",
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -104,9 +127,19 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 20),
           FutureBuilder(
-            future: future,
+            future: getProducts(),
             builder: (context, snapshot) {
-
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  List<Product> products = snapshot.data!;
+                  return Column(
+                    children: products,
+                  );
+                }
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              return const CircularProgressIndicator();
             },
           ),
           Center(
@@ -115,6 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ElevatedButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut();
+                  Navigator.pushNamed(context, '/sign-in');
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.red),
