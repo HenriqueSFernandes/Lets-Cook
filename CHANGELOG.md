@@ -4,13 +4,23 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-- Chat
 - Custom profile page
-- Custom login / register page
 - Report system
 - Rating system
 
-## [v0.2] - 19/04/2024
+## [v0.3.0](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2/releases/tag/v0.3.0-alpha) - 03/05/2024
+
+### Added
+
+- New custom login/register page
+
+https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2/assets/85371550/c14dd9ec-df61-4e3c-bd2f-eac7b933a8a6
+
+- Users can now chat with chefs
+
+https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2/assets/85371550/4a6bf8cc-82fa-48b1-8579-ee64d9fce64c
+
+## [v0.2.0](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC16T2/releases/tag/v0.2.0-alpha) - 19/04/2024
 
 ### Added
 
