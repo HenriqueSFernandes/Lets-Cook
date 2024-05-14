@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class UserButton extends StatelessWidget {
+class UserButton extends StatefulWidget {
   final String userName;
   final String userID;
   final String mealID;
+  String imageUrl = "";
 
-  const UserButton({
+  UserButton({
     required this.userName,
     required this.userID,
     required this.mealID,
@@ -13,7 +15,27 @@ class UserButton extends StatelessWidget {
   });
 
   @override
+  State<UserButton> createState() => _UserButtonState();
+}
+
+class _UserButtonState extends State<UserButton> {
+  void getImageUrl() async {
+    String url = "";
+    final userRef =
+        FirebaseFirestore.instance.collection("users").doc(widget.userID);
+    await userRef.get().then(
+      (value) {
+        url = value['image_url'];
+      },
+    );
+    setState(() {
+      widget.imageUrl = url;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    getImageUrl();
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -47,15 +69,17 @@ class UserButton extends StatelessWidget {
               ],
               border:
                   Border.all(color: Theme.of(context).primaryColor, width: 2),
-              image: const DecorationImage(
+              image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage("lib/resources/default_userimage.png"),
+                image: widget.imageUrl == ""
+                    ? AssetImage("lib/resources/default_userimage.png") as ImageProvider
+                    : NetworkImage(widget.imageUrl) as ImageProvider,
               ),
             ),
           ),
           const SizedBox(width: 6),
           Text(
-            userName,
+            widget.userName,
             style: TextStyle(
               fontSize: 20,
               color: Theme.of(context).primaryColor,
