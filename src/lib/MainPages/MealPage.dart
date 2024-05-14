@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/MealPage/CollapsableList.dart';
 import 'package:lets_cook/Components/MealPage/Gallery.dart';
@@ -30,6 +31,8 @@ class MealPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool chefIsCurrentUser = userID == FirebaseAuth.instance.currentUser!.uid;
+
     ingredients.sort();
     final splitIngredients = ingredients.slices(3);
     final ingredientsColumn1 = [];
@@ -214,10 +217,27 @@ class MealPage extends StatelessWidget {
             right: 20,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      ChatPage(receiverID: userID, mealID: mealID),
-                ));
+                chefIsCurrentUser
+                    ? showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Feature not implemented"),
+                            content: const Text(
+                                "The edit function will be available as soon as possible."),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text("Ok"),
+                              ),
+                            ],
+                          );
+                        },
+                      )
+                    : Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            ChatPage(receiverID: userID, mealID: mealID),
+                      ));
               },
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsets>(
@@ -229,9 +249,9 @@ class MealPage extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all<Color>(
                     Theme.of(context).primaryColor),
               ),
-              child: const Text(
-                "BUY",
-                style: TextStyle(
+              child: Text(
+                chefIsCurrentUser ? "EDIT" : "BUY",
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 25,
                 ),
