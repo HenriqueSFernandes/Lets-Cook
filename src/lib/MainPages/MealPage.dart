@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/MealPage/Gallery.dart';
 import 'package:lets_cook/Components/MealPage/ImagesList.dart';
 import 'package:lets_cook/Components/MealPage/IngredientsList.dart';
-import 'package:lets_cook/Components/MealPage/UpdateListDialog.dart';
 import 'package:lets_cook/Components/MealPage/UpdateValueDialog.dart';
 import 'package:lets_cook/Components/MealPage/UserButton.dart';
 import 'package:lets_cook/MainPages/ChatPage.dart';
+import 'package:lets_cook/MainPages/HomePage.dart';
 
 class MealPage extends StatefulWidget {
   final String userName;
@@ -43,6 +43,13 @@ class _MealPageState extends State<MealPage> {
       widget.dishName = value['mealname'];
       widget.price = double.parse(value["price"].toString());
       widget.description = value['description'];
+      ingredients.clear();
+      for (String s in value['ingredients']){
+        ingredients.add(s);
+      }
+      for (String s in widget.ingredients){
+        print(s);
+      }
     });
     setState(() {});
   }
@@ -239,6 +246,11 @@ class _MealPageState extends State<MealPage> {
                                       )
                                     : const SizedBox(),
                               ],
+                            ),
+                            IngredientsList(
+                              ingredients: widget.ingredients,
+                              mealID: widget.mealID,
+                              isEditable: chefIsCurrentUser,
                             ),
                             ImagesList(images: widget.images),
                           ],
