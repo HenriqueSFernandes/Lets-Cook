@@ -8,7 +8,7 @@ class ProfilePage extends StatefulWidget {
 
   ProfilePage({
     required this.userID,
-    required super.key,
+    super.key,
   });
 
   @override
@@ -48,122 +48,143 @@ class _ProfilePageState extends State<ProfilePage> {
     return products;
   }
 
+  Future<String> getProfilePictureURL() async {
+    String url = "";
+    final userRef =
+        FirebaseFirestore.instance.collection("users").doc(widget.userID);
+    await userRef.get().then((value) => url = value['image_url']);
+    return url;
+  }
+
+  Future<Map<String, String>> getUserInfo() async {
+    Map<String, String> info = {};
+    final userRef =
+        FirebaseFirestore.instance.collection("users").doc(widget.userID);
+    await userRef.get().then(
+      (value) {
+        info['name'] = value['name'];
+        info['bio'] = value['more_about_yourself'];
+        info['image_url'] = value['image_url'];
+      },
+    );
+    return info;
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isCurrentUser =
+        widget.userID == FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
-      body: ListView(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 20),
-            height: MediaQuery.of(context).size.height / 3,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                    FirebaseAuth.instance.currentUser!.photoURL as String),
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-          ),
-          Text(
-            FirebaseAuth.instance.currentUser!.displayName as String,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 22,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(7),
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  color: Theme.of(context).primaryColor,
-                  child: const Icon(
-                    Icons.star,
-                    color: Colors.white,
+      body: FutureBuilder(
+        future: Future.wait([getUserInfo(), getProducts()]),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              List<Product> products = snapshot.data![1] as List<Product>;
+              Map<String, String> info =
+                  snapshot.data![0] as Map<String, String>;
+              return ListView(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    height: MediaQuery.of(context).size.height / 3,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(info['image_url']!),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 5),
-              Text(
-                "4.8 / 5.0",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.only(left: 30, right: 30),
-            child: FutureBuilder(
-              future: getBio(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Text(snapshot.data as String);
-                } else {
-                  return const SizedBox();
-                }
-              },
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "extra info here...",
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Available meals:",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 22,
-            ),
-          ),
-          const SizedBox(height: 20),
-          FutureBuilder(
-            future: getProducts(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  List<Product> products = snapshot.data!;
-                  return Column(
+                  Text(
+                    info['name']!,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(7),
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          color: Theme.of(context).primaryColor,
+                          child: const Icon(
+                            Icons.star,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "4.8 / 5.0",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.only(left: 30, right: 30),
+                    child: Text(info['bio']!),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "extra info here...",
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Available meals:",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Column(
                     children: products,
-                  );
-                }
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              }
-              return const CircularProgressIndicator();
-            },
-          ),
-          Center(
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.pushNamed(context, '/sign-in');
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                ),
-                child: const Text(
-                  "Sign out",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
                   ),
-                ),
-              ),
-            ),
-          ),
-        ],
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (isCurrentUser) {
+                            await FirebaseAuth.instance.signOut();
+                            Navigator.pushNamed(context, '/sign-in');
+                          } else {
+                            
+                          }
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red),
+                        ),
+                        child: const Text(
+                          "Sign out",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              );
+            }
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
