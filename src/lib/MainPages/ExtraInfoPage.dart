@@ -1,13 +1,14 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lets_cook/Components/NewProductPage/DismissibleImageCard.dart';
 import 'package:lets_cook/main.dart';
 
-var done=false;
+var done = false;
 
 class ExtraInfoPage extends StatefulWidget {
   const ExtraInfoPage({super.key});
@@ -21,7 +22,7 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(done) return const MainApp();
+    if (done) return const MainApp();
     return Scaffold(
       body: CustomExtraInfoForm(onFormCompleted: () {
         setState(() {
@@ -31,33 +32,40 @@ class _ExtraInfoPageState extends State<ExtraInfoPage> {
     );
   }
 }
+
 class CustomExtraInfoForm extends StatefulWidget {
   final VoidCallback onFormCompleted;
-  const CustomExtraInfoForm({super.key, required this.onFormCompleted});
 
+  const CustomExtraInfoForm({super.key, required this.onFormCompleted});
 
   @override
   _CustomExtraInfoFormState createState() => _CustomExtraInfoFormState();
 }
 
-class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
-{
+class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
   Map<String, DismissibleImageCard> images = {};
   bool isUploading = false;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _courseOfStudyController = TextEditingController();
+  final TextEditingController _courseOfStudyController =
+      TextEditingController();
   final TextEditingController _specialityController = TextEditingController();
-  final TextEditingController _moreAboutYourselfController = TextEditingController();
+  final TextEditingController _moreAboutYourselfController =
+      TextEditingController();
   File? _selectedImage; // Variable to store the selected image file
 
   Future<void> _saveExtraInfo() async {
+    setState(() {
+      isUploading = true;
+    });
     if (_nameController.text.isEmpty ||
         _phoneNumberController.text.isEmpty ||
         _courseOfStudyController.text.isEmpty ||
         _specialityController.text.isEmpty ||
-        _moreAboutYourselfController.text.isEmpty || _selectedImage==null) {
-      _showErrorDialog("Invalid data!", "Please fill in all the required fields.");
+        _moreAboutYourselfController.text.isEmpty ||
+        _selectedImage == null) {
+      _showErrorDialog(
+          "Invalid data!", "Please fill in all the required fields.");
       return;
     }
 
@@ -89,15 +97,14 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
     } catch (e) {
       _showErrorDialog("Save Data Error", "Failed to save user data: $e");
     }
-
   }
-
-
 
   Future<String> _uploadImageToStorage(File imageFile) async {
     final storageRef = FirebaseStorage.instance.ref().child("user_photos");
-    final imageRef = storageRef.child("${DateTime.now().millisecondsSinceEpoch}.png");
-    await imageRef.putFile(imageFile, SettableMetadata(contentType: "image/jpeg"));
+    final imageRef =
+        storageRef.child("${DateTime.now().millisecondsSinceEpoch}.png");
+    await imageRef.putFile(
+        imageFile, SettableMetadata(contentType: "image/jpeg"));
     return await imageRef.getDownloadURL();
   }
 
@@ -108,6 +115,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
     // Set the user's data in Firestore with the UID as the document ID
     await FirebaseFirestore.instance.collection("users").doc(uid).set(userData);
   }
+
   void _updateCurrentUserProfile(String displayName, String? photoUrl) {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -280,32 +288,35 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm>
                     children: images.values
                         .map(
                           (e) => Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: e,
-                      ),
-                    )
+                            padding: const EdgeInsets.all(8),
+                            child: e,
+                          ),
+                        )
                         .toList(),
                   ),
                 )
               ],
             ),
-
             const SizedBox(height: 20.0),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _saveExtraInfo,
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
-                  minimumSize: MaterialStateProperty.all( const Size(double.infinity, 50.0)), // Set minimum button size
+                  backgroundColor:
+                      MaterialStateProperty.all(Theme.of(context).primaryColor),
+                  minimumSize: MaterialStateProperty.all(const Size(
+                      double.infinity, 50.0)), // Set minimum button size
                 ),
-                child: const Text(
-                  'Finish',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0, // Adjust the font size here
-                  ),
-                ),
+                child: isUploading
+                    ? CircularProgressIndicator()
+                    : const Text(
+                        'Finish',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0, // Adjust the font size here
+                        ),
+                      ),
               ),
             ),
           ],
