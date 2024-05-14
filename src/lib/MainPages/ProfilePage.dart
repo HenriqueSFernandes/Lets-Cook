@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lets_cook/Components/ProfilePage/ReportCard.dart';
 import 'package:lets_cook/Components/HomePage/MealCard.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -20,8 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<List<MealCard>> getProducts() async {
     List<MealCard> products = [];
     final dishesRef = FirebaseFirestore.instance.collection("dishes");
-    final userDishesRef = dishesRef.where('userid',
-        isEqualTo: widget.userID);
+    final userDishesRef = dishesRef.where('userid', isEqualTo: widget.userID);
     await userDishesRef.get().then((doc) {
       for (var value in doc.docs) {
         products.add(MealCard(
@@ -143,18 +143,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text(
-                                            "Feature not implemented!"),
-                                        content: const Text(
-                                            "The report system will be available as soon as possible."),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                            child: const Text("Ok"),
-                                          ),
-                                        ],
+                                      return ReportCard(
+                                        userID: widget.userID,
+                                        username: info['name']!,
                                       );
                                     });
                               }
@@ -175,24 +166,26 @@ class _ProfilePageState extends State<ProfilePage> {
                       )
                     ],
                   ),
-                  isCurrentUser ? const SizedBox() : Positioned(
-                    top: 40,
-                    left: 20,
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(5),
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
+                  isCurrentUser
+                      ? const SizedBox()
+                      : Positioned(
+                          top: 40,
+                          left: 20,
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(5),
+                              backgroundColor: Theme.of(context).primaryColor,
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                 ],
               );
             }
