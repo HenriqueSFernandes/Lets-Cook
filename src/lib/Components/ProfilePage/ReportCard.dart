@@ -56,7 +56,6 @@ class _ReportCardState extends State<ReportCard> {
       "date": DateTime.now(),
       "reason": textEditingController.text,
     });
-    await Future.delayed(const Duration(seconds: 3));
     setState(() {
       isUploading = false;
     });
