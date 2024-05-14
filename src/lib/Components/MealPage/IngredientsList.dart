@@ -44,12 +44,6 @@ class _IngredientsListState extends State<IngredientsList> {
     }
   }
 
-  @override
-  void dispose(){
-    ingredientController.dispose();
-    super.dispose();
-  }
-
   void removeIngredient(String ingredient) async {
     List<String> newIngredients = [];
     for (String s in widget.ingredients) {

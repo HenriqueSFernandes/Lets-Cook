@@ -142,8 +142,9 @@ class _MainAppState extends State<MainApp> {
                   const HomePage(key: PageStorageKey('HomePage')),
                   NewProductPage(key: const PageStorageKey('NewProductPage')),
                   ProfilePage(
-                      userID: FirebaseAuth.instance.currentUser!.uid,
-                      key: const PageStorageKey('ProfilePage')),
+                    userID: FirebaseAuth.instance.currentUser!.uid,
+                    key: const PageStorageKey('ProfilePage'),
+                  ),
                 ],
               ),
             );

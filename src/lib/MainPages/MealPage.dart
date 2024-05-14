@@ -36,6 +36,8 @@ class MealPage extends StatefulWidget {
 }
 
 class _MealPageState extends State<MealPage> {
+  bool isDeleting = false;
+
   void refreshPage() async {
     final mealRef =
         FirebaseFirestore.instance.collection("dishes").doc(widget.mealID);
@@ -44,14 +46,23 @@ class _MealPageState extends State<MealPage> {
       widget.price = double.parse(value["price"].toString());
       widget.description = value['description'];
       ingredients.clear();
-      for (String s in value['ingredients']){
+      for (String s in value['ingredients']) {
         ingredients.add(s);
-      }
-      for (String s in widget.ingredients){
-        print(s);
       }
     });
     setState(() {});
+  }
+
+  Future<void> deleteMeal() async {
+    setState(() {
+      isDeleting = true;
+    });
+    final mealRef =
+        FirebaseFirestore.instance.collection("dishes").doc(widget.mealID);
+    await mealRef.delete();
+    setState(() {
+      isDeleting = false;
+    });
   }
 
   @override
@@ -253,6 +264,57 @@ class _MealPageState extends State<MealPage> {
                               isEditable: chefIsCurrentUser,
                             ),
                             ImagesList(images: widget.images),
+                            chefIsCurrentUser
+                                ? Center(
+                                    child: ElevatedButton(
+                                        onPressed: () => showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: const Text(
+                                                    "Are you sure you want to delete the meal?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(),
+                                                    child: const Text("Cancel"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      await deleteMeal();
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .clearSnackBars();
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              "Meal deleted"),
+                                                        ),
+                                                      );
+                                                      Navigator.of(context)
+                                                          .pushNamed("/home");
+                                                    },
+                                                    child: const Text("Yes"),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.red),
+                                        ),
+                                        child: const Text(
+                                          "Delete",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                          ),
+                                        )),
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                       ),

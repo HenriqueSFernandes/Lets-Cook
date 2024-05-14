@@ -117,9 +117,6 @@ class _HomePageState extends State<HomePage> {
                         );
                         setState(() {
                           ingredients = result;
-                          for (var ingredient in ingredients) {
-                            print(ingredient);
-                          }
                         });
                         break;
                       case 'Cook':
