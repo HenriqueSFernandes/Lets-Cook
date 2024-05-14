@@ -136,11 +136,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    "extra info here...",
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
                     "Available meals:",
                     textAlign: TextAlign.center,
                     style: TextStyle(
