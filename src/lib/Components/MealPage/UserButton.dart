@@ -42,7 +42,7 @@ class _UserButtonState extends State<UserButton> {
         context,
         MaterialPageRoute(
           builder: (context) => ProfilePage(
-            userID: userID,
+            userID: widget.userID,
           ),
         ),
       ),
