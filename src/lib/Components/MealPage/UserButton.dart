@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lets_cook/MainPages/ProfilePage.dart';
 
 class UserButton extends StatefulWidget {
   final String userName;
@@ -37,23 +38,16 @@ class _UserButtonState extends State<UserButton> {
   Widget build(BuildContext context) {
     getImageUrl();
     return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("Feature not implemented!"),
-                content: const Text("This feature is yet to be implemented."),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text("Ok"),
-                  ),
-                ],
-              );
-            });
-      },
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(
+            userID: userID,
+          ),
+        ),
+      ),
       child: Row(
+
         children: [
           Container(
             width: 30,
