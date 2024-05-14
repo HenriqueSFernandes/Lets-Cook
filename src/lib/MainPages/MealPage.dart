@@ -1,22 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/MealPage/Gallery.dart';
 import 'package:lets_cook/Components/MealPage/ImagesList.dart';
 import 'package:lets_cook/Components/MealPage/IngredientsList.dart';
+import 'package:lets_cook/Components/MealPage/UpdateListDialog.dart';
+import 'package:lets_cook/Components/MealPage/UpdateValueDialog.dart';
 import 'package:lets_cook/Components/MealPage/UserButton.dart';
 import 'package:lets_cook/MainPages/ChatPage.dart';
 
 class MealPage extends StatefulWidget {
   final String userName;
-  final String dishName;
-  final double price;
-  final String description;
+  String dishName;
+  double price;
+  String description;
   final String userID;
   final String mealID;
   final List<NetworkImage> images;
   final List<String> ingredients;
 
-  const MealPage({
+  MealPage({
     super.key,
     required this.userName,
     required this.dishName,
@@ -33,6 +36,17 @@ class MealPage extends StatefulWidget {
 }
 
 class _MealPageState extends State<MealPage> {
+  void refreshPage() async {
+    final mealRef =
+        FirebaseFirestore.instance.collection("dishes").doc(widget.mealID);
+    await mealRef.get().then((value) {
+      widget.dishName = value['mealname'];
+      widget.price = double.parse(value["price"].toString());
+      widget.description = value['description'];
+    });
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     bool chefIsCurrentUser =
@@ -87,7 +101,22 @@ class _MealPageState extends State<MealPage> {
                                     ),
                                     chefIsCurrentUser
                                         ? IconButton(
-                                            onPressed: () {},
+                                            onPressed: () async {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return UpdateValueDialog(
+                                                    mealID: widget.mealID,
+                                                    whatToChange: "Name",
+                                                    currentValue:
+                                                        widget.dishName,
+                                                    databaseParameterName:
+                                                        'mealname',
+                                                  );
+                                                },
+                                              );
+                                              refreshPage();
+                                            },
                                             icon: Icon(
                                               Icons.edit,
                                               color: Theme.of(context)
@@ -98,13 +127,44 @@ class _MealPageState extends State<MealPage> {
                                         : const SizedBox(),
                                   ],
                                 ),
-                                Text(
-                                  "${widget.price.toStringAsFixed(2)}€",
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${widget.price.toStringAsFixed(2)}€",
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    chefIsCurrentUser
+                                        ? IconButton(
+                                            onPressed: () async {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    UpdateValueDialog(
+                                                  mealID: widget.mealID,
+                                                  whatToChange: "Price",
+                                                  currentValue:
+                                                      widget.price.toString(),
+                                                  databaseParameterName:
+                                                      "price",
+                                                  inputType:
+                                                      TextInputType.number,
+                                                ),
+                                              );
+                                              refreshPage();
+                                            },
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                            iconSize: 30,
+                                          )
+                                        : const SizedBox(),
+                                  ],
                                 ),
                               ],
                             ),
@@ -149,8 +209,37 @@ class _MealPageState extends State<MealPage> {
                             const SizedBox(
                               height: 25,
                             ),
-                            Text(widget.description),
-                            IngredientsList(ingredients: widget.ingredients),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(child: Text(widget.description)),
+                                chefIsCurrentUser
+                                    ? IconButton(
+                                        onPressed: () async {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                UpdateValueDialog(
+                                              mealID: widget.mealID,
+                                              whatToChange: "Description",
+                                              currentValue: widget.description,
+                                              databaseParameterName:
+                                                  "description",
+                                              inputType:
+                                                  TextInputType.multiline,
+                                            ),
+                                          );
+                                          refreshPage();
+                                        },
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        iconSize: 30,
+                                      )
+                                    : const SizedBox(),
+                              ],
+                            ),
                             ImagesList(images: widget.images),
                           ],
                         ),

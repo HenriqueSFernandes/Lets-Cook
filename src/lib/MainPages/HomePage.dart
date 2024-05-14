@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_cook/Components/HomePage/ProductCard.dart';
+import 'package:lets_cook/Components/HomePage/MealCard.dart';
 
 List<String> ingredients = [];
 List<String> cooks = [];
@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final db = FirebaseFirestore.instance;
-  List<Product> products = [];
+  List<MealCard> products = [];
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  bool matchesSearchCriteria(String searchText, Product product) {
+  bool matchesSearchCriteria(String searchText, MealCard product) {
     return product.dishName.toLowerCase().contains(searchText.toLowerCase()) ||
         product.userName.toLowerCase().contains(searchText.toLowerCase()) ||
         product.description.toLowerCase().contains(searchText.toLowerCase());
@@ -37,9 +37,9 @@ class _HomePageState extends State<HomePage> {
     final collectionRef = db.collection("dishes");
     collectionRef.snapshots().listen(
       (event) {
-        List<Product> updatedProducts = [];
+        List<MealCard> updatedProducts = [];
         for (var element in event.docs) {
-          updatedProducts.add(Product(
+          updatedProducts.add(MealCard(
             userName: element["username"],
             dishName: element["mealname"],
             price: double.parse(element["price"].toString()),

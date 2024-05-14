@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../MainPages/MealPage.dart';
 
-class Product extends StatelessWidget {
+class MealCard extends StatelessWidget {
   final String userName;
   final String dishName;
   final double price;
@@ -12,7 +12,7 @@ class Product extends StatelessWidget {
   final List<String> imageURLs;
   final List<String> ingredients;
 
-  const Product({
+  const MealCard({
     required this.userName,
     required this.dishName,
     required this.price,
