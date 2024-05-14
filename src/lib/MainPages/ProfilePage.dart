@@ -160,16 +160,32 @@ class _ProfilePageState extends State<ProfilePage> {
                             await FirebaseAuth.instance.signOut();
                             Navigator.pushNamed(context, '/sign-in');
                           } else {
-                            
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title:
+                                        const Text("Feature not implemented!"),
+                                    content: const Text(
+                                        "The report system will be available as soon as possible."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                        child: const Text("Ok"),
+                                      ),
+                                    ],
+                                  );
+                                });
                           }
                         },
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.red),
                         ),
-                        child: const Text(
-                          "Sign out",
-                          style: TextStyle(
+                        child: Text(
+                          isCurrentUser ? "Sign-out" : "Report",
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                           ),
