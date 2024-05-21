@@ -298,7 +298,9 @@ class _MealPageState extends State<MealPage> {
                                                         ),
                                                       );
                                                       Navigator.of(context)
-                                                          .pushNamed("/home");
+                                                          .pushNamedAndRemoveUntil(
+                                                              "/home",
+                                                              (route) => false);
                                                     },
                                                     child: const Text("Yes"),
                                                   ),
