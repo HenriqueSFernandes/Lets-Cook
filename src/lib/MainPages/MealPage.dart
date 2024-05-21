@@ -263,7 +263,11 @@ class _MealPageState extends State<MealPage> {
                               mealID: widget.mealID,
                               isEditable: chefIsCurrentUser,
                             ),
-                            ImagesList(images: widget.images),
+                            ImagesList(
+                              images: widget.images,
+                              mealID: widget.mealID,
+                              isEditable: chefIsCurrentUser,
+                            ),
                             chefIsCurrentUser
                                 ? Center(
                                     child: ElevatedButton(
