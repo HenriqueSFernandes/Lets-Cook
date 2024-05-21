@@ -102,13 +102,15 @@ class _ImagesListState extends State<ImagesList> {
           widget.isEditable
               ? isUploading
                   ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: () async {
-                        await _pickImageFromCamera();
-                        await uploadImage({id!: selectedImage!});
-                      },
-                      child: const Text("Add image"),
-                    )
+                  : Center(
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          await _pickImageFromCamera();
+                          await uploadImage({id!: selectedImage!});
+                        },
+                        child: const Text("Add image"),
+                      ),
+                  )
               : const SizedBox(),
         ],
       ),
