@@ -253,9 +253,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          products.isNotEmpty
+          products.isEmpty
               ? Expanded(
-                child: RefreshIndicator(
+                  child: RefreshIndicator(
                     onRefresh: getMeals,
                     child: ListView.builder(
                       shrinkWrap: true,
@@ -267,8 +267,17 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
-              )
-              : const CircularProgressIndicator(),
+                )
+              : const Expanded(
+                  child: Center(
+                    child: Text(
+                      'No meals available, maybe add your own?',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
         ],
       ),
     );
