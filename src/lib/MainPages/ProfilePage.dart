@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_cook/Components/HomePage/ProductCard.dart';
+import 'package:lets_cook/Components/HomePage/MealCard.dart';
 import 'package:lets_cook/Components/ProfilePage/ReportCard.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userID;
+  final void Function(int)? setIndex;
 
   ProfilePage({
     required this.userID,
+    this.setIndex,
     super.key,
   });
 
@@ -17,13 +19,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Future<List<Product>> getProducts() async {
-    List<Product> products = [];
+  Future<List<MealCard>> getProducts() async {
+    List<MealCard> products = [];
     final dishesRef = FirebaseFirestore.instance.collection("dishes");
     final userDishesRef = dishesRef.where('userid', isEqualTo: widget.userID);
     await userDishesRef.get().then((doc) {
       for (var value in doc.docs) {
-        products.add(Product(
+        products.add(MealCard(
           userName: value['username'],
           dishName: value['mealname'],
           price: value['price'],
@@ -32,6 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
           mealID: value.id,
           imageURLs: List<String>.from(value["images"]),
           ingredients: List<String>.from(value["ingredients"]),
+          setIndex: widget.setIndex,
         ));
       }
     });
@@ -62,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
-              List<Product> products = snapshot.data![1] as List<Product>;
+              List<MealCard> products = snapshot.data![1] as List<MealCard>;
               Map<String, String> info =
                   snapshot.data![0] as Map<String, String>;
               return Stack(

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class IngredientCard extends StatelessWidget {
   final String name;
-  final Function onRemove;
+  final Function? onRemove;
 
   const IngredientCard({
     required this.name,
-    required this.onRemove,
+    this.onRemove,
     super.key,
   });
 
@@ -31,15 +31,18 @@ class IngredientCard extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          const SizedBox(width: 5),
-          IconButton(
-              onPressed: () {
-                onRemove();
-              },
-              icon: const Icon(
-                Icons.cancel_outlined,
-                color: Colors.red,
-              )),
+          onRemove != null ? const SizedBox(width: 5) : const SizedBox(),
+          onRemove != null
+              ? IconButton(
+                  onPressed: () {
+                    onRemove!();
+                  },
+                  icon: const Icon(
+                    Icons.cancel_outlined,
+                    color: Colors.red,
+                  ),
+                )
+              : const SizedBox(),
         ],
       ),
     );
