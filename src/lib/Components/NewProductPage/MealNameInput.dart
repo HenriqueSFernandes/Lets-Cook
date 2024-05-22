@@ -33,7 +33,7 @@ class _MealNameInputState extends State<MealNameInput> {
           style: TextStyle(fontSize: 20),
         ),
         Container(
-          /*
+
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(4),
@@ -42,39 +42,13 @@ class _MealNameInputState extends State<MealNameInput> {
             border: Border(
               bottom: BorderSide(
                 width: 4,
-                color: Theme
-                    .of(context)
-                    .primaryColor,
+                color: _errorMessage != null ? Colors.red : Theme.of(context).primaryColor,
               ),
             ),
             color: const Color(0xFF2F3635),
           ),
-          */
-          decoration: _errorMessage == null
-              ? BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(4),
-              topRight: Radius.circular(4),
-            ),
-            border: Border(
-              bottom: BorderSide(
-                width: 4,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-            color: const Color(0xFF2F3635),
-          )
-              : BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(4),
-              topRight: Radius.circular(4),
-            ),
-            border: Border.all(
-              color: Colors.red, // Full border when there is an error
-              width: 4,
-            ),
-            color: const Color(0xFF2F3635),
-          ),
+
+
           //border ends here
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -110,7 +84,7 @@ class _MealNameInputState extends State<MealNameInput> {
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
               _errorMessage!,
-              style: const TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red, fontSize: 20),
             ),
           ),
       ],
