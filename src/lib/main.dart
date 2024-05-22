@@ -122,12 +122,12 @@ class _MainAppState extends State<MainApp> {
                     label: "Add",
                   ),
                   NavigationDestination(
+                      icon: Icon(Icons.message, size: 30),
+                      label: "Messages"),
+                  NavigationDestination(
                     icon: Icon(Icons.person, size: 30),
                     label: "Profile",
                   ),
-                  NavigationDestination(
-                      icon: Icon(Icons.message, size: 30),
-                      label: "Messages")
                 ],
                 labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
                 selectedIndex: currentPageIndex,
@@ -148,10 +148,10 @@ class _MainAppState extends State<MainApp> {
                 children: [
                   const HomePage(key: PageStorageKey('HomePage')),
                   NewProductPage(key: const PageStorageKey('NewProductPage')),
+                  ChatListPage(key: const PageStorageKey('MessagesPage'), rooms: chatrooms),
                   ProfilePage(
                       userID: FirebaseAuth.instance.currentUser!.uid,
                       key: const PageStorageKey('ProfilePage')),
-                  ChatListPage(key: const PageStorageKey('MessagesPage'), rooms: chatrooms),
                 ],
               ),
             );

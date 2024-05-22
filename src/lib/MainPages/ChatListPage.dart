@@ -99,29 +99,24 @@ class _ChatListPageState extends State<ChatListPage> {
         },
       ).toList();
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Chats"),
-      ),
-      body: chats.isEmpty
-          ? const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "(·_·)",
-                    style: TextStyle(fontSize: 64),
-                  ),
-                  Text(
-                    "It's a little quiet around here...",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-            )
-          : ListView(
-              children: chats,
+    return chats.isEmpty
+        ? const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "(·_·)",
+                  style: TextStyle(fontSize: 64),
+                ),
+                Text(
+                  "It's a little quiet around here...",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
             ),
-    );
+          )
+        : ListView(
+            children: chats,
+          );
   }
 }
