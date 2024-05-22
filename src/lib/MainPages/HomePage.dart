@@ -38,12 +38,24 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  fetchDocuments(Query collection) {
+  Future<double> getMealRating(String userID) async {
+    final userRef = db.collection("users").doc(userID);
+    final user = await userRef.get();
+    if (user.data()!.containsKey('totalRating') &&
+        user.data()!.containsKey('ratingCount')) {
+      return (user['totalRating'] / user['ratingCount']);
+    } else {
+      return 0.0;
+    }
+  }
+
+  Future<void> fetchDocuments(Query collection) async {
     collection.get().then((value) {
       collectionState = value;
       bool alreadyExists = false;
-      value.docs.forEach((element) {
+      value.docs.forEach((element) async {
         alreadyExists = false;
+        double rating = await getMealRating(element["userid"]);
         setState(() {
           for (var mealID in products){
             if (mealID.mealID == element.id){
@@ -61,6 +73,7 @@ class _HomePageState extends State<HomePage> {
               mealID: element.id,
               imageURLs: List<String>.from(element["images"]),
               ingredients: List<String>.from(element["ingredients"]),
+              rating : rating,
             ));
           }
         });
@@ -74,7 +87,7 @@ class _HomePageState extends State<HomePage> {
         .collection("dishes")
         .orderBy("mealname")
         .limit(4);
-    fetchDocuments(collection);
+    await fetchDocuments(collection);
   }
 
   Future<void> getNextMeals() async {
@@ -84,7 +97,7 @@ class _HomePageState extends State<HomePage> {
         .orderBy("mealname")
         .startAfterDocument(lastVisible)
         .limit(3);
-    fetchDocuments(collection);
+    await fetchDocuments(collection);
   }
 
   bool matchesSearchCriteria(String searchText, MealCard product) {
