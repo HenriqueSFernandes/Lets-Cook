@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MealPriceInput extends StatelessWidget {
   final TextEditingController priceController;
@@ -31,6 +32,9 @@ class MealPriceInput extends StatelessWidget {
             child: TextField(
               controller: priceController,
               keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Only accept digits and decimal point
+              ],
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 suffixIcon: IconButton(
