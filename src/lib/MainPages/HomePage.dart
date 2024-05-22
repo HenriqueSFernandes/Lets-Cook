@@ -253,7 +253,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          products.isEmpty
+          products.isNotEmpty
               ? Expanded(
                   child: RefreshIndicator(
                     onRefresh: getMeals,
