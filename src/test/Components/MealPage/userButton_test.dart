@@ -7,6 +7,7 @@ void main() {
     // Mock data for testing
     final String userName = 'John Doe';
     final String userID = '123456';
+    final String mealID = '654321';
 
     // Build our widget and trigger a frame.
     await tester.pumpWidget(
@@ -15,6 +16,7 @@ void main() {
           body: UserButton(
             userName: userName,
             userID: userID,
+            mealID: mealID,
           ),
         ),
       ),
@@ -31,6 +33,7 @@ void main() {
     // Mock data for testing
     final String userName = 'John Doe';
     final String userID = '123456';
+    final String mealID = '654321';
 
     // Build our widget and trigger a frame.
     await tester.pumpWidget(
@@ -39,6 +42,7 @@ void main() {
           body: UserButton(
             userName: userName,
             userID: userID,
+            mealID: mealID,
           ),
         ),
       ),
@@ -59,6 +63,7 @@ void main() {
     // Mock data for testing
     final String userName = 'John Doe';
     final String userID = '123456';
+    final String mealID = '654321';
 
     // Build our widget and trigger a frame.
     await tester.pumpWidget(
@@ -67,6 +72,7 @@ void main() {
           body: UserButton(
             userName: userName,
             userID: userID,
+            mealID: mealID,
           ),
         ),
       ),

@@ -55,7 +55,7 @@ class MealCard extends StatelessWidget {
       },
       child: Container(
         height: 225,
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           border: Border.all(
