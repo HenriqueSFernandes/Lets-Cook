@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/HomePage/MealCard.dart';
+import 'package:lets_cook/Components/ProfilePage/RateCard.dart';
 import 'package:lets_cook/Components/ProfilePage/ReportCard.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -53,6 +54,10 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
     return info;
+  }
+
+  Future<void> rateUser(int rating) async {
+    return;
   }
 
   @override
@@ -136,33 +141,60 @@ class _ProfilePageState extends State<ProfilePage> {
                       Center(
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 10),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (isCurrentUser) {
-                                await FirebaseAuth.instance.signOut();
-                                Navigator.pushNamed(context, '/sign-in');
-                              } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ReportCard(
-                                        userID: widget.userID,
-                                        username: info['name']!,
-                                      );
-                                    });
-                              }
-                            },
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.red),
-                            ),
-                            child: Text(
-                              isCurrentUser ? "Sign-out" : "Report",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              !isCurrentUser
+                                  ? ElevatedButton(
+                                      onPressed: () => showDialog(
+                                          context: context,
+                                          builder: (context) => RateCard(
+                                              userID: widget.userID,
+                                              userName: info['name']!)),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                      child: const Text(
+                                        "Rate",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                              SizedBox(width: isCurrentUser ? 0 : 20),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (isCurrentUser) {
+                                    await FirebaseAuth.instance.signOut();
+                                    Navigator.pushNamed(context, '/sign-in');
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return ReportCard(
+                                            userID: widget.userID,
+                                            username: info['name']!,
+                                          );
+                                        });
+                                  }
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.red),
+                                ),
+                                child: Text(
+                                  isCurrentUser ? "Sign-out" : "Report",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       )
