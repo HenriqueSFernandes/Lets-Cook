@@ -95,8 +95,10 @@ class _MainAppState extends State<MainApp> {
                           .doc(FirebaseAuth.instance.currentUser!.uid);
                       userRef.get().then((DocumentSnapshot doc) {
                         final data = doc.data() as Map<String, dynamic>;
-                        final List<Map<String, dynamic>> chatrooms =
-                            List.from(data["chatrooms"]);
+                        List<Map<String, dynamic>> chatrooms = [];
+                        if (data["chatrooms"] != null) {
+                          chatrooms = List.from(data["chatrooms"]);
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
