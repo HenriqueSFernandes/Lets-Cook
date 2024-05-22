@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       collectionState = value;
       value.docs.forEach((element) {
         setState(() {
-          products.add(Product(
+          products.add(MealCard(
             userName: element["username"],
             dishName: element["mealname"],
             price: double.parse(element["price"].toString()),
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
     fetchDocuments(collection);
   }
 
-  bool matchesSearchCriteria(String searchText, Product product) {
+  bool matchesSearchCriteria(String searchText, MealCard product) {
     return product.dishName.toLowerCase().contains(searchText.toLowerCase()) ||
         product.userName.toLowerCase().contains(searchText.toLowerCase()) ||
         product.description.toLowerCase().contains(searchText.toLowerCase());
