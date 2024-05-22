@@ -20,30 +20,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Future<List<MealCard>> getProducts() async {
-    List<MealCard> products = [];
-    final dishesRef = FirebaseFirestore.instance.collection("dishes");
-    final userDishesRef = dishesRef.where('userid', isEqualTo: widget.userID);
-    await userDishesRef.get().then((doc) {
-      for (var value in doc.docs) {
-        products.add(MealCard(
-          userName: value['username'],
-          dishName: value['mealname'],
-          price: value['price'],
-          description: value['description'],
-          userID: value['userid'],
-          mealID: value.id,
-          imageURLs: List<String>.from(value["images"]),
-          ingredients: List<String>.from(value["ingredients"]),
-          setIndex: widget.setIndex,
-        ));
-      }
-    });
-    return products;
-  }
-
-  Future<Map<String, String>> getUserInfo() async {
-    Map<String, String> info = {};
+  Future<Map<String, dynamic>> getUserInfo() async {
+    Map<String, dynamic> info = {};
     final userRef =
         FirebaseFirestore.instance.collection("users").doc(widget.userID);
     await userRef.get().then(
@@ -51,13 +29,38 @@ class _ProfilePageState extends State<ProfilePage> {
         info['name'] = value['name'];
         info['bio'] = value['more_about_yourself'];
         info['image_url'] = value['image_url'];
+        if (value.data()!.containsKey('totalRating') &&
+            value.data()!.containsKey('ratingCount')) {
+          info['rating'] = (value['totalRating'] / value['ratingCount']);
+        } else {
+          info['rating'] = 0.0;
+        }
       },
     );
     return info;
   }
 
-  Future<void> rateUser(int rating) async {
-    return;
+  Future<Map<String, dynamic>> getProductsAndInfo() async {
+    final info = await getUserInfo();
+    List<MealCard> products = [];
+    final dishesRef = FirebaseFirestore.instance.collection("dishes");
+    final userDishesRef = dishesRef.where('userid', isEqualTo: widget.userID);
+    final data = await userDishesRef.get();
+    for (var value in data.docs) {
+      products.add(MealCard(
+        userName: value['username'],
+        dishName: value['mealname'],
+        price: value['price'],
+        description: value['description'],
+        userID: value['userid'],
+        mealID: value.id,
+        imageURLs: List<String>.from(value["images"]),
+        ingredients: List<String>.from(value["ingredients"]),
+        setIndex: widget.setIndex,
+        rating: info['rating'],
+      ));
+    }
+    return {'info': info, 'products': products};
   }
 
   @override
@@ -66,13 +69,12 @@ class _ProfilePageState extends State<ProfilePage> {
         widget.userID == FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       body: FutureBuilder(
-        future: Future.wait([getUserInfo(), getProducts()]),
+        future: getProductsAndInfo(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
-              List<MealCard> products = snapshot.data![1] as List<MealCard>;
-              Map<String, String> info =
-                  snapshot.data![0] as Map<String, String>;
+              List<MealCard> products = snapshot.data!['products'];
+              Map<String, dynamic> info = snapshot.data!['info'];
               return Stack(
                 children: [
                   ListView(
@@ -112,7 +114,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            "4.8 / 5.0",
+                            info['rating'] == 0
+                                ? "N/A"
+                                : "${info['rating'].toStringAsFixed(1)} / 5.0",
                             style: TextStyle(
                               fontSize: 20,
                               color: Theme.of(context).primaryColor,
