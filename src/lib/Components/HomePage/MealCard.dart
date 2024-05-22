@@ -11,6 +11,7 @@ class MealCard extends StatelessWidget {
   final String mealID;
   final List<String> imageURLs;
   final List<String> ingredients;
+  final void Function(int)? setIndex;
 
   const MealCard({
     required this.userName,
@@ -21,6 +22,7 @@ class MealCard extends StatelessWidget {
     required this.mealID,
     required this.imageURLs,
     required this.ingredients,
+    this.setIndex,
     super.key,
   });
 
@@ -43,6 +45,7 @@ class MealCard extends StatelessWidget {
               mealID: mealID,
               images: images,
               ingredients: ingredients,
+              setIndex: setIndex,
             ),
           ),
         );

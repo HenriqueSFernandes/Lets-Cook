@@ -18,6 +18,7 @@ class MealPage extends StatefulWidget {
   final String mealID;
   final List<NetworkImage> images;
   final List<String> ingredients;
+  final void Function(int)? setIndex;
 
   MealPage({
     super.key,
@@ -29,6 +30,7 @@ class MealPage extends StatefulWidget {
     required this.mealID,
     required this.images,
     required this.ingredients,
+    this.setIndex,
   });
 
   @override
@@ -297,6 +299,10 @@ class _MealPageState extends State<MealPage> {
                                                               "Meal deleted"),
                                                         ),
                                                       );
+                                                      if (widget.setIndex !=
+                                                          null) {
+                                                        widget.setIndex!(0);
+                                                      }
                                                       Navigator.of(context)
                                                           .pushNamedAndRemoveUntil(
                                                               "/home",

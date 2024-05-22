@@ -52,6 +52,12 @@ class _MainAppState extends State<MainApp> {
         : '${text.substring(0, maxLength - 3)}...';
   }
 
+  void setIndex(int index) {
+    setState(() {
+      currentPageIndex = index;
+    });
+  }
+
   @override
   Future<QuerySnapshot> _checkUserData(String uid) async {
     return FirebaseFirestore.instance
@@ -133,16 +139,13 @@ class _MainAppState extends State<MainApp> {
               ),
               body: PageView(
                 controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    currentPageIndex = index;
-                  });
-                },
+                onPageChanged: setIndex,
                 children: [
                   const HomePage(key: PageStorageKey('HomePage')),
                   NewProductPage(key: const PageStorageKey('NewProductPage')),
                   ProfilePage(
                     userID: FirebaseAuth.instance.currentUser!.uid,
+                    setIndex: setIndex,
                     key: const PageStorageKey('ProfilePage'),
                   ),
                 ],

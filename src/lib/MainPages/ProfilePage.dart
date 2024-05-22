@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_cook/Components/ProfilePage/ReportCard.dart';
 import 'package:lets_cook/Components/HomePage/MealCard.dart';
+import 'package:lets_cook/Components/ProfilePage/ReportCard.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userID;
+  final void Function(int)? setIndex;
 
   ProfilePage({
     required this.userID,
+    this.setIndex,
     super.key,
   });
 
@@ -17,7 +19,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   Future<List<MealCard>> getProducts() async {
     List<MealCard> products = [];
     final dishesRef = FirebaseFirestore.instance.collection("dishes");
@@ -33,6 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
           mealID: value.id,
           imageURLs: List<String>.from(value["images"]),
           ingredients: List<String>.from(value["ingredients"]),
+          setIndex: widget.setIndex,
         ));
       }
     });
