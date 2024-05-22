@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:lets_cook/Components/MealPage/CollapsableList.dart'; // Replace 'your_package_path' with the actual path to your CollapsableList.dart file
+import 'package:lets_cook/Components/Extra/CollapsableList.dart'; // Replace 'your_package_path' with the actual path to your CollapsableList.dart file
 
 
 void main() {
