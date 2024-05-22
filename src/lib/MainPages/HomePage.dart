@@ -15,7 +15,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final db = FirebaseFirestore.instance;
   List<MealCard> products = [];
+  late QuerySnapshot collectionState;
+  final ScrollController scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getMeals();
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge &&
+          scrollController.position.pixels != 0) {
+        getNextMeals();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -23,7 +37,47 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  bool matchesSearchCriteria(String searchText, MealCard product) {
+  fetchDocuments(Query collection) {
+    collection.get().then((value) {
+      collectionState = value;
+      value.docs.forEach((element) {
+        setState(() {
+          products.add(Product(
+            userName: element["username"],
+            dishName: element["mealname"],
+            price: double.parse(element["price"].toString()),
+            description: element["description"],
+            userID: element["userid"],
+            mealID: element.id,
+            imageURLs: List<String>.from(element["images"]),
+            ingredients: List<String>.from(element["ingredients"]),
+          ));
+        });
+      });
+    });
+  }
+
+  Future<void> getMeals() async {
+    products = [];
+    // TODO change the limit later
+    final collection = FirebaseFirestore.instance
+        .collection("dishes")
+        .orderBy("mealname")
+        .limit(4);
+    fetchDocuments(collection);
+  }
+
+  Future<void> getNextMeals() async {
+    final lastVisible = collectionState.docs[collectionState.docs.length - 1];
+    final collection = FirebaseFirestore.instance
+        .collection("dishes")
+        .orderBy("mealname")
+        .startAfterDocument(lastVisible)
+        .limit(3);
+    fetchDocuments(collection);
+  }
+
+  bool matchesSearchCriteria(String searchText, Product product) {
     return product.dishName.toLowerCase().contains(searchText.toLowerCase()) ||
         product.userName.toLowerCase().contains(searchText.toLowerCase()) ||
         product.description.toLowerCase().contains(searchText.toLowerCase());
@@ -34,29 +88,6 @@ class _HomePageState extends State<HomePage> {
   String _cook = '';
 
   Widget build(BuildContext context) {
-    final collectionRef = db.collection("dishes");
-    collectionRef.snapshots().listen(
-      (event) {
-        List<MealCard> updatedProducts = [];
-        for (var element in event.docs) {
-          updatedProducts.add(MealCard(
-            userName: element["username"],
-            dishName: element["mealname"],
-            price: double.parse(element["price"].toString()),
-            description: element["description"],
-            userID: element["userid"],
-            mealID: element.id,
-            imageURLs: List<String>.from(element["images"]),
-            ingredients: List<String>.from(element["ingredients"]),
-          ));
-        }
-        if (!mounted) return;
-        setState(() {
-          products = updatedProducts;
-        });
-      },
-      onError: (error) => print("Listen failed: $error"),
-    );
     products = products
         .where(
             (product) => product.price >= minPrice && product.price <= maxPrice)
@@ -219,16 +250,31 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Expanded(
-            child: RawScrollbar(
-              radius: const Radius.circular(20),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: products,
+          products.isNotEmpty
+              ? Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: getMeals,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      controller: scrollController,
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        return products[index];
+                      },
+                    ),
+                  ),
+                )
+              : const Expanded(
+                  child: Center(
+                    child: Text(
+                      'No meals available, maybe add your own?',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
         ],
       ),
     );
