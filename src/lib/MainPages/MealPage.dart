@@ -1,23 +1,26 @@
-import 'package:collection/collection.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_cook/Components/MealPage/CollapsableList.dart';
 import 'package:lets_cook/Components/MealPage/Gallery.dart';
-import 'package:lets_cook/Components/MealPage/ImageCard.dart';
+import 'package:lets_cook/Components/MealPage/ImagesList.dart';
+import 'package:lets_cook/Components/MealPage/IngredientsList.dart';
+import 'package:lets_cook/Components/MealPage/UpdateValueDialog.dart';
 import 'package:lets_cook/Components/MealPage/UserButton.dart';
 import 'package:lets_cook/MainPages/ChatPage.dart';
+import 'package:lets_cook/MainPages/HomePage.dart';
 
-class MealPage extends StatelessWidget {
+class MealPage extends StatefulWidget {
   final String userName;
-  final String dishName;
-  final double price;
-  final String description;
+  String dishName;
+  double price;
+  String description;
   final String userID;
   final String mealID;
   final List<NetworkImage> images;
   final List<String> ingredients;
+  final void Function(int)? setIndex;
 
-  const MealPage({
+  MealPage({
     super.key,
     required this.userName,
     required this.dishName,
@@ -27,29 +30,47 @@ class MealPage extends StatelessWidget {
     required this.mealID,
     required this.images,
     required this.ingredients,
+    this.setIndex,
   });
 
   @override
-  Widget build(BuildContext context) {
-    bool chefIsCurrentUser = userID == FirebaseAuth.instance.currentUser!.uid;
+  State<MealPage> createState() => _MealPageState();
+}
 
-    ingredients.sort();
-    final splitIngredients = ingredients.slices(3);
-    final ingredientsColumn1 = [];
-    final ingredientsColumn2 = [];
-    final ingredientsColumn3 = [];
+class _MealPageState extends State<MealPage> {
+  bool isDeleting = false;
 
-    for (var slice in splitIngredients) {
-      for (int i = 0; i < slice.length; i++) {
-        if (i == 0) {
-          ingredientsColumn1.add(slice[i]);
-        } else if (i == 1) {
-          ingredientsColumn2.add(slice[i]);
-        } else if (i == 2) {
-          ingredientsColumn3.add(slice[i]);
-        }
+  void refreshPage() async {
+    final mealRef =
+        FirebaseFirestore.instance.collection("dishes").doc(widget.mealID);
+    await mealRef.get().then((value) {
+      widget.dishName = value['mealname'];
+      widget.price = double.parse(value["price"].toString());
+      widget.description = value['description'];
+      ingredients.clear();
+      for (String s in value['ingredients']) {
+        ingredients.add(s);
       }
-    }
+    });
+    setState(() {});
+  }
+
+  Future<void> deleteMeal() async {
+    setState(() {
+      isDeleting = true;
+    });
+    final mealRef =
+        FirebaseFirestore.instance.collection("dishes").doc(widget.mealID);
+    await mealRef.delete();
+    setState(() {
+      isDeleting = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    bool chefIsCurrentUser =
+        widget.userID == FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
       body: Stack(
@@ -61,14 +82,14 @@ class MealPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        Gallery(initialIndex: 0, images: images),
+                        Gallery(initialIndex: 0, images: widget.images),
                   ),
                 ),
                 child: Container(
                   height: MediaQuery.of(context).size.height / 3,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: images[0],
+                      image: widget.images[0],
                       fit: BoxFit.fitWidth,
                     ),
                   ),
@@ -88,21 +109,82 @@ class MealPage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  dishName,
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      widget.dishName,
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    chefIsCurrentUser
+                                        ? IconButton(
+                                            onPressed: () async {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return UpdateValueDialog(
+                                                    mealID: widget.mealID,
+                                                    whatToChange: "Name",
+                                                    currentValue:
+                                                        widget.dishName,
+                                                    databaseParameterName:
+                                                        'mealname',
+                                                  );
+                                                },
+                                              );
+                                              refreshPage();
+                                            },
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                            iconSize: 30,
+                                          )
+                                        : const SizedBox(),
+                                  ],
                                 ),
-                                Text(
-                                  "${price.toStringAsFixed(2)}€",
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${widget.price.toStringAsFixed(2)}€",
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    chefIsCurrentUser
+                                        ? IconButton(
+                                            onPressed: () async {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    UpdateValueDialog(
+                                                  mealID: widget.mealID,
+                                                  whatToChange: "Price",
+                                                  currentValue:
+                                                      widget.price.toString(),
+                                                  databaseParameterName:
+                                                      "price",
+                                                  inputType:
+                                                      TextInputType.number,
+                                                ),
+                                              );
+                                              refreshPage();
+                                            },
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                            iconSize: 30,
+                                          )
+                                        : const SizedBox(),
+                                  ],
                                 ),
                               ],
                             ),
@@ -111,9 +193,9 @@ class MealPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 UserButton(
-                                  userName: userName,
-                                  userID: userID,
-                                  mealID: mealID,
+                                  userName: widget.userName,
+                                  userID: widget.userID,
+                                  mealID: widget.mealID,
                                 ),
                                 Row(
                                   children: [
@@ -147,62 +229,104 @@ class MealPage extends StatelessWidget {
                             const SizedBox(
                               height: 25,
                             ),
-                            Text(description),
-                            CollapsableList(
-                              title: "Ingredients",
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: ingredientsColumn1
-                                        .map((e) => Text("• $e"))
-                                        .toList(),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: ingredientsColumn2
-                                        .map((e) => Text("• $e"))
-                                        .toList(),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: ingredientsColumn3
-                                        .map((e) => Text("• $e"))
-                                        .toList(),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            CollapsableList(
-                              title: "Pictures (${images.length})",
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: images
-                                      .mapIndexed((index, image) => Padding(
-                                            padding: const EdgeInsets.all(8),
-                                            child: GestureDetector(
-                                              onTap: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => Gallery(
-                                                      initialIndex: index,
-                                                      images: images),
-                                                ),
-                                              ),
-                                              child: ImageCard(image: image),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(child: Text(widget.description)),
+                                chefIsCurrentUser
+                                    ? IconButton(
+                                        onPressed: () async {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                UpdateValueDialog(
+                                              mealID: widget.mealID,
+                                              whatToChange: "Description",
+                                              currentValue: widget.description,
+                                              databaseParameterName:
+                                                  "description",
+                                              inputType:
+                                                  TextInputType.multiline,
                                             ),
-                                          ))
-                                      .toList(),
-                                ),
-                              ),
+                                          );
+                                          refreshPage();
+                                        },
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        iconSize: 30,
+                                      )
+                                    : const SizedBox(),
+                              ],
                             ),
+                            IngredientsList(
+                              ingredients: widget.ingredients,
+                              mealID: widget.mealID,
+                              isEditable: chefIsCurrentUser,
+                            ),
+                            ImagesList(
+                              images: widget.images,
+                              mealID: widget.mealID,
+                              isEditable: chefIsCurrentUser,
+                            ),
+                            chefIsCurrentUser
+                                ? Center(
+                                    child: ElevatedButton(
+                                        onPressed: () => showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: const Text(
+                                                    "Are you sure you want to delete the meal?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(),
+                                                    child: const Text("Cancel"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      await deleteMeal();
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .clearSnackBars();
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              "Meal deleted"),
+                                                        ),
+                                                      );
+                                                      if (widget.setIndex !=
+                                                          null) {
+                                                        widget.setIndex!(0);
+                                                      }
+                                                      Navigator.of(context)
+                                                          .pushNamedAndRemoveUntil(
+                                                              "/home",
+                                                              (route) => false);
+                                                    },
+                                                    child: const Text("Yes"),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.red),
+                                        ),
+                                        child: const Text(
+                                          "Delete",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                          ),
+                                        )),
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                       ),
@@ -212,52 +336,37 @@ class MealPage extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: ElevatedButton(
-              onPressed: () {
-                chefIsCurrentUser
-                    ? showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Feature not implemented"),
-                            content: const Text(
-                                "The edit function will be available as soon as possible."),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text("Ok"),
-                              ),
-                            ],
-                          );
-                        },
-                      )
-                    : Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            ChatPage(receiverID: userID, mealID: mealID),
+          chefIsCurrentUser
+              ? const SizedBox()
+              : Positioned(
+                  bottom: 20,
+                  right: 20,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ChatPage(
+                            receiverID: widget.userID, mealID: widget.mealID),
                       ));
-              },
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsets>(
-                  const EdgeInsets.only(
-                    left: 35,
-                    right: 35,
+                    },
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.only(
+                          left: 35,
+                          right: 35,
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).primaryColor),
+                    ),
+                    child: const Text(
+                      "BUY",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
                   ),
                 ),
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).primaryColor),
-              ),
-              child: Text(
-                chefIsCurrentUser ? "EDIT" : "BUY",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                ),
-              ),
-            ),
-          ),
           Positioned(
             top: 40,
             left: 20,
