@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/MealPage/Gallery.dart';
 import 'package:lets_cook/Components/MealPage/ImagesList.dart';
@@ -62,6 +63,37 @@ class _MealPageState extends State<MealPage> {
     final mealRef =
         FirebaseFirestore.instance.collection("dishes").doc(widget.mealID);
     await mealRef.delete();
+    final chatRooms = await FirebaseFirestore.instance
+        .collection("chatrooms")
+        .where("mealID", isEqualTo: widget.mealID)
+        .get();
+    final List<String> userIds = [];
+    for (QueryDocumentSnapshot chatRoom in chatRooms.docs) {
+      userIds.add(chatRoom['user1ID']);
+      userIds.add(chatRoom['user2ID']);
+      await chatRoom.reference.delete();
+    }
+    for (String userId in userIds) {
+      DocumentReference userDocRef =
+          FirebaseFirestore.instance.collection("users").doc(userId);
+      DocumentSnapshot userDocSnapshot = await userDocRef.get();
+      List chatRooms = userDocSnapshot['chatrooms'];
+      List newChatRooms = [];
+      for (var chatroom in chatRooms) {
+        if (chatroom['mealID'] != widget.mealID) {
+          newChatRooms.add(chatroom);
+        }
+      }
+      await userDocRef.update({"chatrooms": newChatRooms});
+    }
+    final storageRef =
+        FirebaseStorage.instance.ref().child("meals/${widget.mealID}");
+    await storageRef.listAll().then((value) async {
+      for (Reference ref in value.items) {
+        await ref.delete();
+      }
+    });
+
     setState(() {
       isDeleting = false;
     });
