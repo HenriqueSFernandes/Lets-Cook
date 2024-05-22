@@ -20,6 +20,7 @@ class MealPage extends StatefulWidget {
   final List<NetworkImage> images;
   final List<String> ingredients;
   final void Function(int)? setIndex;
+  final double rating;
 
   MealPage({
     super.key,
@@ -31,6 +32,7 @@ class MealPage extends StatefulWidget {
     required this.mealID,
     required this.images,
     required this.ingredients,
+    required this.rating,
     this.setIndex,
   });
 
@@ -246,7 +248,7 @@ class _MealPageState extends State<MealPage> {
                                     const SizedBox(width: 5),
                                     // Add spacing between star icon and text
                                     Text(
-                                      "4.8 / 5.0",
+                                      widget.rating == 0 ? "N/A" : "${widget.rating} / 5.0",
                                       // Convert the rating to string
                                       style: TextStyle(
                                         fontSize: 20,

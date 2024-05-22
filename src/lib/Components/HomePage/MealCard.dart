@@ -11,6 +11,7 @@ class MealCard extends StatelessWidget {
   final String mealID;
   final List<String> imageURLs;
   final List<String> ingredients;
+  final double rating;
   final void Function(int)? setIndex;
 
   const MealCard({
@@ -22,6 +23,7 @@ class MealCard extends StatelessWidget {
     required this.mealID,
     required this.imageURLs,
     required this.ingredients,
+    required this.rating,
     this.setIndex,
     super.key,
   });
@@ -46,6 +48,7 @@ class MealCard extends StatelessWidget {
               images: images,
               ingredients: ingredients,
               setIndex: setIndex,
+              rating: rating,
             ),
           ),
         );
@@ -139,7 +142,9 @@ class MealCard extends StatelessWidget {
                             const SizedBox(width: 5),
                             // Add spacing between star icon and text
                             Text(
-                              "4.8", // Convert the rating to string
+                              rating == 0
+                                  ? "N/A"
+                                  : rating.toStringAsFixed(1),
                               style: TextStyle(
                                 fontSize: 20,
                                 color: primaryColor,
