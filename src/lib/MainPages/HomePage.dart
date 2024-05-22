@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_cook/Components/HomePage/ProductCard.dart';
+import 'package:lets_cook/Components/HomePage/MealCard.dart';
 
 List<String> ingredients = [];
 List<String> cooks = [];
@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final db = FirebaseFirestore.instance;
-  List<Product> products = [];
+  List<MealCard> products = [];
   late QuerySnapshot collectionState;
   final ScrollController scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       collectionState = value;
       value.docs.forEach((element) {
         setState(() {
-          products.add(Product(
+          products.add(MealCard(
             userName: element["username"],
             dishName: element["mealname"],
             price: double.parse(element["price"].toString()),
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
     fetchDocuments(collection);
   }
 
-  bool matchesSearchCriteria(String searchText, Product product) {
+  bool matchesSearchCriteria(String searchText, MealCard product) {
     return product.dishName.toLowerCase().contains(searchText.toLowerCase()) ||
         product.userName.toLowerCase().contains(searchText.toLowerCase()) ||
         product.description.toLowerCase().contains(searchText.toLowerCase());
@@ -148,9 +148,6 @@ class _HomePageState extends State<HomePage> {
                         );
                         setState(() {
                           ingredients = result;
-                          for (var ingredient in ingredients) {
-                            print(ingredient);
-                          }
                         });
                         break;
                       case 'Cook':
