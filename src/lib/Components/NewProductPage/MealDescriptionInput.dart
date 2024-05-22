@@ -27,7 +27,7 @@ class _MealDescriptionInputState extends State<MealDescriptionInput> {
     return Column(
       children: [
         const Text(
-          "Description (200 char max):",
+          "Description:",
           style: TextStyle(fontSize: 20),
         ),
         Container(

@@ -29,7 +29,7 @@ class _MealNameInputState extends State<MealNameInput> {
     return Column(
       children: [
         const Text(
-          "Meal name (20 char max):",
+          "Meal name:",
           style: TextStyle(fontSize: 20),
         ),
         Container(
