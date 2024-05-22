@@ -4,6 +4,7 @@ import 'package:lets_cook/Components/HomePage/MealCard.dart';
 
 List<String> ingredients = [];
 List<String> cooks = [];
+var allProducts = [];
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,25 +41,34 @@ class _HomePageState extends State<HomePage> {
   fetchDocuments(Query collection) {
     collection.get().then((value) {
       collectionState = value;
+      bool alreadyExists = false;
       value.docs.forEach((element) {
+        alreadyExists = false;
         setState(() {
-          products.add(MealCard(
-            userName: element["username"],
-            dishName: element["mealname"],
-            price: double.parse(element["price"].toString()),
-            description: element["description"],
-            userID: element["userid"],
-            mealID: element.id,
-            imageURLs: List<String>.from(element["images"]),
-            ingredients: List<String>.from(element["ingredients"]),
-          ));
+          for (var mealID in products){
+            if (mealID.mealID == element.id){
+              alreadyExists = true;
+              break;
+            }
+          }
+          if (!alreadyExists){
+            products.add(MealCard(
+              userName: element["username"],
+              dishName: element["mealname"],
+              price: double.parse(element["price"].toString()),
+              description: element["description"],
+              userID: element["userid"],
+              mealID: element.id,
+              imageURLs: List<String>.from(element["images"]),
+              ingredients: List<String>.from(element["ingredients"]),
+            ));
+          }
         });
       });
     });
   }
 
   Future<void> getMeals() async {
-    products = [];
     // TODO change the limit later
     final collection = FirebaseFirestore.instance
         .collection("dishes")
@@ -86,6 +96,8 @@ class _HomePageState extends State<HomePage> {
   double minPrice = 0;
   double maxPrice = 1000;
   String _cook = '';
+  bool reload = false;
+
 
   Widget build(BuildContext context) {
     products = products
@@ -123,6 +135,10 @@ class _HomePageState extends State<HomePage> {
             child: TextField(
               controller: _searchController,
               onChanged: (value) {
+                if (value.isEmpty) {
+                  FocusScope.of(context).unfocus();
+                }
+                getMeals();
                 setState(() {}); // Trigger rebuild to apply filter
               },
               decoration: InputDecoration(
@@ -135,124 +151,7 @@ class _HomePageState extends State<HomePage> {
                     width: 2.0,
                   ),
                 ),
-                prefixIcon: PopupMenuButton<String>(
-                  icon: PopupMenuButton<String>(
-                    icon: Icon(Icons.settings,
-                        color: Theme.of(context).primaryColor),
-                    onSelected: (value) async {
-                      switch (value) {
-                        case 'Ingredient':
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    IngredientSelectionScreen()),
-                          );
-                          setState(() {
-                            ingredients = result;
-                            for (var ingredient in ingredients) {
-                              print(ingredient);
-                            }
-                          });
-                          break;
-                        case 'Cook':
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CookSelectionScreen()),
-                          );
-                          setState(() {
-                            _cook = result;
-                          });
-                          break;
-                        case 'Price':
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PriceSelectionScreen()),
-                          );
-                          if (result != null) {
-                            // Check if result is not null to handle case where user cancels the selection
-                            double minPrice_ = result[0];
-                            double maxPrice_ = result[1];
-                            setState(() {
-                              minPrice = minPrice_;
-                              maxPrice = maxPrice_;
-                            });
-                            // Now you can use minPrice and maxPrice as needed
-                            print('Minimum Price: $minPrice');
-                            print('Maximum Price: $maxPrice');
-                          }
-                          break;
-                      }
-                    },
-                    itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<String>>[
-                      const PopupMenuItem<String>(
-                        value: 'Ingredient',
-                        child: SizedBox(
-                          height: 70,
-                          child: ListTile(
-                            leading: Icon(Icons.fastfood),
-                            title: Text('Filter by Ingredient'),
-                          ),
-                        ),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'Cook',
-                        child: SizedBox(
-                          height: 70,
-                          child: ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text('Filter by Cook'),
-                          ),
-                        ),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'Price',
-                        child: SizedBox(
-                          height: 70,
-                          child: ListTile(
-                            leading: Icon(Icons.attach_money),
-                            title: Text('Filter by Price'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'Ingredient',
-                      child: SizedBox(
-                        height: 70,
-                        child: ListTile(
-                          leading: Icon(Icons.fastfood),
-                          title: Text('Filter by Ingredient'),
-                        ),
-                      ),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'Cook',
-                      child: SizedBox(
-                        height: 70,
-                        child: ListTile(
-                          leading: Icon(Icons.person),
-                          title: Text('Filter by Cook'),
-                        ),
-                      ),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'Price',
-                      child: SizedBox(
-                        height: 70,
-                        child: ListTile(
-                          leading: Icon(Icons.attach_money),
-                          title: Text('Filter by Price'),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor),
               ),
             ),
           ),
