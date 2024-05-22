@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RateCard extends StatefulWidget {
@@ -16,8 +17,27 @@ class RateCard extends StatefulWidget {
 }
 
 class _RateCardState extends State<RateCard> {
+  int initialRating = 0;
   int currentRating = 0;
+  bool alreadyRated = false;
   bool isUploading = false;
+
+  Future<bool> userAlreadyRated() async {
+    final userRef =
+        FirebaseFirestore.instance.collection("users").doc(widget.userID);
+    final userDoc = await userRef.get();
+    if (userDoc.data()!.containsKey('ratings')) {
+      final List<dynamic> ratings = userDoc['ratings'];
+      for (var rating in ratings) {
+        if (rating['userID'] == FirebaseAuth.instance.currentUser!.uid) {
+          currentRating = rating['rating'];
+          initialRating = rating['rating'];
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   void updateRating(int rating) {
     setState(() {
@@ -34,23 +54,62 @@ class _RateCardState extends State<RateCard> {
         FirebaseFirestore.instance.collection("users").doc(widget.userID);
     final userDoc = await userRef.get();
     if (userDoc.data()!.containsKey('totalRating') &&
-        userDoc.data()!.containsKey('ratingCount')) {
-      final int totalRating = userDoc['totalRating'] + currentRating;
-      final int ratingCount = userDoc['ratingCount'] + 1;
-      await userRef.update({
-        'totalRating': totalRating,
-        'ratingCount': ratingCount,
-      });
+        userDoc.data()!.containsKey('ratingCount') &&
+        userDoc.data()!.containsKey('ratings')) {
+      List<dynamic> ratings = List.from(userDoc['ratings']);
+      if (!alreadyRated) {
+        // If user has been rated before, but not by the current user.
+        final int totalRating = userDoc['totalRating'] + currentRating;
+        final int ratingCount = userDoc['ratingCount'] + 1;
+        ratings.add({
+          'userID': FirebaseAuth.instance.currentUser!.uid,
+          'rating': currentRating,
+        });
+        await userRef.update({
+          'totalRating': totalRating,
+          'ratingCount': ratingCount,
+          'ratings': ratings,
+        });
+      } else {
+        // If the user has been rated by the current user before.
+        ratings.removeWhere((rating) =>
+            rating['userID'] == FirebaseAuth.instance.currentUser!.uid);
+        final int totalRating =
+            userDoc['totalRating'] - initialRating + currentRating;
+        ratings.add({
+          'userID': FirebaseAuth.instance.currentUser!.uid,
+          'rating': currentRating,
+        });
+        await userRef.update({
+          'totalRating': totalRating,
+          'ratings': ratings,
+        });
+      }
     } else {
+      // If the user has not been rated before.
       await userRef.set({
         'totalRating': currentRating,
         'ratingCount': 1,
+        'ratings': [
+          {
+            'userID': FirebaseAuth.instance.currentUser!.uid,
+            'rating': currentRating,
+          },
+        ],
       }, SetOptions(merge: true));
     }
 
     setState(() {
       isUploading = false;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userAlreadyRated().then((value) => setState(() {
+          alreadyRated = value;
+        }));
   }
 
   @override
@@ -107,7 +166,7 @@ class _RateCardState extends State<RateCard> {
           child: const Text("Cancel"),
         ),
         TextButton(
-          onPressed: currentRating == 0
+          onPressed: currentRating == 0 || currentRating == initialRating
               ? null
               : isUploading
                   ? null
