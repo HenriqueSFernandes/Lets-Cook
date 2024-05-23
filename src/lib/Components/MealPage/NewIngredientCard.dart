@@ -17,6 +17,7 @@ class NewIngredientCard extends StatefulWidget {
 class _NewIngredientCardState extends State<NewIngredientCard> {
   bool uploadIsEnabled = false;
   bool isUploading = false;
+  int characterCount = 0;
 
   @override
   void initState() {
@@ -25,8 +26,9 @@ class _NewIngredientCardState extends State<NewIngredientCard> {
   }
 
   void _ingredientChangeListener() {
+    characterCount = widget.ingredientController.text.trim().length;
     setState(() {
-      uploadIsEnabled = widget.ingredientController.text.isNotEmpty;
+      uploadIsEnabled = widget.ingredientController.text.trim().isNotEmpty && widget.ingredientController.text.trim().length <= 15;
     });
   }
 
@@ -37,8 +39,13 @@ class _NewIngredientCardState extends State<NewIngredientCard> {
       content: TextField(
         keyboardType: TextInputType.text,
         controller: widget.ingredientController,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           hintText: "Ingredient",
+          counterText: "$characterCount/15 characters",
+          counterStyle: TextStyle(
+            color: characterCount > 15 ? Colors.red
+                : Colors.black,
+          ),
         ),
       ),
       actions: [
