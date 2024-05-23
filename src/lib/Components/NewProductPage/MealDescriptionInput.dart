@@ -68,7 +68,7 @@ class _MealDescriptionInputState extends State<MealDescriptionInput> {
                     onPressed: () {
                       widget.descriptionController.clear();
                       setState(() {
-                        _errorMessage = null; // This will remove the error message
+                        _errorMessage = "Please enter a description"; // This will remove the error message
                       });
                     }
                 ),

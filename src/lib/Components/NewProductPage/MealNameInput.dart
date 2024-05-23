@@ -16,6 +16,7 @@ class _MealNameInputState extends State<MealNameInput> {
   String? _errorMessage;
 
   String? validateName(String? value) {
+    value = value?.trim(); // Trim the input string
     if (value == null || value.isEmpty) {
       return 'Please enter a meal name';
     }
@@ -70,7 +71,7 @@ class _MealNameInputState extends State<MealNameInput> {
                     onPressed: () {
                       widget.nameController.clear();
                       setState(() {
-                        _errorMessage = null; // This will remove the error message
+                        _errorMessage = "Please enter a meal name"; // This will remove the error message
                       });
                     }
                 ),
