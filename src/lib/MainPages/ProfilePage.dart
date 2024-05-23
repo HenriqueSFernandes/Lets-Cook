@@ -19,6 +19,10 @@ class ProfilePage extends StatefulWidget {
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
+bool hasPreviousRoute(BuildContext context) {
+  return ModalRoute.of(context)?.canPop ?? false;
+}
+
 
 class _ProfilePageState extends State<ProfilePage> {
   Future<Map<String, dynamic>> getUserInfo() async {
@@ -180,7 +184,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 onPressed: () async {
                                   if (isCurrentUser) {
                                     await FirebaseAuth.instance.signOut();
-                                    Navigator.pushNamed(context, '/sign-in');
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                            "/sign-in", (route) => false);
                                   } else {
                                     showDialog(
                                         context: context,
@@ -210,9 +216,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       )
                     ],
                   ),
-                  isCurrentUser
-                      ? const SizedBox()
-                      : Positioned(
+                  if(hasPreviousRoute(context))
+                  Positioned(
                           top: 40,
                           left: 20,
                           child: ElevatedButton(
