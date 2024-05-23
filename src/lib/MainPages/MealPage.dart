@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,7 +18,7 @@ class MealPage extends StatefulWidget {
   String description;
   final String userID;
   final String mealID;
-  final List<NetworkImage> images;
+  final List<String> imageURLs;
   final List<String> ingredients;
   final void Function(int)? setIndex;
   final double rating;
@@ -30,7 +31,7 @@ class MealPage extends StatefulWidget {
     required this.description,
     required this.userID,
     required this.mealID,
-    required this.images,
+    required this.imageURLs,
     required this.ingredients,
     required this.rating,
     this.setIndex,
@@ -116,14 +117,19 @@ class _MealPageState extends State<MealPage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        Gallery(initialIndex: 0, images: widget.images),
+                        Gallery(initialIndex: 0, imageURLs: widget.imageURLs),
                   ),
                 ),
                 child: Container(
                   height: MediaQuery.of(context).size.height / 3,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: widget.images[0],
+                      image: CachedNetworkImageProvider(
+                        widget.imageURLs[0],
+                        errorListener: (p0) {
+                          const Text('Loading');
+                        },
+                      ),
                       fit: BoxFit.fitWidth,
                     ),
                   ),
@@ -248,7 +254,9 @@ class _MealPageState extends State<MealPage> {
                                     const SizedBox(width: 5),
                                     // Add spacing between star icon and text
                                     Text(
-                                      widget.rating == 0 ? "N/A" : "${widget.rating} / 5.0",
+                                      widget.rating == 0
+                                          ? "N/A"
+                                          : "${widget.rating} / 5.0",
                                       // Convert the rating to string
                                       style: TextStyle(
                                         fontSize: 20,
@@ -300,7 +308,7 @@ class _MealPageState extends State<MealPage> {
                               isEditable: chefIsCurrentUser,
                             ),
                             ImagesList(
-                              images: widget.images,
+                              imageURLs: widget.imageURLs,
                               mealID: widget.mealID,
                               isEditable: chefIsCurrentUser,
                             ),

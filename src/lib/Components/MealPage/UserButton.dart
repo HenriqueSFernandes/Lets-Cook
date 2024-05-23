@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/MainPages/ProfilePage.dart';
@@ -47,7 +48,6 @@ class _UserButtonState extends State<UserButton> {
         ),
       ),
       child: Row(
-
         children: [
           Container(
             width: 30,
@@ -66,8 +66,9 @@ class _UserButtonState extends State<UserButton> {
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: widget.imageUrl == ""
-                    ? AssetImage("lib/resources/default_userimage.png") as ImageProvider
-                    : NetworkImage(widget.imageUrl) as ImageProvider,
+                    ? AssetImage("lib/resources/default_userimage.png")
+                        as ImageProvider
+                    : CachedNetworkImageProvider(widget.imageUrl),
               ),
             ),
           ),

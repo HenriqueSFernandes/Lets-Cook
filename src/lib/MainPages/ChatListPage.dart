@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/MainPages/ChatPage.dart';
@@ -65,8 +66,14 @@ class _ChatListPageState extends State<ChatListPage> {
                               fit: BoxFit.cover,
                               image: imageURL == ""
                                   ? const AssetImage(
-                                      "lib/resources/default_userimage.png")
-                                  : NetworkImage(imageURL) as ImageProvider,
+                                          "lib/resources/default_userimage.png")
+                                      as ImageProvider
+                                  : CachedNetworkImageProvider(
+                                      imageURL,
+                                      errorListener: (p0) {
+                                        const Text('Loading');
+                                      },
+                                    ),
                             ),
                           ),
                         ),

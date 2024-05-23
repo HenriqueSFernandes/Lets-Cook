@@ -41,12 +41,15 @@ class _HomePageState extends State<HomePage> {
   Future<double> getMealRating(String userID) async {
     final userRef = db.collection("users").doc(userID);
     final user = await userRef.get();
-    if (user.data()!.containsKey('totalRating') &&
-        user.data()!.containsKey('ratingCount')) {
-      return (user['totalRating'] / user['ratingCount']);
-    } else {
-      return 0.0;
+    if (user.data() != null) {
+      if (user.data()!.containsKey('totalRating') &&
+          user.data()!.containsKey('ratingCount')) {
+        return (user['totalRating'] / user['ratingCount']);
+      } else {
+        return 0.0;
+      }
     }
+    return 0.0;
   }
 
   Future<void> fetchDocuments(Query collection) async {
@@ -57,13 +60,13 @@ class _HomePageState extends State<HomePage> {
         alreadyExists = false;
         double rating = await getMealRating(element["userid"]);
         setState(() {
-          for (var mealID in products){
-            if (mealID.mealID == element.id){
+          for (var mealID in products) {
+            if (mealID.mealID == element.id) {
               alreadyExists = true;
               break;
             }
           }
-          if (!alreadyExists){
+          if (!alreadyExists) {
             products.add(MealCard(
               userName: element["username"],
               dishName: element["mealname"],
@@ -73,7 +76,7 @@ class _HomePageState extends State<HomePage> {
               mealID: element.id,
               imageURLs: List<String>.from(element["images"]),
               ingredients: List<String>.from(element["ingredients"]),
-              rating : rating,
+              rating: rating,
             ));
           }
         });
@@ -110,7 +113,6 @@ class _HomePageState extends State<HomePage> {
   double maxPrice = 1000;
   String _cook = '';
   bool reload = false;
-
 
   Widget build(BuildContext context) {
     products = products
@@ -164,7 +166,8 @@ class _HomePageState extends State<HomePage> {
                     width: 2.0,
                   ),
                 ),
-                prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor),
+                prefixIcon:
+                    Icon(Icons.search, color: Theme.of(context).primaryColor),
               ),
             ),
           ),
