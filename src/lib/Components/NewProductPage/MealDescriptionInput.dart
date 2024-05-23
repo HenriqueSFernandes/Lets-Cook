@@ -12,6 +12,7 @@ class MealDescriptionInput extends StatefulWidget {
 
 class _MealDescriptionInputState extends State<MealDescriptionInput> {
   String? _errorMessage;
+  int _charCount = 0;
 
   String? validateDescription(String? value) {
     if (value == null || value.isEmpty) {
@@ -57,6 +58,7 @@ class _MealDescriptionInputState extends State<MealDescriptionInput> {
                     controller: widget.descriptionController,
                     onChanged: (value) {
                       setState(() {
+                        _charCount = value.length;
                         _errorMessage = validateDescription(value);
                       });
                     },
@@ -78,11 +80,24 @@ class _MealDescriptionInputState extends State<MealDescriptionInput> {
                     widget.descriptionController.clear();
                     setState(() {
                       _errorMessage = "Please enter a description"; // This will remove the error message
+                      _charCount = 0;
                     });
                   },
                 ),
               ),
             ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: _charCount == 0
+              ? Container() // Return an empty Container when character count is 0
+              : Text(
+            '$_charCount/50 characters',
+            style: TextStyle(
+              fontSize: 15,
+              color: _charCount > 500 ? Colors.red : null, // Make the text red when character count exceeds 50
+            ),
           ),
         ),
         if (_errorMessage != null)

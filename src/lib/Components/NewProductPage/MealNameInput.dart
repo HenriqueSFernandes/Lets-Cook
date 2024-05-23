@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MealNameInput extends StatefulWidget {
@@ -14,6 +15,7 @@ class MealNameInput extends StatefulWidget {
 
 class _MealNameInputState extends State<MealNameInput> {
   String? _errorMessage;
+  int _charCount = 0;
 
   String? validateName(String? value) {
     value = value?.trim(); // Trim the input string
@@ -60,6 +62,7 @@ class _MealNameInputState extends State<MealNameInput> {
               onChanged: (value) {
                 setState(() {
                   _errorMessage = validateName(value);
+                  _charCount = value.length;
                 });
               },
               decoration: InputDecoration(
@@ -72,11 +75,24 @@ class _MealNameInputState extends State<MealNameInput> {
                       widget.nameController.clear();
                       setState(() {
                         _errorMessage = "Please enter a meal name"; // This will remove the error message
+                        _charCount = 0;
                       });
                     }
                 ),
                 border: InputBorder.none,
               ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: _charCount == 0
+              ? Container() // Return an empty Container when character count is 0
+              : Text(
+            '$_charCount/50 characters',
+            style: TextStyle(
+              fontSize: 15,
+              color: _charCount > 50 ? Colors.red : null, // Make the text red when character count exceeds 50
             ),
           ),
         ),
@@ -88,6 +104,7 @@ class _MealNameInputState extends State<MealNameInput> {
               style: const TextStyle(color: Colors.red, fontSize: 20),
             ),
           ),
+
       ],
     );
   }
