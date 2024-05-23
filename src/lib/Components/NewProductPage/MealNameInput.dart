@@ -33,6 +33,7 @@ class MealNameInput extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.text,
               style: const TextStyle(color: Color(0xFFFAFDFC)),
               controller: nameController,

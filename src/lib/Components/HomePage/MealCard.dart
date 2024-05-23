@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../MainPages/MealPage.dart';
@@ -33,8 +34,15 @@ class MealCard extends StatelessWidget {
     final Color primaryColor = Theme.of(context).primaryColor;
     return GestureDetector(
       onTap: () {
-        List<NetworkImage> images =
-            imageURLs.map((e) => NetworkImage(e)).toList();
+        List<CachedNetworkImage> images = imageURLs
+            .map((e) => CachedNetworkImage(
+                  imageUrl: e,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ))
+            .toList();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -45,7 +53,7 @@ class MealCard extends StatelessWidget {
               description: description,
               userID: userID,
               mealID: mealID,
-              images: images,
+              imageURLs: imageURLs,
               ingredients: ingredients,
               setIndex: setIndex,
               rating: rating,
@@ -55,7 +63,7 @@ class MealCard extends StatelessWidget {
       },
       child: Container(
         height: 225,
-        margin: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+        margin: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           border: Border.all(
@@ -70,7 +78,12 @@ class MealCard extends StatelessWidget {
             )
           ],
           image: DecorationImage(
-            image: NetworkImage(imageURLs[0]),
+            image: CachedNetworkImageProvider(
+              imageURLs[0],
+              errorListener: (p0) {
+                const Text('Loading');
+              },
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -142,9 +155,7 @@ class MealCard extends StatelessWidget {
                             const SizedBox(width: 5),
                             // Add spacing between star icon and text
                             Text(
-                              rating == 0
-                                  ? "N/A"
-                                  : rating.toStringAsFixed(1),
+                              rating == 0 ? "N/A" : rating.toStringAsFixed(1),
                               style: TextStyle(
                                 fontSize: 20,
                                 color: primaryColor,

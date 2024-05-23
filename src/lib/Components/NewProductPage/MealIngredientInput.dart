@@ -30,6 +30,7 @@ class MealIngredientInput extends StatelessWidget {
                 child: TextField(
                   controller: ingredientController,
                   keyboardType: TextInputType.text,
+                  textCapitalization: TextCapitalization.sentences,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                   ),

@@ -10,12 +10,12 @@ import 'package:lets_cook/Components/MealPage/Gallery.dart';
 import 'package:lets_cook/Components/MealPage/ImageCard.dart';
 
 class ImagesList extends StatefulWidget {
-  List<NetworkImage> images;
+  List<String> imageURLs;
   final String mealID;
   final bool isEditable;
 
   ImagesList({
-    required this.images,
+    required this.imageURLs,
     required this.mealID,
     this.isEditable = false,
     super.key,
@@ -58,7 +58,7 @@ class _ImagesListState extends State<ImagesList> {
       "images": FieldValue.arrayUnion([url])
     });
     setState(() {
-      widget.images.add(NetworkImage(url));
+      widget.imageURLs.add(url);
       isUploading = false;
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
@@ -76,13 +76,13 @@ class _ImagesListState extends State<ImagesList> {
   @override
   Widget build(BuildContext context) {
     return CollapsableList(
-      title: "Pictures (${widget.images.length})",
+      title: "Pictures (${widget.imageURLs.length})",
       child: Column(
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: widget.images
+              children: widget.imageURLs
                   .mapIndexed((index, image) => Padding(
                         padding: const EdgeInsets.all(8),
                         child: GestureDetector(
@@ -90,10 +90,10 @@ class _ImagesListState extends State<ImagesList> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => Gallery(
-                                  initialIndex: index, images: widget.images),
+                                  initialIndex: index, imageURLs: widget.imageURLs),
                             ),
                           ),
-                          child: ImageCard(image: image),
+                          child: ImageCard(imageURL: image),
                         ),
                       ))
                   .toList(),
