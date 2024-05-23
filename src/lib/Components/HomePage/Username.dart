@@ -32,6 +32,7 @@ class UserWidget extends StatelessWidget {
             margin: const EdgeInsets.only(left: 7),
             child: Text(
               userName,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.background,
                 fontSize: 28,

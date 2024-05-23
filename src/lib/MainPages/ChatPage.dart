@@ -137,9 +137,12 @@ class _ChatPageState extends State<ChatPage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.mealName ?? ""),
+            Text(widget.mealName ?? "",
+            overflow: TextOverflow.ellipsis,
+            ),
             Text(
               widget.chefName ?? "",
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 15,
               ),

@@ -72,6 +72,7 @@ class _ChatListPageState extends State<ChatListPage> {
                         ),
                         Text(
                           "$userName - $mealName",
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 20,
                           ),
