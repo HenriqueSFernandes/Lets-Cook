@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/Components/MealPage/Gallery.dart';
 import 'package:lets_cook/Components/MealPage/ImagesList.dart';
@@ -19,6 +20,7 @@ class MealPage extends StatefulWidget {
   final List<NetworkImage> images;
   final List<String> ingredients;
   final void Function(int)? setIndex;
+  final double rating;
 
   MealPage({
     super.key,
@@ -30,6 +32,7 @@ class MealPage extends StatefulWidget {
     required this.mealID,
     required this.images,
     required this.ingredients,
+    required this.rating,
     this.setIndex,
   });
 
@@ -47,9 +50,9 @@ class _MealPageState extends State<MealPage> {
       widget.dishName = value['mealname'];
       widget.price = double.parse(value["price"].toString());
       widget.description = value['description'];
-      ingredients.clear();
+      widget.ingredients.clear();
       for (String s in value['ingredients']) {
-        ingredients.add(s);
+        widget.ingredients.add(s);
       }
     });
     setState(() {});
@@ -62,6 +65,37 @@ class _MealPageState extends State<MealPage> {
     final mealRef =
         FirebaseFirestore.instance.collection("dishes").doc(widget.mealID);
     await mealRef.delete();
+    final chatRooms = await FirebaseFirestore.instance
+        .collection("chatrooms")
+        .where("mealID", isEqualTo: widget.mealID)
+        .get();
+    final List<String> userIds = [];
+    for (QueryDocumentSnapshot chatRoom in chatRooms.docs) {
+      userIds.add(chatRoom['user1ID']);
+      userIds.add(chatRoom['user2ID']);
+      await chatRoom.reference.delete();
+    }
+    for (String userId in userIds) {
+      DocumentReference userDocRef =
+          FirebaseFirestore.instance.collection("users").doc(userId);
+      DocumentSnapshot userDocSnapshot = await userDocRef.get();
+      List chatRooms = userDocSnapshot['chatrooms'];
+      List newChatRooms = [];
+      for (var chatroom in chatRooms) {
+        if (chatroom['mealID'] != widget.mealID) {
+          newChatRooms.add(chatroom);
+        }
+      }
+      await userDocRef.update({"chatrooms": newChatRooms});
+    }
+    final storageRef =
+        FirebaseStorage.instance.ref().child("meals/${widget.mealID}");
+    await storageRef.listAll().then((value) async {
+      for (Reference ref in value.items) {
+        await ref.delete();
+      }
+    });
+
     setState(() {
       isDeleting = false;
     });
@@ -214,7 +248,7 @@ class _MealPageState extends State<MealPage> {
                                     const SizedBox(width: 5),
                                     // Add spacing between star icon and text
                                     Text(
-                                      "4.8 / 5.0",
+                                      widget.rating == 0 ? "N/A" : "${widget.rating} / 5.0",
                                       // Convert the rating to string
                                       style: TextStyle(
                                         fontSize: 20,
