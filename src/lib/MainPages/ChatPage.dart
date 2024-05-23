@@ -51,7 +51,7 @@ class ChatPage extends StatefulWidget {
           images = imageURLs.map((e) => NetworkImage(e)).toList(),
           chefID = value["userid"],
           ingredients = List<String>.from(value["ingredients"]),
-          rating = rating,
+          this.rating = rating,
         }));
   }
 
@@ -177,7 +177,7 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Expanded(
