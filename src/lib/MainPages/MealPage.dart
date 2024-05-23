@@ -53,9 +53,9 @@ class _MealPageState extends State<MealPage> {
       widget.dishName = value['mealname'];
       widget.price = double.parse(value["price"].toString());
       widget.description = value['description'];
-      ingredients.clear();
+      widget.ingredients.clear();
       for (String s in value['ingredients']) {
-        ingredients.add(s);
+        widget.ingredients.add(s);
       }
     });
     setState(() {});
