@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lets_cook/Components/Extra/CollapsableList.dart';
 import 'package:lets_cook/Components/MealPage/NewIngredientCard.dart';
 import 'package:lets_cook/Components/NewProductPage/IngredientCard.dart';
@@ -113,33 +115,43 @@ class _IngredientsListState extends State<IngredientsList> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: ingredientsColumn1.map((e) {
-                        return Column(
-                          children: [
-                            IngredientCard(
-                              name: e,
-                              onRemove: () => removeIngredient(e),
-                            ),
-                            const SizedBox(height: 5),
-                          ],
-                        );
-                      }).toList(),
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: ingredientsColumn1.map((e) {
+                            return Column(
+                              children: [
+                                IngredientCard(
+                                  name: e,
+                                  onRemove: () => removeIngredient(e),
+                                ),
+                                const SizedBox(height: 5),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: ingredientsColumn2.map((e) {
-                        return Column(
-                          children: [
-                            IngredientCard(
-                              name: e,
-                              onRemove: () => removeIngredient(e),
-                            ),
-                            const SizedBox(height: 5),
-                          ],
-                        );
-                      }).toList(),
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: ingredientsColumn2.map((e) {
+                            return Column(
+                              children: [
+                                IngredientCard(
+                                  name: e,
+                                  onRemove: () => removeIngredient(e),
+                                ),
+                                const SizedBox(height: 5),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ),
                   ],
                 ),
