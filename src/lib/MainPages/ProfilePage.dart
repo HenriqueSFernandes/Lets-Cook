@@ -174,7 +174,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 onPressed: () async {
                                   if (isCurrentUser) {
                                     await FirebaseAuth.instance.signOut();
-                                    Navigator.pushNamed(context, '/sign-in');
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                            "/sign-in", (route) => false);
                                   } else {
                                     showDialog(
                                         context: context,
