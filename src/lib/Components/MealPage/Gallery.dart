@@ -1,13 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class Gallery extends StatefulWidget {
-  final List<NetworkImage> images;
+  final List<String> imageURLs;
   final int initialIndex;
 
   const Gallery({
     required this.initialIndex,
-    required this.images,
+    required this.imageURLs,
     Key? key,
   }) : super(key: key);
 
@@ -54,16 +55,26 @@ class _GalleryState extends State<Gallery> {
             },
             child: PageView.builder(
               controller: pageController,
-              itemCount: widget.images.length,
+              itemCount: widget.imageURLs.length,
               onPageChanged: (index) {
                 setState(() {});
               },
-              physics: _scrollEnabled ? PageScrollPhysics() : NeverScrollableScrollPhysics(),
+              physics: _scrollEnabled
+                  ? PageScrollPhysics()
+                  : NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return PhotoView(
-                  backgroundDecoration: const BoxDecoration(color: Colors.white),
-                  imageProvider: widget.images[index],
-                  maxScale: _zoomEnabled ? PhotoViewComputedScale.contained * 2.5 : PhotoViewComputedScale.contained,
+                  backgroundDecoration:
+                      const BoxDecoration(color: Colors.white),
+                  imageProvider: CachedNetworkImageProvider(
+                    widget.imageURLs[index],
+                    errorListener: (p0) {
+                      const Text('Loading');
+                    },
+                  ),
+                  maxScale: _zoomEnabled
+                      ? PhotoViewComputedScale.contained * 2.5
+                      : PhotoViewComputedScale.contained,
                   minScale: PhotoViewComputedScale.contained,
                 );
               },
@@ -96,7 +107,7 @@ class _GalleryState extends State<Gallery> {
                     ),
                   ),
                   Text(
-                    "${pageController.hasClients && pageController.page != null ? pageController.page!.round() + 1 : widget.initialIndex + 1}/${widget.images.length}",
+                    "${pageController.hasClients && pageController.page != null ? pageController.page!.round() + 1 : widget.initialIndex + 1}/${widget.imageURLs.length}",
                     style: TextStyle(
                       fontSize: 30,
                       color: Theme.of(context).primaryColor,
