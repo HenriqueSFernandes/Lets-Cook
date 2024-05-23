@@ -29,6 +29,7 @@ void main() {
               mealID: testMealID,
               imageURLs: testImageURLs,
               ingredients: testIngredients,
+              rating: 4.8,
             ),
           ),
         ),
