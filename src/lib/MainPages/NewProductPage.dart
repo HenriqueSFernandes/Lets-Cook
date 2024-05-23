@@ -121,7 +121,7 @@ class _NewProductPageState extends State<NewProductPage> {
         price < 0 ||
         portions <= 0 ||
         name.length> 50 ||
-        description.length> 200) {
+        description.length> 500) {
       showDialog(
           context: context,
           builder: (BuildContext context) {

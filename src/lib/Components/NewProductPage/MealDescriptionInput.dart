@@ -93,7 +93,7 @@ class _MealDescriptionInputState extends State<MealDescriptionInput> {
           child: _charCount == 0
               ? Container() // Return an empty Container when character count is 0
               : Text(
-            '$_charCount/50 characters',
+            '$_charCount/500 characters',
             style: TextStyle(
               fontSize: 15,
               color: _charCount > 500 ? Colors.red : null, // Make the text red when character count exceeds 50
