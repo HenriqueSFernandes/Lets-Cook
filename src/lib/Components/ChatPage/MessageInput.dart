@@ -18,7 +18,7 @@ class _MessageInputState extends State<MessageInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5, left: 20, ),
       width: double.infinity,
       //height: 80,
       decoration: BoxDecoration(
@@ -29,8 +29,10 @@ class _MessageInputState extends State<MessageInput> {
         children: [
           Expanded(
             child: TextField(
+              style: const TextStyle(fontSize: 18),
               controller: widget.inputController,
               keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
                 hintText: "Message",
                 border: InputBorder.none,
