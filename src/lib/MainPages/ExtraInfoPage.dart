@@ -309,7 +309,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
                       double.infinity, 50.0)), // Set minimum button size
                 ),
                 child: isUploading
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator(color: Colors.white)
                     : const Text(
                         'Finish',
                         style: TextStyle(
@@ -317,6 +317,31 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
                           fontSize: 20.0, // Adjust the font size here
                         ),
                       ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  if (FirebaseAuth.instance.currentUser != null) {
+                    await FirebaseAuth.instance.currentUser!.delete();
+                  }
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "/sign-in", (route) => false);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                  minimumSize: MaterialStateProperty.all(const Size(
+                      double.infinity, 50.0)), // Set minimum button size
+                ),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0, // Adjust the font size here
+                  ),
+                ),
               ),
             ),
           ],
