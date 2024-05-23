@@ -28,7 +28,7 @@ class _NewIngredientCardState extends State<NewIngredientCard> {
   void _ingredientChangeListener() {
     characterCount = widget.ingredientController.text.trim().length;
     setState(() {
-      uploadIsEnabled = widget.ingredientController.text.trim().isNotEmpty && widget.ingredientController.text.trim().length <= 15;
+      uploadIsEnabled = widget.ingredientController.text.trim().isNotEmpty && widget.ingredientController.text.trim().length <= 20;
     });
   }
 
@@ -41,9 +41,9 @@ class _NewIngredientCardState extends State<NewIngredientCard> {
         controller: widget.ingredientController,
         decoration: InputDecoration(
           hintText: "Ingredient",
-          counterText: "$characterCount/15 characters",
+          counterText: "$characterCount/20 characters",
           counterStyle: TextStyle(
-            color: characterCount > 15 ? Colors.red
+            color: characterCount > 20 ? Colors.red
                 : Colors.black,
           ),
         ),

@@ -13,11 +13,12 @@ class MealIngredientInput extends StatefulWidget {
 
 class _MealIngredientInputState extends State<MealIngredientInput> {
   String? _errorMessage;
+  int _charCount = 0;
 
   String? validateIngredient(String? value) {
     value = value?.trim(); // Trim the input string
-    if (value!.length > 15) {
-      return 'Ingredient name cannot be more than 15 characters';
+    if (value!.length > 20) {
+      return 'Ingredient name cannot be more than 20 characters';
     }
     return null;
   }
@@ -47,6 +48,7 @@ class _MealIngredientInputState extends State<MealIngredientInput> {
                   keyboardType: TextInputType.text,
                   onChanged: (value) {
                     setState(() {
+                      _charCount = value.length;
                       _errorMessage = validateIngredient(value);
                     });
                   },
@@ -61,12 +63,26 @@ class _MealIngredientInputState extends State<MealIngredientInput> {
                     if(widget.ingredientController.text.trim().isNotEmpty) {
                       widget.addNewIngredient(
                           widget.ingredientController.text.trim());
+                      _charCount = 0;
+
                     }
                   }
                 },
                 child: const Icon(Icons.add),
               ),
             ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: _charCount == 0
+              ? Container() // Return an empty Container when character count is 0
+              : Text(
+            '$_charCount/20 characters',
+            style: TextStyle(
+              fontSize: 15,
+              color: _charCount > 20 ? Colors.red : null, // Make the text red when character count exceeds 50
+            ),
           ),
         ),
         if (_errorMessage != null)
