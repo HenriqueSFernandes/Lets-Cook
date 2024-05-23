@@ -102,8 +102,8 @@ class _UpdateValueDialogState extends State<UpdateValueDialog> {
               ? null
               : "$characterCount/${widget.whatToChange == "Name" ? 20 : 200} characters",
           counterStyle: TextStyle(
-            color: (widget.whatToChange == "Name" && characterCount > 20) ||
-                (widget.whatToChange == "Description" && characterCount > 200)
+            color: (widget.whatToChange == "Name" && (characterCount > 20  || characterCount <= 0)) ||
+                (widget.whatToChange == "Description" && (characterCount > 200  || characterCount <= 0))
                 ? Colors.red
                 : Colors.black,
           ),
