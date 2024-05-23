@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MealDescriptionInput extends StatefulWidget {
@@ -16,8 +17,8 @@ class _MealDescriptionInputState extends State<MealDescriptionInput> {
     if (value == null || value.isEmpty) {
       return 'Please enter a description';
     }
-    if (value.length > 200) {
-      return 'Description cannot be more than 200 characters';
+    if (value.length > 500) {
+      return 'Description cannot be more than 500 characters';
     }
     return null;
   }
@@ -45,36 +46,43 @@ class _MealDescriptionInputState extends State<MealDescriptionInput> {
             ),
             color: const Color(0xFF2F3635),
           ),
-
-          //border ends here
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              controller: widget.descriptionController,
-              onChanged: (value) {
-                setState(() {
-                  _errorMessage = validateDescription(value);
-                });
-              },
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                    icon: const Icon(
-                      Icons.cancel_outlined,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      widget.descriptionController.clear();
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: widget.descriptionController,
+                    onChanged: (value) {
                       setState(() {
-                        _errorMessage = "Please enter a description"; // This will remove the error message
+                        _errorMessage = validateDescription(value);
                       });
-                    }
+                    },
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                  ),
                 ),
-                border: InputBorder.none,
               ),
-            ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.cancel_outlined,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    widget.descriptionController.clear();
+                    setState(() {
+                      _errorMessage = "Please enter a description"; // This will remove the error message
+                    });
+                  },
+                ),
+              ),
+            ],
           ),
         ),
         if (_errorMessage != null)

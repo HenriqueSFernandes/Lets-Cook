@@ -1,7 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lets_cook/Components/MealPage/Gallery.dart';
 import 'package:lets_cook/Components/MealPage/ImagesList.dart';
 import 'package:lets_cook/Components/MealPage/IngredientsList.dart';
@@ -143,43 +146,48 @@ class _MealPageState extends State<MealPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      widget.dishName,
-                                      style: TextStyle(
-                                        fontSize: 30,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w600,
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: AutoSizeText(
+                                          widget.dishName,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            color: Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    chefIsCurrentUser
-                                        ? IconButton(
-                                            onPressed: () async {
-                                              await showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return UpdateValueDialog(
-                                                    mealID: widget.mealID,
-                                                    whatToChange: "Name",
-                                                    currentValue:
-                                                        widget.dishName,
-                                                    databaseParameterName:
-                                                        'mealname',
-                                                  );
-                                                },
-                                              );
-                                              refreshPage();
-                                            },
-                                            icon: Icon(
-                                              Icons.edit,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                            ),
-                                            iconSize: 30,
-                                          )
-                                        : const SizedBox(),
-                                  ],
+                                      chefIsCurrentUser
+                                          ? IconButton(
+                                              onPressed: () async {
+                                                await showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return UpdateValueDialog(
+                                                      mealID: widget.mealID,
+                                                      whatToChange: "Name",
+                                                      currentValue:
+                                                          widget.dishName,
+                                                      databaseParameterName:
+                                                          'mealname',
+                                                    );
+                                                  },
+                                                );
+                                                refreshPage();
+                                              },
+                                              icon: Icon(
+                                                Icons.edit,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                              iconSize: 30,
+                                            )
+                                          : const SizedBox(),
+                                    ],
+                                  ),
                                 ),
                                 Row(
                                   children: [

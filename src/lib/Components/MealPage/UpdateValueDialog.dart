@@ -53,10 +53,10 @@ class _UpdateValueDialogState extends State<UpdateValueDialog> {
       if (textEditingController.text.isEmpty) {
         updateIsEnabled = false;
       }
-      if(widget.whatToChange == "Name" && textEditingController.text.length > 20){
+      if(widget.whatToChange == "Name" && textEditingController.text.length > 50){
         updateIsEnabled = false;
       }
-      if(widget.whatToChange == "Description" && textEditingController.text.length > 200){
+      if(widget.whatToChange == "Description" && textEditingController.text.length > 500){
         updateIsEnabled = false;
       }
       if (widget.inputType == TextInputType.number) {
@@ -100,10 +100,10 @@ class _UpdateValueDialogState extends State<UpdateValueDialog> {
           hintText: "Enter the new ${widget.whatToChange}",
           counterText: widget.whatToChange == "Price"
               ? null
-              : "$characterCount/${widget.whatToChange == "Name" ? 20 : 200} characters",
+              : "$characterCount/${widget.whatToChange == "Name" ? 50 : 500} characters",
           counterStyle: TextStyle(
-            color: (widget.whatToChange == "Name" && (characterCount > 20  || characterCount <= 0)) ||
-                (widget.whatToChange == "Description" && (characterCount > 200  || characterCount <= 0))
+            color: (widget.whatToChange == "Name" && (characterCount > 50  || characterCount <= 0)) ||
+                (widget.whatToChange == "Description" && (characterCount > 500  || characterCount <= 0))
                 ? Colors.red
                 : Colors.black,
           ),

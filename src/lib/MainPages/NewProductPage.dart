@@ -120,7 +120,7 @@ class _NewProductPageState extends State<NewProductPage> {
         portions == null ||
         price < 0 ||
         portions <= 0 ||
-        name.length> 20 ||
+        name.length> 50 ||
         description.length> 200) {
       showDialog(
           context: context,

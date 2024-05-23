@@ -20,8 +20,8 @@ class _MealNameInputState extends State<MealNameInput> {
     if (value == null || value.isEmpty) {
       return 'Please enter a meal name';
     }
-    if (value.length > 20) {
-      return 'Meal name cannot be more than 20 characters';
+    if (value.length > 50) {
+      return 'Meal name cannot be more than 50 characters';
     }
     return null;
   }

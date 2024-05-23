@@ -170,6 +170,7 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
             });
       }
       _formKey.currentState!.validate(); // Validate the form after the image is selected
+      _formKey.currentState!.validate(); // Validate the form after the image is selected
     });
   }
 

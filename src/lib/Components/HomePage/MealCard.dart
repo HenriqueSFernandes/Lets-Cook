@@ -100,6 +100,7 @@ class MealCard extends StatelessWidget {
                         horizontal: 16.0, vertical: 0.0), // Adjusted padding
                     child: Text(
                       dishName,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 25,
                         color: primaryColor,
