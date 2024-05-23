@@ -10,6 +10,11 @@ import 'package:lets_cook/MainPages/LoginPage.dart';
 import 'package:lets_cook/MainPages/NewProductPage.dart';
 import 'package:lets_cook/MainPages/ProfilePage.dart';
 import 'package:lets_cook/firebase_options.dart';
+import 'package:lets_cook/MainPages/SearchPage.dart';
+
+import 'MainPages/SearchPage.dart';
+
+List<Map<String, dynamic>> chatrooms = [];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +43,18 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: currentPageIndex);
+    _fetchChatrooms();
+  }
+
+  Future<void> _fetchChatrooms() async {
+    final userRef = FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    final doc = await userRef.get();
+    final data = doc.data() as Map<String, dynamic>;
+    setState(() {
+      chatrooms = List.from(data["chatrooms"]);
+    });
   }
 
   @override
@@ -85,31 +102,14 @@ class _MainAppState extends State<MainApp> {
           "/home": (context) {
             return Scaffold(
               appBar: AppBar(
-                title: const Text("Let's Cook"),
-                elevation: 4,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      final userRef = FirebaseFirestore.instance
-                          .collection("users")
-                          .doc(FirebaseAuth.instance.currentUser!.uid);
-                      userRef.get().then((DocumentSnapshot doc) {
-                        final data = doc.data() as Map<String, dynamic>;
-                        List<Map<String, dynamic>> chatrooms = [];
-                        if (data["chatrooms"] != null) {
-                          chatrooms = List.from(data["chatrooms"]);
-                        }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ChatListPage(rooms: chatrooms)),
-                        );
-                      });
-                    },
-                    icon: Icon(Icons.message),
-                  )
-                ],
+                toolbarHeight: 80,
+                title: Image.asset(
+                  'lib/resources/LetsCookOfc.png', // Replace with your image path
+                  fit: BoxFit.cover, // You can remove this if you don't want to fit the image
+                  height: 80.0, // You can adjust the height as needed
+                ),
+                centerTitle: true,
+                elevation: 500,
               ),
               bottomNavigationBar: NavigationBar(
                 destinations: const [
@@ -121,6 +121,9 @@ class _MainAppState extends State<MainApp> {
                     icon: Icon(Icons.add, size: 30),
                     label: "Add",
                   ),
+                  NavigationDestination(
+                      icon: Icon(Icons.message, size: 30),
+                      label: "Messages"),
                   NavigationDestination(
                     icon: Icon(Icons.person, size: 30),
                     label: "Profile",
@@ -145,11 +148,10 @@ class _MainAppState extends State<MainApp> {
                 children: [
                   const HomePage(key: PageStorageKey('HomePage')),
                   NewProductPage(key: const PageStorageKey('NewProductPage')),
+                  ChatListPage(key: const PageStorageKey('MessagesPage'), rooms: chatrooms),
                   ProfilePage(
-                    userID: FirebaseAuth.instance.currentUser!.uid,
-                    setIndex: setIndex,
-                    key: const PageStorageKey('ProfilePage'),
-                  ),
+                      userID: FirebaseAuth.instance.currentUser!.uid,
+                      key: const PageStorageKey('ProfilePage')),
                 ],
               ),
             );

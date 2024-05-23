@@ -17,6 +17,7 @@ class ChatPage extends StatefulWidget {
   String? chefID;
   List<String>? ingredients;
   List<NetworkImage>? images;
+  double? rating;
   List<Message> messages = [];
 
   ChatPage({
@@ -24,12 +25,24 @@ class ChatPage extends StatefulWidget {
     required this.mealID,
     super.key,
   }) {
+    Future<double> getMealRating(String userID) async {
+      final userRef =
+          FirebaseFirestore.instance.collection("users").doc(userID);
+      final user = await userRef.get();
+      if (user.data()!.containsKey('totalRating') &&
+          user.data()!.containsKey('ratingCount')) {
+        return (user['totalRating'] / user['ratingCount']);
+      } else {
+        return 0.0;
+      }
+    }
+
     final List<String> userIDs = [senderID, receiverID];
     userIDs.sort();
     roomID = userIDs.join() + mealID;
     final mealRef = FirebaseFirestore.instance.collection("dishes").doc(mealID);
     List<String> imageURLs;
-    mealRef.get().then((value) => {
+    getMealRating(receiverID).then((rating) => mealRef.get().then((value) => {
           chefName = value["username"],
           mealName = value["mealname"],
           price = value["price"],
@@ -38,7 +51,8 @@ class ChatPage extends StatefulWidget {
           images = imageURLs.map((e) => NetworkImage(e)).toList(),
           chefID = value["userid"],
           ingredients = List<String>.from(value["ingredients"]),
-        });
+          rating = rating,
+        }));
   }
 
   @override
@@ -139,14 +153,16 @@ class _ChatPageState extends State<ChatPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => MealPage(
-                      userName: widget.chefName!,
-                      dishName: widget.mealName!,
-                      price: widget.price!,
-                      description: widget.description!,
-                      userID: widget.chefID!,
-                      mealID: widget.mealID,
-                      images: widget.images!,
-                      ingredients: widget.ingredients!),
+                    userName: widget.chefName!,
+                    dishName: widget.mealName!,
+                    price: widget.price!,
+                    description: widget.description!,
+                    userID: widget.chefID!,
+                    mealID: widget.mealID,
+                    images: widget.images!,
+                    ingredients: widget.ingredients!,
+                    rating: widget.rating!,
+                  ),
                 ),
               );
             },
