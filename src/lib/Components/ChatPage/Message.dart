@@ -21,16 +21,19 @@ class Message extends StatelessWidget {
       mainAxisAlignment:
           userIsSender ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: userIsSender ? Color(0xFF00514F) : Color(0xFF1B8587),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          padding: EdgeInsets.all(8),
-          margin: EdgeInsets.only(bottom: 5),
-          child: Text(
-            content,
-            style: TextStyle(color: Colors.white),
+        Flexible(
+          child: Container(
+            decoration: BoxDecoration(
+              color: userIsSender ? const Color(0xFF00514F) : const Color(0xFF1B8587),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+            margin : userIsSender ?  const EdgeInsets.only(bottom: 10, right: 10, left: 60) : const EdgeInsets.only(bottom: 10, left: 10, right: 60),
+          
+            child: Text(
+              content,
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+            ),
           ),
         ),
       ],

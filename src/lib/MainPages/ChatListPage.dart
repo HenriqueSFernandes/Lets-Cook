@@ -38,7 +38,7 @@ class _ChatListPageState extends State<ChatListPage> {
                 String mealName = snapshot.data![1]["mealname"];
                 final String imageURL = snapshot.data![0]["image_url"];
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(top: 30),
                   child: GestureDetector(
                     child: Row(
                       children: [
