@@ -50,7 +50,6 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _courseOfStudyController =
       TextEditingController();
-  final TextEditingController _specialityController = TextEditingController();
   final TextEditingController _moreAboutYourselfController =
       TextEditingController();
   File? _selectedImage; // Variable to store the selected image file
@@ -90,7 +89,6 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
       "name": _nameController.text.trim(),
       "phone_number": _phoneNumberController.text.trim(),
       "course_of_study": _courseOfStudyController.text.trim(),
-      "speciality": _specialityController.text.trim(),
       "more_about_yourself": _moreAboutYourselfController.text.trim(),
       "image_url": imageUrl,
       // Add more fields as needed
@@ -327,40 +325,6 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
               ),
               const SizedBox(height: 20.0),
               TextFormField(
-                controller: _specialityController,
-                onChanged: (value) {
-                  setState(() {
-                    _formKey.currentState!.validate();
-                  }); // Update the UI when the name changes
-                },
-                validator: (value) {
-                  if (value != null && value.trim().isEmpty) {
-                    return 'Specialty cannot be empty';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Speciality',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  prefixIcon: const Icon(Icons.star_border_outlined),
-                  filled: true,
-                  fillColor: Theme.of(context).bottomAppBarTheme.color,
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              TextFormField(
                 controller: _moreAboutYourselfController,
                 onChanged: (value) {
                   setState(() {
@@ -559,7 +523,6 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
     _nameController.dispose();
     _phoneNumberController.dispose();
     _courseOfStudyController.dispose();
-    _specialityController.dispose();
     _moreAboutYourselfController.dispose();
     super.dispose();
   }

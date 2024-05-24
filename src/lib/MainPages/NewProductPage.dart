@@ -11,7 +11,6 @@ import 'package:lets_cook/Components/NewProductPage/IngredientCard.dart';
 import 'package:lets_cook/Components/NewProductPage/MealDescriptionInput.dart';
 import 'package:lets_cook/Components/NewProductPage/MealIngredientInput.dart';
 import 'package:lets_cook/Components/NewProductPage/MealNameInput.dart';
-import 'package:lets_cook/Components/NewProductPage/MealPortionsInput.dart';
 import 'package:lets_cook/Components/NewProductPage/MealPriceInput.dart';
 
 class NewProductPage extends StatefulWidget {
@@ -32,7 +31,6 @@ class _NewProductPageState extends State<NewProductPage>
   final descriptionController = TextEditingController();
   final ingredientController = TextEditingController();
   final priceController = TextEditingController();
-  final portionsController = TextEditingController();
 
   Future<void> _pickImageFromGallery() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -112,15 +110,12 @@ class _NewProductPageState extends State<NewProductPage>
     String name = nameController.text;
     String description = descriptionController.text;
     double? price = double.tryParse(priceController.text);
-    int? portions = int.tryParse(portionsController.text);
     List<String> ingredientNames = ingredients.keys.toList();
     List imageFiles = images.values.map((e) => e.file).toList();
     if (name.isEmpty ||
         description.isEmpty ||
         price == null ||
-        portions == null ||
         price < 0 ||
-        portions <= 0 ||
         name.length> 50 ||
         description.length> 500) {
       showDialog(
@@ -191,7 +186,6 @@ class _NewProductPageState extends State<NewProductPage>
       "mealname": name,
       "description": description,
       "price": price,
-      "quantity": portions,
       "username": FirebaseAuth.instance.currentUser!.displayName,
       "userid": FirebaseAuth.instance.currentUser!.uid,
       "ingredients": ingredientNames,
@@ -203,7 +197,6 @@ class _NewProductPageState extends State<NewProductPage>
     descriptionController.clear();
     ingredients.clear();
     priceController.clear();
-    portionsController.clear();
     ingredientController.clear();
     images.clear();
     isUploading = false;
@@ -265,8 +258,6 @@ class _NewProductPageState extends State<NewProductPage>
                 ),
                 const SizedBox(height: 20),
                 MealPriceInput(priceController: priceController),
-                const SizedBox(height: 20),
-                MealPortionsController(portionsController: portionsController),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
