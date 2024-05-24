@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/MainPages/ChatPage.dart';
 
@@ -99,10 +100,18 @@ class ChatListPage extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      Text(
-                                        "${snapshot.data!["name"]} - ${snapshot.data!["mealname"]}",
-                                        style: const TextStyle(
-                                          fontSize: 20,
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 30,
+                                          ),
+                                          child: Text(
+                                            "${snapshot.data!["name"]} - ${snapshot.data!["mealname"]}",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
