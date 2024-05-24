@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getMeals() async {
-    // TODO change the limit later
+    products = [];
     final collection = FirebaseFirestore.instance
         .collection("dishes")
         .orderBy("mealname")
