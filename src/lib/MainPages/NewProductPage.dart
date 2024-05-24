@@ -6,9 +6,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lets_cook/Components/NewProductPage/DismissibleImageCard.dart';
 import 'package:lets_cook/Components/NewProductPage/IngredientCard.dart';
 import 'package:lets_cook/Components/NewProductPage/MealDescriptionInput.dart';
-import 'package:lets_cook/Components/NewProductPage/DismissibleImageCard.dart';
 import 'package:lets_cook/Components/NewProductPage/MealIngredientInput.dart';
 import 'package:lets_cook/Components/NewProductPage/MealNameInput.dart';
 import 'package:lets_cook/Components/NewProductPage/MealPortionsInput.dart';
@@ -21,7 +21,8 @@ class NewProductPage extends StatefulWidget {
   State<NewProductPage> createState() => _NewProductPageState();
 }
 
-class _NewProductPageState extends State<NewProductPage> {
+class _NewProductPageState extends State<NewProductPage>
+    with AutomaticKeepAliveClientMixin<NewProductPage> {
   Map<String, IngredientCard> ingredients = {};
   Map<String, DismissibleImageCard> images = {};
   bool isUploading = false;
@@ -218,7 +219,11 @@ class _NewProductPageState extends State<NewProductPage> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Padding(
       padding: const EdgeInsets.only(top: 25),
       child: ListView(

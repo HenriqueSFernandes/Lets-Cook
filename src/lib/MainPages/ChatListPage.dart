@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,12 +51,6 @@ class ChatListPage extends StatelessWidget {
                 ),
               );
             }
-
-            // print every element from data
-            print(data.runtimeType);
-            for (var element in data) {
-              print(element);
-            }
             return ListView(
               children: data
                   .map((e) => Padding(
@@ -92,13 +87,16 @@ class ChatListPage extends StatelessWidget {
                                           ),
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: snapshot.data!['image_url'] ==
+                                            image: snapshot
+                                                        .data!['image_url'] ==
                                                     ""
                                                 ? const AssetImage(
                                                     "lib/resources/default_userimage.png")
-                                                : NetworkImage(snapshot
-                                                        .data!['image_url'])
-                                                    as ImageProvider,
+                                                : CachedNetworkImageProvider(
+                                                    snapshot.data!['image_url'],
+                                                    errorListener: (p0) =>
+                                                        const Text("Loading"),
+                                                  ) as ImageProvider,
                                           ),
                                         ),
                                       ),

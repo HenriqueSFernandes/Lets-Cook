@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
 import 'LoginPage.dart';
 
 class CustomProfilePage extends StatefulWidget {
@@ -26,7 +28,8 @@ class _CustomProfilePageState extends State<CustomProfilePage> {
 
     if (user != null) {
       String uid = user.uid;
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      DocumentSnapshot userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
       setState(() {
         userName = userDoc['name'] ?? '';
         userEmail = user.email ?? '';
@@ -39,7 +42,7 @@ class _CustomProfilePageState extends State<CustomProfilePage> {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
 
@@ -47,11 +50,11 @@ class _CustomProfilePageState extends State<CustomProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         actions: [
           IconButton(
             onPressed: signOut,
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
           ),
         ],
       ),
@@ -63,40 +66,41 @@ class _CustomProfilePageState extends State<CustomProfilePage> {
             Center(
               child: CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage(FirebaseAuth.instance.currentUser!.photoURL as String),
+                backgroundImage: CachedNetworkImageProvider(
+                  FirebaseAuth.instance.currentUser!.photoURL as String,
+                  errorListener: (p0) {
+                    const Text('Loading');
+                  },
+                ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               'Name: $userName',
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Email: $userEmail',
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Bio: $userBio',
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-
-              },
-              child: Text(
+              onPressed: () {},
+              child: const Text(
                 'View Meals',
                 style: TextStyle(fontSize: 18),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-
-              },
-              child: Text(
+              onPressed: () {},
+              child: const Text(
                 'Report',
                 style: TextStyle(fontSize: 18),
               ),

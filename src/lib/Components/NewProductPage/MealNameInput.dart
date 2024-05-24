@@ -55,7 +55,8 @@ class _MealNameInputState extends State<MealNameInput> {
           //border ends here
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
+            child: TextField(
+              textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.text,
               style: const TextStyle(color: Color(0xFFFAFDFC)),
               controller: widget.nameController,

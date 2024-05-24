@@ -41,6 +41,8 @@ class _HomePageState extends State<HomePage> {
       if (user.data()!.containsKey('totalRating') &&
           user.data()!.containsKey('ratingCount')) {
         return (user['totalRating'] / user['ratingCount']);
+      } else {
+        return 0.0;
       }
     }
     return 0.0;

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: MediaQuery.of(context).size.height / 3,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(info['image_url']!),
+                            image: CachedNetworkImageProvider(
+                              info['image_url']!,
+                              errorListener: (p0) {
+                                const Text('Loading');
+                              },
+                            ),
                             fit: BoxFit.fitWidth,
                           ),
                         ),
@@ -178,7 +184,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 onPressed: () async {
                                   if (isCurrentUser) {
                                     await FirebaseAuth.instance.signOut();
-                                    Navigator.pushNamed(context, '/sign-in');
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                            "/sign-in", (route) => false);
                                   } else {
                                     showDialog(
                                         context: context,

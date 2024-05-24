@@ -52,7 +52,8 @@ class _MealIngredientInputState extends State<MealIngredientInput> {
                       _errorMessage = validateIngredient(value);
                     });
                   },
-                  decoration: InputDecoration(
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                   ),
                 ),
