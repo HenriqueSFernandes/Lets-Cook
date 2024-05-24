@@ -241,7 +241,32 @@ class _NewProductPageState extends State<NewProductPage>
                     ),
                     FilledButton(
                       onPressed: () {
-                        _pickImageFromCamera();
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Select image source"),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    _pickImageFromGallery();
+                                  },
+                                  child: const Icon(Icons.image),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    _pickImageFromCamera();
+                                  },
+                                  child:
+                                      const Icon(Icons.photo_camera_outlined),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                       },
                       child: const Row(
                         children: [
