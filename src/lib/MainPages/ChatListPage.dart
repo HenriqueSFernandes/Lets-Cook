@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_cook/MainPages/ChatPage.dart';
 
@@ -49,12 +51,6 @@ class ChatListPage extends StatelessWidget {
                 ),
               );
             }
-
-            // print every element from data
-            print(data.runtimeType);
-            for (var element in data) {
-              print(element);
-            }
             return ListView(
               children: data
                   .map((e) => Padding(
@@ -91,20 +87,31 @@ class ChatListPage extends StatelessWidget {
                                           ),
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: snapshot.data!['image_url'] ==
+                                            image: snapshot
+                                                        .data!['image_url'] ==
                                                     ""
                                                 ? const AssetImage(
                                                     "lib/resources/default_userimage.png")
-                                                : NetworkImage(snapshot
-                                                        .data!['image_url'])
-                                                    as ImageProvider,
+                                                : CachedNetworkImageProvider(
+                                                    snapshot.data!['image_url'],
+                                                    errorListener: (p0) =>
+                                                        const Text("Loading"),
+                                                  ) as ImageProvider,
                                           ),
                                         ),
                                       ),
-                                      Text(
-                                        "${snapshot.data!["name"]} - ${snapshot.data!["mealname"]}",
-                                        style: const TextStyle(
-                                          fontSize: 20,
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 30,
+                                          ),
+                                          child: Text(
+                                            "${snapshot.data!["name"]} - ${snapshot.data!["mealname"]}",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],

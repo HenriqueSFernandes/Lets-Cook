@@ -29,12 +29,14 @@ class _UpdateValueDialogState extends State<UpdateValueDialog> {
   late TextEditingController textEditingController;
   bool updateIsEnabled = false;
   bool isUploading = false;
+  int characterCount = 0;
 
   @override
   void initState() {
     super.initState();
     textEditingController = TextEditingController();
     textEditingController.text = widget.currentValue;
+    characterCount = textEditingController.text.length ;
     textEditingController.addListener(_textChangeListener);
   }
 
@@ -46,8 +48,15 @@ class _UpdateValueDialogState extends State<UpdateValueDialog> {
 
   void _textChangeListener() {
     setState(() {
+      characterCount = textEditingController.text.trim().length;
       updateIsEnabled = textEditingController.text != widget.currentValue;
       if (textEditingController.text.isEmpty) {
+        updateIsEnabled = false;
+      }
+      if(widget.whatToChange == "Name" && textEditingController.text.length > 50){
+        updateIsEnabled = false;
+      }
+      if(widget.whatToChange == "Description" && textEditingController.text.length > 500){
         updateIsEnabled = false;
       }
       if (widget.inputType == TextInputType.number) {
@@ -72,7 +81,7 @@ class _UpdateValueDialogState extends State<UpdateValueDialog> {
       await docRef.update({widget.databaseParameterName: price});
     } else {
       await docRef
-          .update({widget.databaseParameterName: textEditingController.text});
+          .update({widget.databaseParameterName: textEditingController.text.trim()});
     }
     setState(() {
       isUploading = false;
@@ -82,13 +91,22 @@ class _UpdateValueDialogState extends State<UpdateValueDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Change name"),
+      title: Text("Change ${widget.whatToChange}"),
       content: TextField(
         controller: textEditingController,
         keyboardType: widget.inputType,
         maxLines: widget.maxLines,
-        decoration: const InputDecoration(
-          hintText: "Enter the new name",
+        decoration: InputDecoration(
+          hintText: "Enter the new ${widget.whatToChange}",
+          counterText: widget.whatToChange == "Price"
+              ? null
+              : "$characterCount/${widget.whatToChange == "Name" ? 50 : 500} characters",
+          counterStyle: TextStyle(
+            color: (widget.whatToChange == "Name" && (characterCount > 50  || characterCount <= 0)) ||
+                (widget.whatToChange == "Description" && (characterCount > 500  || characterCount <= 0))
+                ? Colors.red
+                : Colors.black,
+          ),
         ),
       ),
       actions: [

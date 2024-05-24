@@ -46,19 +46,21 @@ Let's Cook is a revolutionary mobile application designed to connect students wi
 * Home Page
 * Menu for navigation
 * User profile
-* Search bar with many filters ( food restrictions or diets, location preferences, price filtering, ratings and chef)
-* Scrolldown list of offers with an appealing photo, price, rating, cook
-* Dish Page extended version of the menu
-* Cook Page photo, description, experience, rating
+* Search bar
+* Scrolldown list of offers with an appealing photo, price, rating, chef
+* Chef Page photo, description, rating
 * About Page
 
 ### Elevator Pitch
 
-Introducing Let's Cook, the game-changing platform addressing campus food affordability. In a time when many students struggle financially, Let's Cook connects student chefs with those in need of affordable, quality meals. With just a tap, students can buy and sell homemade dishes, creating a win-win situation: culinary enthusiasts earn extra income while offering convenient, inexpensive meals to their peers. Let's Cook isn't just about food delivery; it's about fostering a community of sharing, empowering students economically, and reshaping the future of campus dining.
+Have you ever been told that you cook well? Would you like to earn extra money doing what you love? Or are you simply tired of eating in the canteen and want affordable prices and homemade food? That's Let's Cook.
+Let's Cook connects students who have a passion for cooking with other students who are looking for cheap home-cooked meals. It's a simple and sustainable solution to excess food and tight budgets.
+Our target audience are FEUP students who want to buy or sell homemade meals. Whether you're a culinary enthusiast or just looking for an affordable meal, Let's Cook has something for everyone.
+While there are other food delivery apps, they don't focus on homemade food, and Let's Cook fills that unique niche.
+What sets us apart is our community-focused approach. It's not just a food delivery service, it's a platform for students to meet each other and enjoy delicious home-cooked meals.
+Let's revolutionize the future of campus dining together!
 
 ## Requirements
-
-<!-- In this section, you should describe all kinds of requirements for your module: functional and non-functional requirements. -->
 
 ### Domain model
 

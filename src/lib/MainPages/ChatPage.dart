@@ -16,7 +16,7 @@ class ChatPage extends StatefulWidget {
   String? description;
   String? chefID;
   List<String>? ingredients;
-  List<NetworkImage>? images;
+  List<String>? imageURLs;
   double? rating;
   List<Message> messages = [];
 
@@ -41,14 +41,12 @@ class ChatPage extends StatefulWidget {
     userIDs.sort();
     roomID = userIDs.join() + mealID;
     final mealRef = FirebaseFirestore.instance.collection("dishes").doc(mealID);
-    List<String> imageURLs;
     getMealRating(receiverID).then((rating) => mealRef.get().then((value) => {
           chefName = value["username"],
           mealName = value["mealname"],
           price = value["price"],
           description = value["description"],
           imageURLs = List<String>.from(value["images"]),
-          images = imageURLs.map((e) => NetworkImage(e)).toList(),
           chefID = value["userid"],
           ingredients = List<String>.from(value["ingredients"]),
           this.rating = rating,
@@ -137,9 +135,12 @@ class _ChatPageState extends State<ChatPage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.mealName ?? ""),
+            Text(widget.mealName ?? "",
+            overflow: TextOverflow.ellipsis,
+            ),
             Text(
               widget.chefName ?? "",
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 15,
               ),
@@ -159,7 +160,7 @@ class _ChatPageState extends State<ChatPage> {
                     description: widget.description!,
                     userID: widget.chefID!,
                     mealID: widget.mealID,
-                    images: widget.images!,
+                    imageURLs: widget.imageURLs!,
                     ingredients: widget.ingredients!,
                     rating: widget.rating!,
                   ),

@@ -10,12 +10,12 @@ import 'package:lets_cook/Components/MealPage/Gallery.dart';
 import 'package:lets_cook/Components/MealPage/ImageCard.dart';
 
 class ImagesList extends StatefulWidget {
-  List<NetworkImage> images;
+  List<String> imageURLs;
   final String mealID;
   final bool isEditable;
 
   ImagesList({
-    required this.images,
+    required this.imageURLs,
     required this.mealID,
     this.isEditable = false,
     super.key,
@@ -29,6 +29,16 @@ class _ImagesListState extends State<ImagesList> {
   bool isUploading = false;
   File? selectedImage;
   String? id;
+
+  Future<void> _pickImageFromGallery() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      selectedImage = File(image!.path);
+      if (selectedImage != null) {
+        id = DateTime.now().millisecondsSinceEpoch.toString();
+      }
+    });
+  }
 
   Future _pickImageFromCamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -58,7 +68,7 @@ class _ImagesListState extends State<ImagesList> {
       "images": FieldValue.arrayUnion([url])
     });
     setState(() {
-      widget.images.add(NetworkImage(url));
+      widget.imageURLs.add(url);
       isUploading = false;
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
@@ -76,13 +86,13 @@ class _ImagesListState extends State<ImagesList> {
   @override
   Widget build(BuildContext context) {
     return CollapsableList(
-      title: "Pictures (${widget.images.length})",
+      title: "Pictures (${widget.imageURLs.length})",
       child: Column(
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: widget.images
+              children: widget.imageURLs
                   .mapIndexed((index, image) => Padding(
                         padding: const EdgeInsets.all(8),
                         child: GestureDetector(
@@ -90,10 +100,11 @@ class _ImagesListState extends State<ImagesList> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => Gallery(
-                                  initialIndex: index, images: widget.images),
+                                  initialIndex: index,
+                                  imageURLs: widget.imageURLs),
                             ),
                           ),
-                          child: ImageCard(image: image),
+                          child: ImageCard(imageURL: image),
                         ),
                       ))
                   .toList(),
@@ -103,14 +114,41 @@ class _ImagesListState extends State<ImagesList> {
               ? isUploading
                   ? const CircularProgressIndicator()
                   : Center(
-                    child: ElevatedButton(
+                      child: ElevatedButton(
                         onPressed: () async {
-                          await _pickImageFromCamera();
-                          await uploadImage({id!: selectedImage!});
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Select image source"),
+                              content: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      await _pickImageFromGallery();
+                                      await uploadImage({id!: selectedImage!});
+                                    },
+                                    child: const Icon(Icons.image),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      await _pickImageFromCamera();
+                                      await uploadImage({id!: selectedImage!});
+                                    },
+                                    child:
+                                        const Icon(Icons.photo_camera_outlined),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
                         child: const Text("Add image"),
                       ),
-                  )
+                    )
               : const SizedBox(),
         ],
       ),

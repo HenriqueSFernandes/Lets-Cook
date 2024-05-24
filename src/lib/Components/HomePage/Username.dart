@@ -21,8 +21,6 @@ class UserWidget extends StatelessWidget {
               ),
             ),
             child: const CircleAvatar(
-              // foregroundImage: NetworkImage(
-              //     "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png"),
               foregroundImage:
                   AssetImage("lib/resources/default_userimage.png"),
               backgroundColor: Colors.grey,
@@ -32,6 +30,7 @@ class UserWidget extends StatelessWidget {
             margin: const EdgeInsets.only(left: 7),
             child: Text(
               userName,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.background,
                 fontSize: 28,
