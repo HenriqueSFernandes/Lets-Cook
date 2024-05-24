@@ -30,6 +30,16 @@ class _ImagesListState extends State<ImagesList> {
   File? selectedImage;
   String? id;
 
+  Future<void> _pickImageFromGallery() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      selectedImage = File(image!.path);
+      if (selectedImage != null) {
+        id = DateTime.now().millisecondsSinceEpoch.toString();
+      }
+    });
+  }
+
   Future _pickImageFromCamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
@@ -90,7 +100,8 @@ class _ImagesListState extends State<ImagesList> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => Gallery(
-                                  initialIndex: index, imageURLs: widget.imageURLs),
+                                  initialIndex: index,
+                                  imageURLs: widget.imageURLs),
                             ),
                           ),
                           child: ImageCard(imageURL: image),
@@ -103,14 +114,41 @@ class _ImagesListState extends State<ImagesList> {
               ? isUploading
                   ? const CircularProgressIndicator()
                   : Center(
-                    child: ElevatedButton(
+                      child: ElevatedButton(
                         onPressed: () async {
-                          await _pickImageFromCamera();
-                          await uploadImage({id!: selectedImage!});
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Select image source"),
+                              content: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      await _pickImageFromGallery();
+                                      await uploadImage({id!: selectedImage!});
+                                    },
+                                    child: const Icon(Icons.image),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      await _pickImageFromCamera();
+                                      await uploadImage({id!: selectedImage!});
+                                    },
+                                    child:
+                                        const Icon(Icons.photo_camera_outlined),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
                         child: const Text("Add image"),
                       ),
-                  )
+                    )
               : const SizedBox(),
         ],
       ),
