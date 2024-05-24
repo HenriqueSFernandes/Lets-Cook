@@ -121,17 +121,53 @@ class _NewProductPageState extends State<NewProductPage>
         portions == null ||
         price < 0 ||
         portions <= 0 ||
-        ingredientNames.isEmpty ||
-        imageFiles.isEmpty ||
-        name.length > 20 ||
-        description.length > 200) {
+        name.length> 50 ||
+        description.length> 500) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("Invalid data!"),
               content: const Text(
-                  "Please check if you entered all the values correctly."),
+                  "Please fill in all information and fix all the errors before submitting again."),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Ok"),
+                ),
+              ],
+            );
+          });
+      isUploading = false;
+      setState(() {});
+      return;
+    } else if ( ingredients.isEmpty ) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Invalid ingredients!"),
+              content: const Text(
+                  "Please add at least one ingredient."),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Ok"),
+                ),
+              ],
+            );
+          });
+      isUploading = false;
+      setState(() {});
+      return;
+    } else if (images.isEmpty){
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Invalid images!"),
+              content: const Text(
+                  "Please add at least one image."),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
@@ -241,7 +277,32 @@ class _NewProductPageState extends State<NewProductPage>
                     ),
                     FilledButton(
                       onPressed: () {
-                        _pickImageFromCamera();
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Select image source"),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    _pickImageFromGallery();
+                                  },
+                                  child: const Icon(Icons.image),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    _pickImageFromCamera();
+                                  },
+                                  child:
+                                      const Icon(Icons.photo_camera_outlined),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                       },
                       child: const Row(
                         children: [

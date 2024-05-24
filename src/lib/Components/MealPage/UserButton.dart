@@ -75,6 +75,7 @@ class _UserButtonState extends State<UserButton> {
           const SizedBox(width: 6),
           Text(
             widget.userName,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 20,
               color: Theme.of(context).primaryColor,

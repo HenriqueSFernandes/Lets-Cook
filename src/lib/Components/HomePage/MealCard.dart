@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import '../../MainPages/MealPage.dart';
 
 class MealCard extends StatelessWidget {
@@ -113,6 +112,7 @@ class MealCard extends StatelessWidget {
                         horizontal: 16.0, vertical: 0.0), // Adjusted padding
                     child: Text(
                       dishName,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 25,
                         color: primaryColor,
@@ -125,6 +125,7 @@ class MealCard extends StatelessWidget {
                         horizontal: 16.0, vertical: 0.0), // Adjusted padding
                     child: Text(
                       userName,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 15,
                         color: primaryColor,
