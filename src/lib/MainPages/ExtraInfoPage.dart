@@ -143,8 +143,25 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
     );
   }
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImageFromGallery() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      _selectedImage = File(image!.path);
+      if (_selectedImage != null) {
+        images.clear();
+        final id = DateTime.now().millisecondsSinceEpoch.toString();
+        images[id] = DismissibleImageCard(
+            image: _selectedImage!,
+            onRemove: () {
+              images.remove(id);
+              setState(() {});
+            });
+      }
+    });
+  }
+
+  Future<void> _pickImageFromCamera() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
       _selectedImage = File(image!.path);
       if (_selectedImage != null) {
@@ -264,8 +281,32 @@ class _CustomExtraInfoFormState extends State<CustomExtraInfoForm> {
                   style: TextStyle(fontSize: 20),
                 ),
                 FilledButton(
-                  onPressed: () {
-                    _pickImage();
+                  onPressed: () async {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Select image source"),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                Navigator.of(context).pop();
+                                await _pickImageFromGallery();
+                              },
+                              child: const Icon(Icons.image),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                Navigator.of(context).pop();
+                                await _pickImageFromCamera();
+                              },
+                              child: const Icon(Icons.photo_camera_outlined),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   },
                   child: const Row(
                     children: [
