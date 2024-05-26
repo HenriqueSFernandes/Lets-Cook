@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">3.2&nbsp;%</td>
+            <td class="headerCovTableEntryLo">1.6&nbsp;%</td>
             <td class="headerCovTableEntry">126</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">2</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-05-24 21:08:03</td>
+            <td class="headerValue">2024-05-26 18:48:38</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -68,13 +68,13 @@
 <span id="L6"><span class="lineNum">       6</span>              : import 'ExtraInfoPage.dart';</span>
 <span id="L7"><span class="lineNum">       7</span>              : import 'package:cloud_firestore/cloud_firestore.dart';</span>
 <span id="L8"><span class="lineNum">       8</span>              : class LoginPage extends StatelessWidget {</span>
-<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC tlaBgGNC">           7 :   const LoginPage({super.key});</span></span>
+<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC tlaBgGNC">          12 :   const LoginPage({super.key});</span></span>
 <span id="L10"><span class="lineNum">      10</span>              : </span>
-<span id="L11"><span class="lineNum">      11</span> <span class="tlaGNC">           1 :   @override</span></span>
+<span id="L11"><span class="lineNum">      11</span> <span class="tlaUNC tlaBgUNC">           0 :   @override</span></span>
 <span id="L12"><span class="lineNum">      12</span>              :   Widget build(BuildContext context) {</span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaUNC tlaBgUNC">           0 :     return StreamBuilder&lt;User?&gt;(</span></span>
-<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC tlaBgGNC">           1 :       stream: FirebaseAuth.instance.authStateChanges(),</span></span>
-<span id="L15"><span class="lineNum">      15</span> <span class="tlaUNC tlaBgUNC">           0 :       builder: (context, snapshot) {</span></span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaUNC">           0 :     return StreamBuilder&lt;User?&gt;(</span></span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaUNC">           0 :       stream: FirebaseAuth.instance.authStateChanges(),</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaUNC">           0 :       builder: (context, snapshot) {</span></span>
 <span id="L16"><span class="lineNum">      16</span> <span class="tlaUNC">           0 :         if (!snapshot.hasData) {</span></span>
 <span id="L17"><span class="lineNum">      17</span>              :           return const CustomLoginForm();</span>
 <span id="L18"><span class="lineNum">      18</span>              :         } else {</span>
@@ -113,7 +113,7 @@
 <span id="L51"><span class="lineNum">      51</span>              : }</span>
 <span id="L52"><span class="lineNum">      52</span>              : </span>
 <span id="L53"><span class="lineNum">      53</span>              : class CustomLoginForm extends StatefulWidget {</span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC tlaBgGNC">           3 :   const CustomLoginForm({super.key});</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC tlaBgGNC">           6 :   const CustomLoginForm({super.key});</span></span>
 <span id="L55"><span class="lineNum">      55</span>              : </span>
 <span id="L56"><span class="lineNum">      56</span> <span class="tlaUNC tlaBgUNC">           0 :   @override</span></span>
 <span id="L57"><span class="lineNum">      57</span> <span class="tlaUNC">           0 :   _CustomLoginFormState createState() =&gt; _CustomLoginFormState();</span></span>
