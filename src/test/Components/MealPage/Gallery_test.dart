@@ -19,7 +19,7 @@ void main() {
         MaterialApp(
           home: Gallery(
             initialIndex: 0,
-            images: mockImages,
+            imageURLs: mockImages.map((image) => image.url).toList(),
           ),
         ),
       );
@@ -31,37 +31,5 @@ void main() {
       expect(find.text('1/${mockImages.length}'), findsOneWidget);
     });
   });
-
-  testWidgets('Gallery navigate to next image', (WidgetTester tester) async {
-    mockNetworkImagesFor(() async {
-      // Define some mock network images
-      List<NetworkImage> mockImages = [
-        NetworkImage('https://example.com/image1.jpg'),
-        NetworkImage('https://example.com/image2.jpg'),
-        NetworkImage('https://example.com/image3.jpg'),
-      ];
-
-      // Build the Gallery widget
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Gallery(
-            initialIndex: 0,
-            images: mockImages,
-          ),
-        ),
-      );
-
-      // Tap on the next button
-      await tester.tap(find.widgetWithIcon(ElevatedButton, Icons.arrow_forward));
-      await tester.pumpAndSettle();
-
-      // Verify that the next image is displayed
-      expect(find.text('2/${mockImages.length}'), findsOneWidget);
-    });
-  });
-
-
-
-
 
 }

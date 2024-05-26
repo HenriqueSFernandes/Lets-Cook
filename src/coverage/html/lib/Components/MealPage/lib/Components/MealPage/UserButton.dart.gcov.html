@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2024-05-24 07:25:39</td>
+            <td class="headerValue">2024-05-26 18:48:38</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -60,56 +60,56 @@
               <td>
 <pre class="sourceHeading">            Line data    Source code</pre>
 <pre class="source">
-<span id="L1"><span class="lineNum">       1</span>              : import 'package:cloud_firestore/cloud_firestore.dart';</span>
-<span id="L2"><span class="lineNum">       2</span>              : import 'package:flutter/material.dart';</span>
-<span id="L3"><span class="lineNum">       3</span>              : import 'package:lets_cook/MainPages/ProfilePage.dart';</span>
-<span id="L4"><span class="lineNum">       4</span>              : </span>
-<span id="L5"><span class="lineNum">       5</span>              : class UserButton extends StatefulWidget {</span>
-<span id="L6"><span class="lineNum">       6</span>              :   final String userName;</span>
-<span id="L7"><span class="lineNum">       7</span>              :   final String userID;</span>
-<span id="L8"><span class="lineNum">       8</span>              :   final String mealID;</span>
-<span id="L9"><span class="lineNum">       9</span>              :   String imageUrl = &quot;&quot;;</span>
-<span id="L10"><span class="lineNum">      10</span>              : </span>
-<span id="L11"><span class="lineNum">      11</span> <span class="tlaUNC tlaBgUNC">           0 :   UserButton({</span></span>
-<span id="L12"><span class="lineNum">      12</span>              :     required this.userName,</span>
-<span id="L13"><span class="lineNum">      13</span>              :     required this.userID,</span>
-<span id="L14"><span class="lineNum">      14</span>              :     required this.mealID,</span>
-<span id="L15"><span class="lineNum">      15</span>              :     super.key,</span>
-<span id="L16"><span class="lineNum">      16</span>              :   });</span>
-<span id="L17"><span class="lineNum">      17</span>              : </span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaUNC">           0 :   @override</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaUNC">           0 :   State&lt;UserButton&gt; createState() =&gt; _UserButtonState();</span></span>
-<span id="L20"><span class="lineNum">      20</span>              : }</span>
-<span id="L21"><span class="lineNum">      21</span>              : </span>
-<span id="L22"><span class="lineNum">      22</span>              : class _UserButtonState extends State&lt;UserButton&gt; {</span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaUNC">           0 :   void getImageUrl() async {</span></span>
-<span id="L24"><span class="lineNum">      24</span>              :     String url = &quot;&quot;;</span>
-<span id="L25"><span class="lineNum">      25</span>              :     final userRef =</span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaUNC">           0 :         FirebaseFirestore.instance.collection(&quot;users&quot;).doc(widget.userID);</span></span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaUNC">           0 :     await userRef.get().then(</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaUNC">           0 :       (value) {</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaUNC">           0 :         url = value['image_url'];</span></span>
-<span id="L30"><span class="lineNum">      30</span>              :       },</span>
-<span id="L31"><span class="lineNum">      31</span>              :     );</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaUNC">           0 :     setState(() {</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaUNC">           0 :       widget.imageUrl = url;</span></span>
-<span id="L34"><span class="lineNum">      34</span>              :     });</span>
-<span id="L35"><span class="lineNum">      35</span>              :   }</span>
-<span id="L36"><span class="lineNum">      36</span>              : </span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaUNC">           0 :   @override</span></span>
-<span id="L38"><span class="lineNum">      38</span>              :   Widget build(BuildContext context) {</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaUNC">           0 :     getImageUrl();</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0 :     return GestureDetector(</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaUNC">           0 :       onTap: () =&gt; Navigator.push(</span></span>
-<span id="L42"><span class="lineNum">      42</span>              :         context,</span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaUNC">           0 :         MaterialPageRoute(</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC">           0 :           builder: (context) =&gt; ProfilePage(</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaUNC">           0 :             userID: widget.userID,</span></span>
-<span id="L46"><span class="lineNum">      46</span>              :           ),</span>
-<span id="L47"><span class="lineNum">      47</span>              :         ),</span>
-<span id="L48"><span class="lineNum">      48</span>              :       ),</span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :       child: Row(</span></span>
-<span id="L50"><span class="lineNum">      50</span>              : </span>
+<span id="L1"><span class="lineNum">       1</span>              : import 'package:cached_network_image/cached_network_image.dart';</span>
+<span id="L2"><span class="lineNum">       2</span>              : import 'package:cloud_firestore/cloud_firestore.dart';</span>
+<span id="L3"><span class="lineNum">       3</span>              : import 'package:flutter/material.dart';</span>
+<span id="L4"><span class="lineNum">       4</span>              : import 'package:lets_cook/MainPages/ProfilePage.dart';</span>
+<span id="L5"><span class="lineNum">       5</span>              : </span>
+<span id="L6"><span class="lineNum">       6</span>              : class UserButton extends StatefulWidget {</span>
+<span id="L7"><span class="lineNum">       7</span>              :   final String userName;</span>
+<span id="L8"><span class="lineNum">       8</span>              :   final String userID;</span>
+<span id="L9"><span class="lineNum">       9</span>              :   final String mealID;</span>
+<span id="L10"><span class="lineNum">      10</span>              :   String imageUrl = &quot;&quot;;</span>
+<span id="L11"><span class="lineNum">      11</span>              : </span>
+<span id="L12"><span class="lineNum">      12</span> <span class="tlaUNC tlaBgUNC">           0 :   UserButton({</span></span>
+<span id="L13"><span class="lineNum">      13</span>              :     required this.userName,</span>
+<span id="L14"><span class="lineNum">      14</span>              :     required this.userID,</span>
+<span id="L15"><span class="lineNum">      15</span>              :     required this.mealID,</span>
+<span id="L16"><span class="lineNum">      16</span>              :     super.key,</span>
+<span id="L17"><span class="lineNum">      17</span>              :   });</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaUNC">           0 :   State&lt;UserButton&gt; createState() =&gt; _UserButtonState();</span></span>
+<span id="L21"><span class="lineNum">      21</span>              : }</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : class _UserButtonState extends State&lt;UserButton&gt; {</span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaUNC">           0 :   void getImageUrl() async {</span></span>
+<span id="L25"><span class="lineNum">      25</span>              :     String url = &quot;&quot;;</span>
+<span id="L26"><span class="lineNum">      26</span>              :     final userRef =</span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaUNC">           0 :         FirebaseFirestore.instance.collection(&quot;users&quot;).doc(widget.userID);</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaUNC">           0 :     await userRef.get().then(</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaUNC">           0 :       (value) {</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaUNC">           0 :         url = value['image_url'];</span></span>
+<span id="L31"><span class="lineNum">      31</span>              :       },</span>
+<span id="L32"><span class="lineNum">      32</span>              :     );</span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaUNC">           0 :     setState(() {</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaUNC">           0 :       widget.imageUrl = url;</span></span>
+<span id="L35"><span class="lineNum">      35</span>              :     });</span>
+<span id="L36"><span class="lineNum">      36</span>              :   }</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L39"><span class="lineNum">      39</span>              :   Widget build(BuildContext context) {</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0 :     getImageUrl();</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaUNC">           0 :     return GestureDetector(</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC">           0 :       onTap: () =&gt; Navigator.push(</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :         context,</span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC">           0 :         MaterialPageRoute(</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaUNC">           0 :           builder: (context) =&gt; ProfilePage(</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaUNC">           0 :             userID: widget.userID,</span></span>
+<span id="L47"><span class="lineNum">      47</span>              :           ),</span>
+<span id="L48"><span class="lineNum">      48</span>              :         ),</span>
+<span id="L49"><span class="lineNum">      49</span>              :       ),</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :       child: Row(</span></span>
 <span id="L51"><span class="lineNum">      51</span> <span class="tlaUNC">           0 :         children: [</span></span>
 <span id="L52"><span class="lineNum">      52</span> <span class="tlaUNC">           0 :           Container(</span></span>
 <span id="L53"><span class="lineNum">      53</span>              :             width: 30,</span>
@@ -128,25 +128,27 @@
 <span id="L66"><span class="lineNum">      66</span> <span class="tlaUNC">           0 :               image: DecorationImage(</span></span>
 <span id="L67"><span class="lineNum">      67</span>              :                 fit: BoxFit.cover,</span>
 <span id="L68"><span class="lineNum">      68</span> <span class="tlaUNC">           0 :                 image: widget.imageUrl == &quot;&quot;</span></span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaUNC">           0 :                     ? AssetImage(&quot;lib/resources/default_userimage.png&quot;) as ImageProvider</span></span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaUNC">           0 :                     : NetworkImage(widget.imageUrl) as ImageProvider,</span></span>
-<span id="L71"><span class="lineNum">      71</span>              :               ),</span>
-<span id="L72"><span class="lineNum">      72</span>              :             ),</span>
-<span id="L73"><span class="lineNum">      73</span>              :           ),</span>
-<span id="L74"><span class="lineNum">      74</span>              :           const SizedBox(width: 6),</span>
-<span id="L75"><span class="lineNum">      75</span> <span class="tlaUNC">           0 :           Text(</span></span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaUNC">           0 :             widget.userName,</span></span>
-<span id="L77"><span class="lineNum">      77</span> <span class="tlaUNC">           0 :             style: TextStyle(</span></span>
-<span id="L78"><span class="lineNum">      78</span>              :               fontSize: 20,</span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaUNC">           0 :               color: Theme.of(context).primaryColor,</span></span>
-<span id="L80"><span class="lineNum">      80</span>              :               fontWeight: FontWeight.bold,</span>
-<span id="L81"><span class="lineNum">      81</span>              :             ),</span>
-<span id="L82"><span class="lineNum">      82</span>              :           ),</span>
-<span id="L83"><span class="lineNum">      83</span>              :         ],</span>
-<span id="L84"><span class="lineNum">      84</span>              :       ),</span>
-<span id="L85"><span class="lineNum">      85</span>              :     );</span>
-<span id="L86"><span class="lineNum">      86</span>              :   }</span>
-<span id="L87"><span class="lineNum">      87</span>              : }</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaUNC">           0 :                     ? AssetImage(&quot;lib/resources/default_userimage.png&quot;)</span></span>
+<span id="L70"><span class="lineNum">      70</span>              :                         as ImageProvider</span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaUNC">           0 :                     : CachedNetworkImageProvider(widget.imageUrl),</span></span>
+<span id="L72"><span class="lineNum">      72</span>              :               ),</span>
+<span id="L73"><span class="lineNum">      73</span>              :             ),</span>
+<span id="L74"><span class="lineNum">      74</span>              :           ),</span>
+<span id="L75"><span class="lineNum">      75</span>              :           const SizedBox(width: 6),</span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaUNC">           0 :           Text(</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaUNC">           0 :             widget.userName,</span></span>
+<span id="L78"><span class="lineNum">      78</span>              :             overflow: TextOverflow.ellipsis,</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaUNC">           0 :             style: TextStyle(</span></span>
+<span id="L80"><span class="lineNum">      80</span>              :               fontSize: 20,</span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaUNC">           0 :               color: Theme.of(context).primaryColor,</span></span>
+<span id="L82"><span class="lineNum">      82</span>              :               fontWeight: FontWeight.bold,</span>
+<span id="L83"><span class="lineNum">      83</span>              :             ),</span>
+<span id="L84"><span class="lineNum">      84</span>              :           ),</span>
+<span id="L85"><span class="lineNum">      85</span>              :         ],</span>
+<span id="L86"><span class="lineNum">      86</span>              :       ),</span>
+<span id="L87"><span class="lineNum">      87</span>              :     );</span>
+<span id="L88"><span class="lineNum">      88</span>              :   }</span>
+<span id="L89"><span class="lineNum">      89</span>              : }</span>
         </pre>
               </td>
             </tr>

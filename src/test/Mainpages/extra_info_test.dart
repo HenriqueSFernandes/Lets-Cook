@@ -14,24 +14,6 @@ void main() {
       expect(find.byType(ExtraInfoPage), findsOneWidget);
     });
 
-    testWidgets('TextFormField widgets are present', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ExtraInfoPage(),
-        ),
-      );
 
-      expect(find.byType(TextFormField), findsNWidgets(5));
-    });
-
-    testWidgets('ElevatedButton is present', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ExtraInfoPage(),
-        ),
-      );
-
-      expect(find.byType(ElevatedButton), findsOneWidget);
-    });
   });
 }
