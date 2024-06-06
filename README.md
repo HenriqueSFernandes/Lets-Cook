@@ -31,6 +31,8 @@ Thank you!
 - José Sousa (up202208817)
 - Leandro Martins (up202208001)
 
+Final Grade: 18.8/20
+
 ---
 
 ## Business Modelling
